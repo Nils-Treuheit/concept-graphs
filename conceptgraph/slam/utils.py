@@ -1,8 +1,11 @@
-from collections import Counter
+from collections import Counter, OrderedDict
 import copy
+import hashlib
 import json
 import logging
+import os
 from pathlib import Path
+import threading
 # from conceptgraph.utils.logging_metrics import track_denoising, 
 from conceptgraph.utils.logging_metrics import DenoisingTracker, MappingTracker 
 import cv2
@@ -345,6 +348,324 @@ def merge_obj2_into_obj1(obj1, obj2, downsample_voxel_size, dbscan_remove_noise,
 
     return obj1
 
+def _validate_point_array(arr):
+    """Validate that arr is a nonempty C-contiguous Nx3 float32 array with finite values."""
+    arr = np.ascontiguousarray(arr, dtype=np.float32)
+    if arr.ndim != 2:
+        raise ValueError(
+            f"point cloud array must be 2D, got shape {arr.shape}"
+        )
+    if arr.shape[0] == 0:
+        raise ValueError(
+            f"point cloud array must be nonempty, got shape {arr.shape}"
+        )
+    if arr.shape[1] != 3:
+        raise ValueError(
+            f"point cloud array must be Nx3, got shape {arr.shape}"
+        )
+    if not np.all(np.isfinite(arr)):
+        raise ValueError(
+            "point cloud array must contain only finite values"
+        )
+    return arr
+
+
+_faiss_torch_bridge_enabled = False
+
+
+class GpuFaissIndexCache:
+    """Byte-bounded LRU for exact Faiss indexes keyed by point contents.
+
+    The cache stores indexes, not mutable Open3D objects. It hashes every
+    validated FP32 cloud on lookup, so geometry changes cannot reuse a stale
+    index even when an object's identity remains stable.
+    """
+
+    def __init__(self, max_bytes: int, index_factory):
+        if max_bytes < 0:
+            raise ValueError("max_bytes must be nonnegative")
+        self.max_bytes = int(max_bytes)
+        self.index_factory = index_factory
+        self._entries = OrderedDict()
+        self._token_keys = {}
+        self._resident_bytes = 0
+        self._lock = threading.RLock()
+
+    @property
+    def resident_bytes(self) -> int:
+        return self._resident_bytes
+
+    @staticmethod
+    def _key(points: np.ndarray, token=None):
+        if not isinstance(points, np.ndarray):
+            raise ValueError("point arrays must be NumPy arrays")
+        if points.dtype != np.float32:
+            raise ValueError("point arrays must have dtype float32")
+        if points.ndim != 2 or points.shape[1] != 3 or points.shape[0] == 0:
+            raise ValueError(f"point arrays must be nonempty Nx3, got {points.shape}")
+        if not points.flags.c_contiguous:
+            raise ValueError("point arrays must be C-contiguous")
+        if not np.all(np.isfinite(points)):
+            raise ValueError("point arrays must contain only finite values")
+        if token is not None:
+            try:
+                hash(token)
+            except TypeError as exc:
+                raise ValueError("cache tokens must be hashable") from exc
+        digest = hashlib.blake2b(memoryview(points).cast("B"), digest_size=20).digest()
+        return (token, points.shape, digest)
+
+    def get(self, points: np.ndarray, cache_token=None):
+        return self.get_many([points], cache_tokens=[cache_token])[0]
+
+    def get_many(
+        self, point_arrays, index_batch_factory=None, cache_tokens=None,
+        max_active_bytes=None,
+    ):
+        """Return indexes in input order, batching uploads for cache misses."""
+        arrays = list(point_arrays)
+        if not arrays:
+            return []
+        tokens = [None] * len(arrays) if cache_tokens is None else list(cache_tokens)
+        if len(tokens) != len(arrays):
+            raise ValueError("cache_tokens must match the number of point arrays")
+        keys = [self._key(points, token) for points, token in zip(arrays, tokens)]
+        with self._lock:
+            if max_active_bytes is not None:
+                unique_points = dict(zip(keys, arrays))
+                active_bytes = sum(points.nbytes for points in unique_points.values())
+                if active_bytes > max_active_bytes:
+                    raise MemoryError(
+                        f"active GPU Faiss point payload ({active_bytes} bytes) exceeds "
+                        f"the configured limit ({max_active_bytes} bytes); increase "
+                        "CONCEPTGRAPH_FAISS_GPU_CACHE_BYTES or reduce the map size"
+                    )
+                active_keys = set(keys)
+                for cached_key in list(self._entries):
+                    if cached_key in active_keys:
+                        continue
+                    _, cached_size = self._entries.pop(cached_key)
+                    self._resident_bytes -= cached_size
+                    cached_token = cached_key[0]
+                    if cached_token is not None and self._token_keys.get(cached_token) == cached_key:
+                        del self._token_keys[cached_token]
+
+            # Stable object IDs let an updated point cloud replace its previous
+            # index immediately instead of retaining obsolete geometry in LRU.
+            for token, key in zip(tokens, keys):
+                if token is None:
+                    continue
+                previous_key = self._token_keys.get(token)
+                if previous_key is not None and previous_key != key:
+                    previous_entry = self._entries.pop(previous_key, None)
+                    if previous_entry is not None:
+                        self._resident_bytes -= previous_entry[1]
+                self._token_keys[token] = key
+
+            result = [None] * len(arrays)
+            misses = OrderedDict()
+            for idx, (key, points) in enumerate(zip(keys, arrays)):
+                entry = self._entries.get(key)
+                if entry is not None:
+                    self._entries.move_to_end(key)
+                    result[idx] = entry[0]
+                else:
+                    misses.setdefault(key, points)
+
+            if misses:
+                miss_keys = list(misses)
+                miss_arrays = list(misses.values())
+                if index_batch_factory is None:
+                    created = [self.index_factory(points) for points in miss_arrays]
+                else:
+                    created = index_batch_factory(miss_arrays)
+                if len(created) != len(miss_arrays):
+                    raise RuntimeError("index factory returned an unexpected number of indexes")
+
+                for key, points, index in zip(miss_keys, miss_arrays, created):
+                    size = points.nbytes
+                    if size <= self.max_bytes:
+                        while self._entries and self._resident_bytes + size > self.max_bytes:
+                            evicted_key, (_, evicted_size) = self._entries.popitem(last=False)
+                            self._resident_bytes -= evicted_size
+                            evicted_token = evicted_key[0]
+                            if evicted_token is not None and self._token_keys.get(evicted_token) == evicted_key:
+                                del self._token_keys[evicted_token]
+                        self._entries[key] = (index, size)
+                        self._resident_bytes += size
+                        if key[0] is not None:
+                            self._token_keys[key[0]] = key
+                    for idx, candidate_key in enumerate(keys):
+                        if candidate_key == key:
+                            result[idx] = index
+            return result
+
+    def clear(self) -> None:
+        with self._lock:
+            self._entries.clear()
+            self._token_keys.clear()
+            self._resident_bytes = 0
+
+
+_GPU_FAISS_CACHE_BYTES_DEFAULT = 8 * 1024 * 1024 * 1024
+_gpu_faiss_state_lock = threading.RLock()
+_gpu_faiss_resources = None
+_gpu_faiss_index_cache = None
+_gpu_faiss_backend_id = None
+
+
+def _enable_faiss_torch_bridge():
+    """Lazily enable the official Faiss to PyTorch tensor bridge (once)."""
+    global _faiss_torch_bridge_enabled
+    if not _faiss_torch_bridge_enabled:
+        # Importing faiss.contrib.torch_utils makes Faiss's Python interface
+        # accept and return PyTorch tensors, enabling GPU-resident add/search
+        # with CUDA FP32 point tensors without host round-trips.
+        import faiss.contrib.torch_utils  # noqa: F401
+        _faiss_torch_bridge_enabled = True
+
+
+def _point_arrays_to_cuda(point_arrays):
+    """Pack already-validated contiguous finite FP32 point arrays and move once.
+
+    Concatenates all arrays into one contiguous (total, 3) FP32 CPU batch,
+    performs a single host to device transfer to cuda:0, and returns one
+    contiguous CUDA FP32 view per input array, slicing the batch with the
+    recorded per-cloud offsets.
+    """
+    _enable_faiss_torch_bridge()
+    sizes = [arr.shape[0] for arr in point_arrays]
+    batched = np.concatenate(point_arrays, axis=0)
+    batch = torch.from_numpy(batched).to("cuda:0")
+    views = []
+    offset = 0
+    for size in sizes:
+        views.append(batch[offset:offset + size].contiguous())
+        offset += size
+    return views
+
+
+def _make_gpu_flat_l2_index(dims, gpu_res):
+    """Create an exact FP32 GpuIndexFlatL2 index on CUDA device 0."""
+    if hasattr(faiss, "GpuIndexFlatConfig"):
+        cfg = faiss.GpuIndexFlatConfig()
+        cfg.device = 0
+        return faiss.GpuIndexFlatL2(gpu_res, dims, cfg)
+    return faiss.GpuIndexFlatL2(gpu_res, dims)
+
+
+def _create_gpu_resources():
+    """Create a single StandardGpuResources with 64 MiB temp memory bound."""
+    if not callable(getattr(faiss, "StandardGpuResources", None)):
+        raise RuntimeError(
+            "CUDA/GPU Faiss build is unavailable: faiss.StandardGpuResources "
+            "is missing or not callable. Install a GPU-enabled Faiss build."
+        )
+    if not callable(getattr(faiss, "GpuIndexFlatL2", None)):
+        raise RuntimeError(
+            "CUDA/GPU Faiss build is unavailable: faiss.GpuIndexFlatL2 is "
+            "missing or not callable. Install a GPU-enabled Faiss build."
+        )
+    gpu_res = faiss.StandardGpuResources()
+    if hasattr(gpu_res, "setTempMemory"):
+        gpu_res.setTempMemory(64 * 1024 * 1024)
+    return gpu_res
+
+
+def _build_gpu_faiss_indexes(point_arrays, gpu_res):
+    """Build exact indexes from one packed H2D point-cloud transfer."""
+    if not point_arrays:
+        return []
+    point_tensors = _point_arrays_to_cuda(point_arrays)
+    indexes = []
+    try:
+        for points in point_tensors:
+            index = _make_gpu_flat_l2_index(3, gpu_res)
+            index.add(points)
+            indexes.append(index)
+        return indexes
+    except Exception:
+        indexes.clear()
+        raise
+    finally:
+        point_tensors.clear()
+
+
+def _build_gpu_faiss_indexes_and_queries(index_arrays, query_arrays, gpu_res):
+    """Build misses and prepare queries with one packed host-to-device copy."""
+    if not index_arrays:
+        return [], _point_arrays_to_cuda(query_arrays)
+
+    # A single transfer can serve both index additions and queries. Deduplicate
+    # identical geometry so self-overlap does not upload the same cloud twice.
+    unique_arrays = OrderedDict()
+    for points in list(index_arrays) + list(query_arrays):
+        unique_arrays.setdefault(GpuFaissIndexCache._key(points), points)
+    keys = list(unique_arrays)
+    tensors = _point_arrays_to_cuda(list(unique_arrays.values()))
+    tensor_by_key = dict(zip(keys, tensors))
+    indexes = []
+    try:
+        for points in index_arrays:
+            index = _make_gpu_flat_l2_index(3, gpu_res)
+            index.add(tensor_by_key[GpuFaissIndexCache._key(points)])
+            indexes.append(index)
+        query_tensors = [
+            tensor_by_key[GpuFaissIndexCache._key(points)]
+            for points in query_arrays
+        ]
+        return indexes, query_tensors
+    except Exception:
+        indexes.clear()
+        raise
+
+
+def _get_gpu_faiss_state():
+    """Return the persistent GPU resource and content-validated index cache."""
+    global _gpu_faiss_resources, _gpu_faiss_index_cache, _gpu_faiss_backend_id
+    backend_id = id(faiss)
+    with _gpu_faiss_state_lock:
+        if _gpu_faiss_backend_id != backend_id:
+            if _gpu_faiss_index_cache is not None:
+                _gpu_faiss_index_cache.clear()
+            _gpu_faiss_index_cache = None
+            _gpu_faiss_resources = None
+            _gpu_faiss_backend_id = backend_id
+
+        if _gpu_faiss_resources is None:
+            _gpu_faiss_resources = _create_gpu_resources()
+
+        if _gpu_faiss_index_cache is None:
+            configured_bytes = os.environ.get(
+                "CONCEPTGRAPH_FAISS_GPU_CACHE_BYTES",
+                str(_GPU_FAISS_CACHE_BYTES_DEFAULT),
+            )
+            try:
+                max_bytes = int(configured_bytes)
+            except ValueError as exc:
+                raise ValueError(
+                    "CONCEPTGRAPH_FAISS_GPU_CACHE_BYTES must be an integer"
+                ) from exc
+            _gpu_faiss_index_cache = GpuFaissIndexCache(
+                max_bytes=max_bytes,
+                index_factory=lambda points: _build_gpu_faiss_indexes(
+                    [points], _gpu_faiss_resources
+                )[0],
+            )
+        return _gpu_faiss_resources, _gpu_faiss_index_cache
+
+
+def clear_gpu_faiss_index_cache() -> None:
+    """Release cached GPU indexes and their shared Faiss resource."""
+    global _gpu_faiss_resources, _gpu_faiss_index_cache, _gpu_faiss_backend_id
+    with _gpu_faiss_state_lock:
+        if _gpu_faiss_index_cache is not None:
+            _gpu_faiss_index_cache.clear()
+        _gpu_faiss_index_cache = None
+        _gpu_faiss_resources = None
+        _gpu_faiss_backend_id = None
+
+
 def compute_overlap_matrix(objects: MapObjectList, downsample_voxel_size):
     '''
     compute pairwise overlapping between objects in terms of point nearest neighbor. 
@@ -354,40 +675,68 @@ def compute_overlap_matrix(objects: MapObjectList, downsample_voxel_size):
     '''
     n = len(objects)
     overlap_matrix = np.zeros((n, n))
-    
-    # Convert the point clouds into numpy arrays and then into FAISS indices for efficient search
-    point_arrays = [np.asarray(obj['pcd'].points, dtype=np.float32) for obj in objects]
-    indices = [faiss.IndexFlatL2(arr.shape[1]) for arr in point_arrays]
-    
-    # Add the points from the numpy arrays to the corresponding FAISS indices
-    for index, arr in zip(indices, point_arrays):
-        index.add(arr)
 
-    # Compute the pairwise overlaps
+    if n == 0:
+        return overlap_matrix
+
+    point_arrays = [
+        _validate_point_array(np.asarray(obj['pcd'].points, dtype=np.float32))
+        for obj in objects
+    ]
+
+    # Evaluate the scalar IoU pair gates and select candidate pairs before
+    # uploading any point cloud to the GPU.
+    candidate_pairs = []
     for i in range(n):
         for j in range(n):
-            if i != j:  # Skip diagonal elements
-                box_i = objects[i]['bbox']
-                box_j = objects[j]['bbox']
-                
-                # Skip if the boxes do not overlap at all (saves computation)
-                iou = compute_3d_iou(box_i, box_j)
-                if iou == 0:
-                    continue
-                
-                # # Use range_search to find points within the threshold
-                # _, I = indices[j].range_search(point_arrays[i], threshold ** 2)
-                D, I = indices[j].search(point_arrays[i], 1)
+            if i == j:  # Skip diagonal elements
+                continue
 
-                # # If any points are found within the threshold, increase overlap count
-                # overlap += sum([len(i) for i in I])
+            box_i = objects[i]['bbox']
+            box_j = objects[j]['bbox']
 
-                overlap = (D < downsample_voxel_size ** 2).sum() # D is the squared distance
+            iou = compute_3d_iou(box_i, box_j)
+            if iou == 0:
+                continue
 
-                # Calculate the ratio of points within the threshold
-                overlap_matrix[i, j] = overlap / len(point_arrays[i])
+            candidate_pairs.append((i, j))
 
-    return overlap_matrix
+    point_tensors = None
+    gpu_res, index_cache = _get_gpu_faiss_state()
+
+    def build_indexes(misses):
+        nonlocal point_tensors
+        indexes, point_tensors = _build_gpu_faiss_indexes_and_queries(
+            misses, point_arrays, gpu_res
+        )
+        return indexes
+
+    indices = index_cache.get_many(
+        point_arrays,
+        index_batch_factory=build_indexes,
+        cache_tokens=[obj.get("id") for obj in objects],
+        max_active_bytes=index_cache.max_bytes,
+    )
+    overlap_tensor = None
+    thresh2 = downsample_voxel_size ** 2
+    try:
+        if point_tensors is None:
+            point_tensors = _point_arrays_to_cuda(point_arrays)
+
+        overlap_tensor = torch.zeros(
+            (n, n), device="cuda:0", dtype=torch.float64
+        )
+
+        for i, j in candidate_pairs:
+            D, I = indices[j].search(point_tensors[i], 1)
+            overlap = (D < thresh2).sum(dtype=torch.float64)
+            overlap_tensor[i, j] = overlap / len(point_arrays[i])
+    finally:
+        point_tensors = None
+        indices = None
+        gpu_res = None
+
+    return overlap_tensor.cpu().numpy()
 
 def compute_overlap_matrix_2set(objects_map: MapObjectList, objects_new: DetectionList, downsample_voxel_size) -> np.ndarray:
     """
@@ -412,51 +761,87 @@ def compute_overlap_matrix_2set(objects_map: MapObjectList, objects_new: Detecti
     m = len(objects_map)
     n = len(objects_new)
     overlap_matrix = np.zeros((m, n))
-    
-    # Convert the point clouds into numpy arrays and then into FAISS indices for efficient search
-    points_map = [np.asarray(obj['pcd'].points, dtype=np.float32) for obj in objects_map] # m arrays
-    indices = [faiss.IndexFlatL2(arr.shape[1]) for arr in points_map] # m indices
-    
-    # Add the points from the numpy arrays to the corresponding FAISS indices
-    for index, arr in zip(indices, points_map):
-        index.add(arr)
-        
-    points_new = [np.asarray(obj['pcd'].points, dtype=np.float32) for obj in objects_new] # n arrays
-        
+
+    if m == 0 or n == 0:
+        return overlap_matrix
+
+    points_map = [
+        _validate_point_array(np.asarray(obj['pcd'].points, dtype=np.float32))
+        for obj in objects_map
+    ]
+    points_new = [
+        _validate_point_array(np.asarray(obj['pcd'].points, dtype=np.float32))
+        for obj in objects_new
+    ]
+
     bbox_map = objects_map.get_stacked_values_torch('bbox')
     bbox_new = objects_new.get_stacked_values_torch('bbox')
     try:
         iou = compute_3d_iou_accurate_batch(bbox_map, bbox_new) # (m, n)
     except ValueError:
         print("Met `Plane vertices are not coplanar` error, use axis aligned bounding box instead")
-        bbox_map = []
-        bbox_new = []
+        bbox_map_list = []
+        bbox_new_list = []
         for pcd in objects_map.get_values('pcd'):
-            bbox_map.append(np.asarray(
+            bbox_map_list.append(np.asarray(
                 pcd.get_axis_aligned_bounding_box().get_box_points()))
         for pcd in objects_new.get_values('pcd'):
-            bbox_new.append(np.asarray(
+            bbox_new_list.append(np.asarray(
                 pcd.get_axis_aligned_bounding_box().get_box_points()))
-        bbox_map = torch.from_numpy(np.stack(bbox_map))
-        bbox_new = torch.from_numpy(np.stack(bbox_new))
-        
+        bbox_map = torch.from_numpy(np.stack(bbox_map_list))
+        bbox_new = torch.from_numpy(np.stack(bbox_new_list))
         iou = compute_iou_batch(bbox_map, bbox_new) # (m, n)
-            
 
-    # Compute the pairwise overlaps
+    # Select all candidate pairs using the precomputed batch IoU matrix before
+    # uploading any point cloud to the GPU.
+    if torch.is_tensor(iou):
+        iou = iou.detach().cpu().numpy()
+    candidate_pairs = []
     for i in range(m):
         for j in range(n):
-            if iou[i,j] < 1e-6:
+            if iou[i, j] < 1e-6:
                 continue
-            
-            D, I = indices[i].search(points_new[j], 1) # search new object j in map object i
+            candidate_pairs.append((i, j))
 
-            overlap = (D < downsample_voxel_size ** 2).sum() # D is the squared distance
+    point_tensors = None
+    tensors_new = None
+    gpu_res, index_cache = _get_gpu_faiss_state()
 
-            # Calculate the ratio of points within the threshold
-            overlap_matrix[i, j] = overlap / len(points_new[j])
+    def build_map_indexes(misses):
+        nonlocal point_tensors
+        indexes, point_tensors = _build_gpu_faiss_indexes_and_queries(
+            misses, points_new, gpu_res
+        )
+        return indexes
 
-    return overlap_matrix
+    indices = index_cache.get_many(
+        points_map,
+        index_batch_factory=build_map_indexes,
+        cache_tokens=[obj.get("id") for obj in objects_map],
+        max_active_bytes=index_cache.max_bytes,
+    )
+    overlap_tensor = None
+    thresh2 = downsample_voxel_size ** 2
+    try:
+        if point_tensors is None:
+            point_tensors = _point_arrays_to_cuda(points_new)
+        tensors_new = point_tensors
+
+        overlap_tensor = torch.zeros(
+            (m, n), device="cuda:0", dtype=torch.float64
+        )
+
+        for i, j in candidate_pairs:
+            D, I = indices[i].search(tensors_new[j], 1)
+            overlap = (D < thresh2).sum(dtype=torch.float64)
+            overlap_tensor[i, j] = overlap / len(points_new[j])
+    finally:
+        point_tensors = None
+        indices = None
+        tensors_new = None
+        gpu_res = None
+
+    return overlap_tensor.cpu().numpy()
 
 # @profile
 def compute_overlap_matrix_general(objects_a: MapObjectList, objects_b = None, downsample_voxel_size = None) -> np.ndarray:
@@ -509,6 +894,33 @@ def compute_overlap_matrix_general(objects_a: MapObjectList, objects_b = None, d
     if downsample_voxel_size is None:
         raise ValueError("downsample_voxel_size is not provided")
 
+    return _compute_overlap_matrix_general_torch(
+        objects_a,
+        objects_b,
+        downsample_voxel_size,
+    ).cpu().numpy()
+
+def _configured_overlap_device(*containers):
+    '''
+    First non-None ``.device`` stored on a MapObjectList/DetectionList
+    container, or ``None`` (CPU) for plain list-like containers without a
+    device attribute. Reads only the stored attribute: no Faiss resources
+    are created and no points are uploaded.
+    '''
+    for container in containers:
+        device = getattr(container, "device", None)
+        if device is not None:
+            return device
+    return None
+
+def _compute_overlap_matrix_general_torch(objects_a: MapObjectList, objects_b = None, downsample_voxel_size=None) -> torch.Tensor:
+    '''
+    Shared two-set overlap computation backing both the legacy NumPy API
+    and the Torch-returning variant. Returns an (len_a, len_b)
+    torch.Tensor: float64 on cuda:0 for non-empty inputs, and a float64 zero
+    tensor for empty inputs placed on the container's configured device when
+    available (CPU otherwise) without touching Faiss or uploading points.
+    '''
     # hardcoding for now because its this value is actually not supposed to be the downsample voxel size
     downsample_voxel_size = 0.025
 
@@ -518,57 +930,101 @@ def compute_overlap_matrix_general(objects_a: MapObjectList, objects_b = None, d
 
     len_a = len(objects_a)
     len_b = len(objects_b)
-    overlap_matrix = np.zeros((len_a, len_b))
 
-    # Convert the point clouds into numpy arrays and then into FAISS indices for efficient search
-    points_a = [np.asarray(obj['pcd'].points, dtype=np.float32) for obj in objects_a] # m arrays
-    indices_a = [faiss.IndexFlatL2(points_a_arr.shape[1]) for points_a_arr in points_a] # m indices
+    if len_a == 0 or len_b == 0:
+        return torch.zeros(
+            (len_a, len_b),
+            dtype=torch.float64,
+            device=_configured_overlap_device(objects_a, objects_b),
+        )
 
-    # Add the points from the numpy arrays to the corresponding FAISS indices
-    for idx_a, points_a_arr in zip(indices_a, points_a):
-        idx_a.add(points_a_arr)
-
-    points_b = [np.asarray(obj['pcd'].points, dtype=np.float32) for obj in objects_b] # n arrays
+    points_a = [
+        _validate_point_array(np.asarray(obj['pcd'].points, dtype=np.float32))
+        for obj in objects_a
+    ]
+    points_b = [
+        _validate_point_array(np.asarray(obj['pcd'].points, dtype=np.float32))
+        for obj in objects_b
+    ]
 
     bbox_a = objects_a.get_stacked_values_torch('bbox')
     bbox_b = objects_b.get_stacked_values_torch('bbox')
-    
-    # def compute_3d_iou_accurate_batch_safe(bbox1, bbox2):
-    #     try:
-    #         return compute_3d_iou_accurate_batch(bbox1, bbox2)
-    #     except ValueError as e:
-    #         if str(e) == "Plane vertices are not coplanar":
-    #             # Log the error or handle it in a way that's appropriate for your application
-    #             print("Non-coplanar boxes detected; returning zero IoU.")
-    #             return torch.zeros((bbox1.size(0), bbox2.size(0)))  # Return a zero IoU matrix
-    #         else:
-    #             raise  # Re-raise other unexpected exceptions
-    # ious = compute_3d_iou_accurate_batch_safe(bbox_a, bbox_b)        
-    
-    ious = compute_3d_iou_accurate_batch(bbox_a, bbox_b) # (m, n)
+    ious = compute_3d_iou_accurate_batch(bbox_a, bbox_b) # (len_a, len_b)
 
-
-    # Compute the pairwise overlaps
+    # Select all candidate pairs using the precomputed batch IoU matrix before
+    # uploading any point cloud to the GPU.
+    if torch.is_tensor(ious):
+        ious = ious.detach().cpu().numpy()
+    candidate_pairs = []
     for idx_a in range(len_a):
         for idx_b in range(len_b):
-
-            # skip same object comparison if same_objects is True
             if same_objects and idx_a == idx_b:
                 continue
-
-            # skip if the boxes do not overlap at all
-            if ious[idx_a,idx_b] < 1e-6:
+            if ious[idx_a, idx_b] < 1e-6:
                 continue
+            candidate_pairs.append((idx_a, idx_b))
 
-            # get the distance of the nearest neighbor of
-            # each point in points_b[idx_b] to the points_a[idx_a]
-            D, I = indices_a[idx_a].search(points_b[idx_b], 1) 
-            overlap = (D < downsample_voxel_size ** 2).sum() # D is the squared distance
+    point_tensors = None
+    tensors_b = None
+    gpu_res, index_cache = _get_gpu_faiss_state()
 
-            # Calculate the ratio of points within the threshold
-            overlap_matrix[idx_a, idx_b] = overlap / len(points_b[idx_b])
+    def build_a_indexes(misses):
+        nonlocal point_tensors
+        indexes, point_tensors = _build_gpu_faiss_indexes_and_queries(
+            misses, points_b, gpu_res
+        )
+        return indexes
 
-    return overlap_matrix
+    indices_a = index_cache.get_many(
+        points_a,
+        index_batch_factory=build_a_indexes,
+        cache_tokens=[obj.get("id") for obj in objects_a],
+        max_active_bytes=index_cache.max_bytes,
+    )
+    overlap_tensor = None
+    thresh2 = downsample_voxel_size ** 2
+    try:
+        if point_tensors is None:
+            point_tensors = _point_arrays_to_cuda(points_b)
+        tensors_b = point_tensors
+
+        overlap_tensor = torch.zeros(
+            (len_a, len_b), device="cuda:0", dtype=torch.float64
+        )
+
+        for idx_a, idx_b in candidate_pairs:
+            D, I = indices_a[idx_a].search(tensors_b[idx_b], 1)
+            overlap = (D < thresh2).sum(dtype=torch.float64)
+            overlap_tensor[idx_a, idx_b] = overlap / len(points_b[idx_b])
+    finally:
+        point_tensors = None
+        indices_a = None
+        tensors_b = None
+        gpu_res = None
+
+    return overlap_tensor
+
+def compute_overlap_matrix_general_torch(objects_a: MapObjectList, objects_b = None, downsample_voxel_size = None) -> torch.Tensor:
+    """
+    Torch-returning variant of compute_overlap_matrix_general with the same
+    signature and semantics (thresholds, gating, orientation, dtype, Faiss
+    behavior and cleanup). Returns the (len_a, len_b) overlap matrix as a
+    torch.Tensor instead of an np.ndarray.
+
+    Raises
+    ------
+    ValueError
+        If `downsample_voxel_size` is not provided.
+    """
+    # if downsample_voxel_size is None, raise an error
+    if downsample_voxel_size is None:
+        raise ValueError("downsample_voxel_size is not provided")
+
+    return _compute_overlap_matrix_general_torch(
+        objects_a,
+        objects_b,
+        downsample_voxel_size,
+    )
 
 # @profile
 def merge_overlap_objects(
@@ -599,7 +1055,7 @@ def merge_overlap_objects(
         len(objects), dtype=bool
     )  # Initialize all objects as 'kept' initially
     
-    index_updates = list(range(len(objects)))  # Initialize index updates with the same indices
+    parent = list(range(len(objects)))  # parent[i] is the object that i was merged into
 
     for i, j, ratio in zip(x, y, overlap_ratio):
         if ratio > merge_overlap_thresh:
@@ -630,18 +1086,29 @@ def merge_overlap_objects(
                     )
                     kept_objects[i] = False  # Mark object i as 'merged'
                     merge_operations.append((i, j))  # Record this merge for edge updates 
-                    index_updates[i] = None  # Update index as merged
+                    parent[i] = j  # Record the merge target so transitive chains can be resolved
         else:
             break  # Stop processing if the current overlap ratio is below the threshold
         
-    # Update remaining indices in index_updates
+    # Compact index of every retained object, in original order
+    kept_compact_index = {}
     current_index = 0
     for original_index, is_kept in enumerate(kept_objects):
         if is_kept:
-            index_updates[original_index] = current_index
+            kept_compact_index[original_index] = current_index
             current_index += 1
+
+    # Every original object maps to the compact index of its final retained
+    # representative, following transitive merge chains (a->b->c maps to c).
+    index_updates = []
+    for original_index, is_kept in enumerate(kept_objects):
+        if is_kept:
+            index_updates.append(kept_compact_index[original_index])
         else:
-            index_updates[original_index] = None
+            representative = original_index
+            while not kept_objects[representative]:
+                representative = parent[representative]
+            index_updates.append(kept_compact_index[representative])
 
     # Create a new list of objects excluding those that were merged
     new_objects = [obj for obj, keep in zip(objects, kept_objects) if keep]
@@ -777,8 +1244,12 @@ def merge_objects(
     
     # if map_edges is not None:
     if do_edges:
-        map_edges.merge_update_indices(index_updates)
+        # Set the edge mapping's object list to the final merged list before
+        # rebuilding UUID keys, then remap directed edges through the compact
+        # index mapping: merge-created self-loops are dropped and duplicate
+        # directed edges are coalesced while summing detection counts.
         map_edges.update_objects_list(objects)
+        map_edges.merge_update_indices(index_updates)
         print("After merging:", len(objects))
 
     # if map_edges is not None:
@@ -796,6 +1267,12 @@ def merge_objects(
         return objects
     
 def filter_captions(captions, detection_class_labels):
+    if detection_class_labels is None:
+        return []
+
+    if captions is None:
+        captions = []
+
     # Create a dictionary to map id to the index in the captions list
     captions_index = {item['id']: index for index, item in enumerate(captions)}
     
@@ -886,7 +1363,7 @@ def filter_gobs(
         else:
             raise NotImplementedError(f"Unhandled type {type(gobs[attribute])}")
         
-    filtered_captions = filter_captions(gobs['captions'], gobs['detection_class_labels'])
+    filtered_captions = filter_captions(gobs.get('captions'), gobs['detection_class_labels'])
     gobs['captions'] = filtered_captions
 
     return gobs
@@ -921,120 +1398,6 @@ def resize_gobs(gobs, image):
 
     return gobs
 
-# # @profile
-# def gobs_to_detection_list(
-#     image, 
-#     depth_array,
-#     cam_K, 
-#     idx, 
-#     gobs, 
-#     trans_pose = None,
-#     class_names = None,
-#     BG_CLASSES  = None,
-#     color_path = None,
-#     min_points_threshold: int = None,
-#     spatial_sim_type: str = None,
-#     downsample_voxel_size: float = None,  # New parameter
-#     dbscan_remove_noise: bool = None,     # New parameter
-#     dbscan_eps: float = None,             # New parameter
-#     dbscan_min_points: int = None         # New parameter
-# ):
-#     '''
-#     Return a DetectionList object from the gobs
-#     All object are still in the camera frame. 
-#     '''
-#     fg_detection_list = DetectionList()
-#     bg_detection_list = DetectionList()
-    
-#     # gobs = resize_gobs(gobs, image)
-#     # gobs = filter_gobs(
-#     #     gobs, 
-#     #     image, 
-#     #     skip_bg=skip_bg,
-#     #     BG_CLASSES=BG_CLASSES,
-#     #     mask_area_threshold=mask_area_threshold,
-#     #     max_bbox_area_ratio=max_bbox_area_ratio,
-#     #     mask_conf_threshold=mask_conf_threshold,
-#     # )
-
-#     if len(gobs['xyxy']) == 0:
-#         return fg_detection_list, bg_detection_list
-    
-#     # Compute the containing relationship among all detections and subtract fg from bg objects
-#     xyxy = gobs['xyxy']
-#     mask = gobs['mask']
-#     # gobs['mask'] = mask_subtract_contained(xyxy, mask)
-    
-#     n_masks = len(gobs['xyxy'])
-#     for mask_idx in range(n_masks):
-#         local_class_id = gobs['class_id'][mask_idx]
-#         mask = gobs['mask'][mask_idx]
-#         class_name = gobs['classes'][local_class_id]
-#         global_class_id = -1 if class_names is None else class_names.index(class_name)
-        
-#         # make the pcd and color it
-#         camera_object_pcd = create_object_pcd(
-#             depth_array,
-#             mask,
-#             cam_K,
-#             image,
-#             obj_color = None
-#         )
-        
-#         # It at least contains 5 points
-#         if len(camera_object_pcd.points) < max(min_points_threshold, 5): 
-#             continue
-        
-#         if trans_pose is not None:
-#             global_object_pcd = camera_object_pcd.transform(trans_pose)
-#         else:
-#             global_object_pcd = camera_object_pcd
-        
-#         # get largest cluster, filter out noise 
-#         # global_object_pcd = process_pcd(global_object_pcd, cfg)
-#         global_object_pcd = process_pcd(global_object_pcd, downsample_voxel_size, dbscan_remove_noise, dbscan_eps, dbscan_min_points, run_dbscan=True)
-
-        
-#         # pcd_bbox = get_bounding_box(cfg, global_object_pcd)
-#         pcd_bbox = get_bounding_box(spatial_sim_type, global_object_pcd)
-#         pcd_bbox.color = [0,1,0]
-        
-#         if pcd_bbox.volume() < 1e-6:
-#             continue
-        
-#         # Treat the detection in the same way as a 3D object
-#         # Store information that is enough to recover the detection
-#         detected_object = {
-#             'id' : uuid.uuid4(),
-#             'image_idx' : [idx],                             # idx of the image
-#             'mask_idx' : [mask_idx],                         # idx of the mask/detection
-#             'color_path' : [color_path],                     # path to the RGB image
-#             'class_name' : [class_name],                         # global class id for this detection
-#             'class_id' : [global_class_id],                         # global class id for this detection
-#             'num_detections' : 1,                            # number of detections in this object
-#             'mask': [mask],
-#             'xyxy': [gobs['xyxy'][mask_idx]],
-#             'conf': [gobs['confidence'][mask_idx]],
-#             'n_points': [len(global_object_pcd.points)],
-#             'pixel_area': [mask.sum()],
-#             'contain_number': [None],                          # This will be computed later
-#             "inst_color": np.random.rand(3),                 # A random color used for this segment instance
-#             'is_background': class_name in BG_CLASSES,
-            
-#             # These are for the entire 3D object
-#             'pcd': global_object_pcd,
-#             'bbox': pcd_bbox,
-#             'clip_ft': to_tensor(gobs['image_feats'][mask_idx]),
-#             'text_ft': to_tensor(gobs['text_feats'][mask_idx]),
-#         }
-        
-#         if class_name in BG_CLASSES:
-#             bg_detection_list.append(detected_object)
-#         else:
-#             fg_detection_list.append(detected_object)
-    
-#     return fg_detection_list, bg_detection_list
-
 def transform_detection_list(
     detection_list: DetectionList,
     transform: torch.Tensor,
@@ -1062,6 +1425,106 @@ def transform_detection_list(
         # detection_list[i]['bbox'] = detection_list[i]['pcd'].get_oriented_bounding_box(robust=True)
 
     return detection_list
+
+
+def gobs_to_detection_list(
+    cfg,
+    image,
+    depth_array,
+    cam_K,
+    idx,
+    gobs,
+    trans_pose=None,
+    class_names=None,
+    BG_CLASSES=None,
+    color_path=None,
+):
+    """Convert one frame of Grounded-SAM observations into CFSLAM detections.
+
+    This restores the adapter used by the original CFSLAM entry point while
+    keeping point-cloud construction and filtering in the existing helpers.
+    Invalid or misaligned detector metadata fails with a useful message.
+    """
+    required = ("xyxy", "mask", "class_id", "confidence", "image_feats")
+    missing = [key for key in required if key not in gobs]
+    if missing:
+        raise ValueError(f"gobs is missing required fields: {', '.join(missing)}")
+
+    xyxy = gobs["xyxy"]
+    masks = gobs["mask"]
+    class_ids = gobs["class_id"]
+    confidences = gobs["confidence"]
+    image_feats = gobs["image_feats"]
+    count = len(xyxy)
+    for key, values in (("mask", masks), ("class_id", class_ids),
+                        ("confidence", confidences), ("image_feats", image_feats)):
+        if len(values) != count:
+            raise ValueError(f"gobs field {key!r} has {len(values)} entries; expected {count}")
+
+    foreground = DetectionList(device=str(cfg.device))
+    background = DetectionList(device=str(cfg.device))
+    if count == 0:
+        return foreground, background
+
+    background_names = set(BG_CLASSES or ())
+    for mask_idx in range(count):
+        try:
+            local_class_id = int(class_ids[mask_idx])
+            class_name = gobs["classes"][local_class_id]
+        except (KeyError, IndexError, TypeError, ValueError) as exc:
+            raise ValueError(f"invalid gobs class_id at detection {mask_idx}") from exc
+        if cfg.skip_bg and class_name in background_names:
+            continue
+        try:
+            global_class_id = -1 if class_names is None else class_names.index(class_name)
+        except ValueError as exc:
+            raise ValueError(f"class {class_name!r} is absent from class_names") from exc
+
+        pcd = create_object_pcd(depth_array, masks[mask_idx], cam_K, image)
+        if len(pcd.points) < max(int(cfg.min_points_threshold), 5):
+            continue
+        if trans_pose is not None:
+            pcd.transform(trans_pose)
+        pcd = process_pcd(
+            pcd, cfg.downsample_voxel_size, cfg.dbscan_remove_noise,
+            cfg.dbscan_eps, cfg.dbscan_min_points,
+        )
+        bbox = get_bounding_box(cfg.spatial_sim_type, pcd)
+        if bbox.volume() < 1e-6:
+            continue
+        bbox.color = [0, 1, 0]
+
+        tracker.curr_class_count[class_name] += 1
+        feature = to_tensor(image_feats[mask_idx], device=cfg.device)
+        detection = {
+            "id": uuid.uuid4(),
+            "image_idx": [idx],
+            "mask_idx": [mask_idx],
+            "color_path": [color_path],
+            "class_name": [class_name],
+            "class_id": [global_class_id],
+            "num_detections": 1,
+            "mask": [masks[mask_idx]],
+            "xyxy": [xyxy[mask_idx]],
+            "conf": [confidences[mask_idx]],
+            "n_points": len(pcd.points),
+            "contain_number": [None],
+            "inst_color": np.random.rand(3),
+            "is_background": class_name in background_names,
+            "pcd": pcd,
+            "bbox": bbox,
+            "clip_ft": feature,
+            "num_obj_in_class": tracker.curr_class_count[class_name] - 1,
+            "curr_obj_num": tracker.total_object_count,
+            "new_counter": tracker.brand_new_counter,
+        }
+        if "captions" in gobs and len(gobs["captions"]) == count:
+            detection["captions"] = [gobs["captions"][mask_idx]]
+        (background if detection["is_background"] else foreground).append(detection)
+        tracker.total_object_count += 1
+        tracker.brand_new_counter += 1
+
+    return foreground, background
 
 # @profile
 def make_detection_list_from_pcd_and_gobs(
@@ -1312,24 +1775,6 @@ def processing_needed(
     if run_on_final_frame and is_final_frame:
         return True
     return False
-
-
-def prepare_objects_save_vis(objects: MapObjectList, downsample_size: float=0.025):
-    objects_to_save = copy.deepcopy(objects)
-            
-    # Downsample the point cloud
-    for i in range(len(objects_to_save)):
-        objects_to_save[i]['pcd'] = objects_to_save[i]['pcd'].voxel_down_sample(downsample_size)
-
-    # Remove unnecessary keys
-    for i in range(len(objects_to_save)):
-        for k in list(objects_to_save[i].keys()):
-            if k not in [
-                'pcd', 'bbox', 'clip_ft', 'text_ft', 'class_id', 'num_detections', 'inst_color'
-            ]:
-                del objects_to_save[i][k]
-                
-    return objects_to_save.to_serializable()
 
 
 def process_cfg(cfg: DictConfig):

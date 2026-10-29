@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=64", "wheel", "torch==2.14.1"]
+build-backend = "setuptools.build_meta"
+
+# Build against the same torch build that is installed at runtime: the
+# default PyPI wheel of torch 2.14.1 is not the CUDA 13 build used here.
+[tool.uv]
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }

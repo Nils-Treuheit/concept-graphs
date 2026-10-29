@@ -590,6 +590,14 @@ class LLaVaChat(object):
         self.conv_mode = conv_mode
         self.num_gpus = num_gpus
 
+        # CUDA-only: the legacy interface has no device argument, so require CUDA
+        # to be present before any tokenizer or model loading is attempted.
+        if not torch.cuda.is_available():
+            raise RuntimeError(
+                "LLaVaChat is CUDA-only: CUDA is not available on this "
+                "machine. Refusing to load on CPU or without a GPU."
+            )
+
         # Handle multi-gpu config
         if self.num_gpus == 1:
             kwargs = {}
@@ -611,6 +619,21 @@ class LLaVaChat(object):
         self.model = LlavaLlamaForCausalLMTweaked.from_pretrained(
             self.model_path, torch_dtype=torch.float16, low_cpu_mem_usage=True, **kwargs
         )
+
+        # CUDA-only: with device_map='auto' (multi-GPU) accelerate may silently
+        # place layers on CPU or disk when they do not fit on the GPUs. Refuse to
+        # expose a partially offloaded model with an actionable error instead.
+        hf_device_map = getattr(self.model, "hf_device_map", None)
+        if hf_device_map is not None:
+            for layer, target in hf_device_map.items():
+                if target in ("cpu", "disk", "meta"):
+                    raise RuntimeError(
+                        "LLaVaChat is CUDA-only: device_map='auto' placed layer "
+                        f"{layer!r} on {target!r}. The model did not fit on the "
+                        f"{self.num_gpus} configured GPU(s) without offloading; "
+                        "CPU, disk and meta placement are not allowed here."
+                    )
+
         self.model.cuda()
 
         # Image preprocessor
@@ -750,7 +773,10 @@ class LLaVaChat(object):
         return image
 
     def encode_image(self, image_tensor_half_cuda):
-        return self.model.model.encode_image(image_tensor_half_cuda)
+        vision_tower = self.vision_tower
+        images = image_tensor_half_cuda.to(device=vision_tower.device)
+        with torch.inference_mode():
+            return self.model.model.encode_image(images)
     
 
 

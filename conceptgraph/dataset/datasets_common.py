@@ -473,8 +473,10 @@ class ReplicaDataset(GradSLAMDataset):
         for i in range(self.num_imgs):
             line = lines[i]
             c2w = np.array(list(map(float, line.split()))).reshape(4, 4)
-            # c2w[:3, 1] *= -1
-            # c2w[:3, 2] *= -1
+            # Replica poses use a different camera basis. Convert once to the
+            # OpenCV convention used by depth unprojection and camera logging.
+            c2w[:3, 1] *= -1
+            c2w[:3, 2] *= -1
             c2w = torch.from_numpy(c2w).float()
             poses.append(c2w)
         return poses

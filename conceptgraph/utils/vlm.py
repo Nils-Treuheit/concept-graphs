@@ -1,7 +1,12 @@
 import json
-from openai import OpenAI
 import os
 import base64
+
+from conceptgraph.utils.llm_client import (
+    LocalLLMClient,
+    get_llm_client,
+    get_vlm_client,
+)
 
 from PIL import Image
 import numpy as np
@@ -99,14 +104,17 @@ Do not include any additional information in your response.
 
 system_prompt = system_prompt_only_top
 
-# gpt_model = "gpt-4-vision-preview"
-gpt_model = "gpt-4o-2024-05-13"
+# The VLM that is used for the open-vocabulary steps.  It runs locally on
+# this machine (Ollama) - see conceptgraph/utils/llm_client.py.
+gpt_model = os.getenv("LLM_MODEL", "qwen3.8:27b-mtp4-ud_q4_K_XL-128k")
 
-def get_openai_client():
-    client = OpenAI(
-        api_key=os.getenv('OPENAI_API_KEY')
-    )
-    return client
+def get_openai_client() -> LocalLLMClient:
+    """Return a client for the locally served VLM.
+
+    The name is kept for backwards compatibility: ConceptGraphs used to query
+    the OpenAI cloud API here, the model now runs locally (Qwen3-VL).
+    """
+    return get_vlm_client()
 
 # Function to encode the image as base64
 def encode_image_for_openai(image_path: str, resize = False, target_size: int=512):
@@ -159,7 +167,15 @@ def encode_image_for_openai(image_path: str, resize = False, target_size: int=51
 
     return encoded_image
 
-def consolidate_captions(client: OpenAI, captions: list):
+def consolidate_captions(client: LocalLLMClient = None, captions: list = None):
+    """Merge the captions of one object into a single caption.
+
+    This is a pure text call, so it goes to the local text model
+    (Qwen3.8 served by Ollama).
+    """
+    if client is None:
+        client = get_llm_client()
+
     # Formatting the captions into a single string prompt
     captions_text = "\n".join([f"{cap['caption']}" for cap in captions if cap['caption'] is not None])
     user_query = f"Here are several captions for the same object:\n{captions_text}\n\nPlease consolidate these into a single, clear caption that accurately describes the object."
@@ -178,13 +194,26 @@ def consolidate_captions(client: OpenAI, captions: list):
     consolidated_caption = ""
     try:
         response = client.chat.completions.create(
-            model=f"{gpt_model}",
+            model=getattr(client, "model", None) or gpt_model,
             messages=messages,
             response_format={"type": "json_object"}
         )
         
         consolidated_caption_json = response.choices[0].message.content.strip()
-        consolidated_caption = json.loads(consolidated_caption_json).get("consolidated_caption", "")
+        # The local model sometimes answers with a different key ("caption")
+        # - accept the usual variants instead of losing the caption.
+        parsed = json.loads(consolidated_caption_json)
+        if isinstance(parsed, dict):
+            consolidated_caption = (
+                parsed.get("consolidated_caption")
+                or parsed.get("caption")
+                or next(
+                    (v for v in parsed.values() if isinstance(v, str)),
+                    "",
+                )
+            )
+        else:
+            consolidated_caption = str(parsed)
         print(f"Consolidated Caption: {consolidated_caption}")
         
     except Exception as e:
@@ -252,7 +281,15 @@ def vlm_extract_object_captions(text: str):
         print("No list of objects found in the text.")
         return []
     
-def get_obj_rel_from_image_gpt4v(client: OpenAI, image_path: str, label_list: list):
+def get_obj_rel_from_image_gpt4v(client: LocalLLMClient = None, image_path: str = None, label_list: list = None):
+    """Extract the spatial relations between the annotated objects.
+
+    This is a vision call, so it goes to the locally served VLM
+    (Qwen3-VL, optionally the scene-graph model JosephZ/R1-SGG-7B).
+    """
+    if client is None:
+        client = get_vlm_client()
+
     # Getting the base64 string
     base64_image = encode_image_for_openai(image_path)
     
@@ -265,7 +302,7 @@ def get_obj_rel_from_image_gpt4v(client: OpenAI, image_path: str, label_list: li
     vlm_answer = []
     try:
         response = client.chat.completions.create(
-            model=f"{gpt_model}",
+            model=getattr(client, "model", None) or gpt_model,
             messages=[
                 {
                     "role": "system",
@@ -305,7 +342,14 @@ def get_obj_rel_from_image_gpt4v(client: OpenAI, image_path: str, label_list: li
     return vlm_answer
 
     
-def get_obj_captions_from_image_gpt4v(client: OpenAI, image_path: str, label_list: list):
+def get_obj_captions_from_image_gpt4v(client: LocalLLMClient = None, image_path: str = None, label_list: list = None):
+    """Caption the annotated objects of an image.
+
+    Vision call -> local VLM (Qwen3-VL).
+    """
+    if client is None:
+        client = get_vlm_client()
+
     # Getting the base64 string
     base64_image = encode_image_for_openai(image_path)
     
@@ -340,7 +384,7 @@ def get_obj_captions_from_image_gpt4v(client: OpenAI, image_path: str, label_lis
     vlm_answer_captions = []
     try:
         response = client.chat.completions.create(
-            model=f"{gpt_model}",
+            model=getattr(client, "model", None) or gpt_model,
             messages=messages
         )
         

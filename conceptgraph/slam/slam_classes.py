@@ -21,6 +21,17 @@ def to_tensor(numpy_array, device=None):
         return torch.from_numpy(numpy_array).to(device)
 
 class DetectionList(list):
+    def __init__(self, *args, device: str = "cuda", **kwargs):
+        """
+        A ``list`` of detections.
+
+        ``device`` is accepted (and stored) because the mapping scripts create
+        the object lists with ``MapObjectList(device=cfg.device)`` - a plain
+        ``list`` does not accept keyword arguments.
+        """
+        super().__init__(*args, **kwargs)
+        self.device = device
+
     def get_values(self, key, idx:int=None):
         if idx is None:
             return [detection[key] for detection in self]
@@ -39,7 +50,9 @@ class DetectionList(list):
             if isinstance(v, np.ndarray):
                 v = torch.from_numpy(v)
             values.append(v)
-        return torch.stack(values, dim=0)
+        # Move each element onto self.device so the stacked tensor (including
+        # mixed NumPy/tensor inputs) resides on the configured device.
+        return torch.stack([v.to(self.device) for v in values], dim=0)
     
     def get_stacked_values_numpy(self, key, idx:int=None):
         values = self.get_stacked_values_torch(key, idx)

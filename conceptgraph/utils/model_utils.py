@@ -4,8 +4,119 @@ from conceptgraph.utils.general_utils import measure_time
 # from segment_anything import sam_model_registry, SamPredictor, SamAutomaticMaskGenerator
 import numpy as np
 import torch
+import cv2
 from PIL import Image
 from scipy.spatial.distance import cosine
+
+
+YOLO_WORLD_INPUT_SIZE = 640
+SAM_L_INPUT_SIZE = 1024
+
+
+def resize_and_letterbox(image: np.ndarray, size: int, color: int = 114):
+    """Resize an image proportionally into a square model input.
+
+    Returns the padded image and the exact scale/padding needed to map model
+    coordinates back to the source image. The source aspect ratio is preserved.
+    """
+    if image.ndim not in (2, 3) or image.shape[0] == 0 or image.shape[1] == 0:
+        raise ValueError("image must be a non-empty HxW or HxWxC array")
+    height, width = image.shape[:2]
+    gain = min(size / width, size / height)
+    resized_width = min(size, max(1, int(round(width * gain))))
+    resized_height = min(size, max(1, int(round(height * gain))))
+    resized = cv2.resize(image, (resized_width, resized_height), interpolation=cv2.INTER_LINEAR)
+    left = (size - resized_width) // 2
+    top = (size - resized_height) // 2
+    if image.ndim == 2:
+        canvas = np.full((size, size), color, dtype=image.dtype)
+    else:
+        canvas = np.full((size, size, image.shape[2]), color, dtype=image.dtype)
+    canvas[top : top + resized_height, left : left + resized_width] = resized
+    transform = {
+        "source_shape": (height, width),
+        "resized_shape": (resized_height, resized_width),
+        "gain_x": resized_width / width,
+        "gain_y": resized_height / height,
+        "left": left,
+        "top": top,
+    }
+    return canvas, transform
+
+
+def boxes_from_letterbox(boxes: np.ndarray, transform: dict) -> np.ndarray:
+    """Map XYXY boxes from a letterboxed model canvas to source coordinates."""
+    boxes = np.asarray(boxes).copy()
+    if boxes.size == 0:
+        return boxes.reshape((-1, 4))
+    boxes = boxes.reshape((-1, 4))
+    boxes[:, [0, 2]] = (boxes[:, [0, 2]] - transform["left"]) / transform["gain_x"]
+    boxes[:, [1, 3]] = (boxes[:, [1, 3]] - transform["top"]) / transform["gain_y"]
+    height, width = transform["source_shape"]
+    boxes[:, [0, 2]] = np.clip(boxes[:, [0, 2]], 0, width)
+    boxes[:, [1, 3]] = np.clip(boxes[:, [1, 3]], 0, height)
+    return boxes
+
+
+def boxes_to_letterbox(boxes: np.ndarray, transform: dict) -> np.ndarray:
+    """Map source-image XYXY boxes onto a model's letterboxed input canvas."""
+    boxes = np.asarray(boxes).copy()
+    if boxes.size == 0:
+        return boxes.reshape((-1, 4))
+    boxes = boxes.reshape((-1, 4))
+    boxes[:, [0, 2]] = boxes[:, [0, 2]] * transform["gain_x"] + transform["left"]
+    boxes[:, [1, 3]] = boxes[:, [1, 3]] * transform["gain_y"] + transform["top"]
+    return boxes
+
+
+def masks_from_letterbox(masks: np.ndarray, transform: dict) -> np.ndarray:
+    """Remove square padding from masks and restore source-image resolution."""
+    masks = np.asarray(masks)
+    height, width = transform["source_shape"]
+    resized_height, resized_width = transform["resized_shape"]
+    left, top = transform["left"], transform["top"]
+    content = masks[..., top : top + resized_height, left : left + resized_width]
+    if content.shape[-2:] == (height, width):
+        return content
+    leading_shape = content.shape[:-2]
+    flat = content.reshape((-1, resized_height, resized_width))
+    interpolation = cv2.INTER_NEAREST
+    restored = [cv2.resize(mask, (width, height), interpolation=interpolation) for mask in flat]
+    return np.stack(restored).reshape((*leading_shape, height, width))
+
+def require_cuda_device(device) -> torch.device:
+    """Validate and resolve a CUDA device for neural inference.
+
+    Returns the resolved ``torch.device`` only when the requested device is a
+    CUDA device and ``torch.cuda.is_available()`` is true. This is the single
+    CUDA validation seam shared by the detection and mapping entry points; it
+    must be called before any YOLO, SAM or CLIP model is constructed.
+
+    Raises
+    ------
+    ValueError
+        If the requested device is not a CUDA device (e.g. ``"cpu"``). A CPU
+        fallback is never returned.
+    RuntimeError
+        If a CUDA device is requested but CUDA is not available.
+
+    This helper performs no model loading, allocates no inference tensors, and
+    does not fall back to CPU.
+    """
+    dev = torch.device(device)
+    if dev.type != "cuda":
+        raise ValueError(
+            "Neural inference in the detection/mapping path requires a CUDA "
+            f"device, but was given '{device}'. Set the pipeline device to a "
+            "CUDA device (e.g. 'cuda:0'); there is no CPU fallback."
+        )
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            f"A CUDA device ({dev}) was requested, but PyTorch reports that "
+            "CUDA is not available. Check that a CUDA-enabled PyTorch build is "
+            "installed and a GPU is reachable."
+        )
+    return dev
 
 # def get_sam_predictor(cfg) -> SamPredictor:
 #     if cfg.sam_variant == "sam":
@@ -106,13 +217,13 @@ def compute_clip_features(image, detections, clip_model, clip_preprocess, clip_t
         cropped_image = image.crop((x_min, y_min, x_max, y_max))
         
         # Get the preprocessed image for clip from the crop 
-        preprocessed_image = clip_preprocess(cropped_image).unsqueeze(0).to("cuda")
+        preprocessed_image = clip_preprocess(cropped_image).unsqueeze(0).to(device)
 
         crop_feat = clip_model.encode_image(preprocessed_image)
         crop_feat /= crop_feat.norm(dim=-1, keepdim=True)
         
         class_id = detections.class_id[idx]
-        tokenized_text = clip_tokenizer([classes[class_id]]).to("cuda")
+        tokenized_text = clip_tokenizer([classes[class_id]]).to(device)
         text_feat = clip_model.encode_text(tokenized_text)
         text_feat /= text_feat.norm(dim=-1, keepdim=True)
         
@@ -131,6 +242,8 @@ def compute_clip_features(image, detections, clip_model, clip_preprocess, clip_t
 
 # @profile
 def compute_clip_features_batched(image, detections, clip_model, clip_preprocess, clip_tokenizer, classes, device):
+    if len(detections.xyxy) == 0:
+        return [], np.empty((0, 0), dtype=np.float32), []
     
     image = Image.fromarray(image)
     padding = 20  # Adjust the padding amount as needed

@@ -41,10 +41,10 @@ from transformers import logging as hf_logging
 torch.autograd.set_grad_enabled(False)
 hf_logging.set_verbosity_error()
 
-# Import OpenAI API
-import openai
+# The VLM runs locally (Ollama) - no cloud API key needed.
+from conceptgraph.utils.llm_client import get_llm_client
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+llm_client = get_llm_client()
 
 
 @dataclass
@@ -243,9 +243,26 @@ def plot_images_with_captions(images, captions, confidences, low_confidences, ma
 
 
 
-def extract_node_captions(args):
-    from conceptgraph.llava.llava_model import LLaVaChat
+def load_llava_chat(model_path: str, num_gpus: int = 1):
+    """Load a LLaVA checkpoint, transparently handling both formats.
 
+    Checkpoints in the Hugging Face format (e.g. ``llava-hf/llava-v1.6-mistral-7b-hf``
+    from the local hub) are loaded with ``transformers``; the original LLaVA
+    release format is still supported as a fallback.
+    """
+    from conceptgraph.llava.llava_hf_model import LLaVAHFChat
+
+    try:
+        chat = LLaVAHFChat(model_path)
+    except Exception as exc:  # pragma: no cover - depends on the checkpoint
+        print(f"[llava] transformers loader failed ({exc}), trying the original LLaVA format")
+        from conceptgraph.llava.llava_model import LLaVaChat
+
+        chat = LLaVaChat(model_path, "v0_mmtag", num_gpus)
+    return chat
+
+
+def extract_node_captions(args):
     # NOTE: args.mapfile is in cfslam format
     from conceptgraph.slam.slam_classes import MapObjectList
 
@@ -289,8 +306,7 @@ def extract_node_captions(args):
     console = rich.console.Console()
 
     # Initialize LLaVA chat
-    chat = LLaVaChat(chat_args.model_path, chat_args.conv_mode, chat_args.num_gpus)
-    # chat = LLaVaChat(chat_args)
+    chat = load_llava_chat(chat_args.model_path, chat_args.num_gpus)
     print("LLaVA chat initialized...")
     query = "Describe the central object in the image."
     # query = "Describe the object in the image that is outlined in red."
@@ -353,12 +369,18 @@ def extract_node_captions(args):
                 low_confidences.append(False)
 
             # image_tensor = chat.image_processor.preprocess(image_crop, return_tensors="pt")["pixel_values"][0]
-            image_tensor = chat.image_processor.preprocess(image_crop_modified, return_tensors="pt")["pixel_values"][0]
+            if hasattr(chat, "preprocess_image"):
+                image_tensor = chat.preprocess_image(image_crop_modified)
+            else:
+                image_tensor = chat.image_processor.preprocess(image_crop_modified, return_tensors="pt")["pixel_values"][0]
 
             image_features = chat.encode_image(image_tensor[None, ...].half().cuda())
             features.append(image_features.detach().cpu())
 
             chat.reset()
+            if hasattr(chat, "upload_image"):
+                # reset() clears the conversation, so the image is set afterwards
+                chat.upload_image(image_crop_modified)
             console.print("[bold red]User:[/bold red] " + query)
             outputs = chat(query=query, image_features=image_features)
             console.print("[bold green]LLaVA:[/bold green] " + outputs)
@@ -464,11 +486,9 @@ def refine_node_captions(args):
     
         curr_chat_messages = gpt_messages[:]
         curr_chat_messages.append({"role": "user", "content": preds})
-        chat_completion = openai.ChatCompletion.create(
-            # model="gpt-3.5-turbo",
-            model="gpt-4",
+        chat_completion = llm_client.chat.completions.create(
+            model=llm_client.model,
             messages=curr_chat_messages,
-            timeout=TIMEOUT,  # Timeout in seconds
         )
         elapsed_time = time.time() - start_time
         if elapsed_time > TIMEOUT:
@@ -637,7 +657,9 @@ def build_scenegraph(args):
         pkl.dump(scene_map.to_serializable(), f)
 
     print("Computing bounding box overlaps...")
-    bbox_overlaps = compute_overlap_matrix_general(args, scene_map)
+    bbox_overlaps = compute_overlap_matrix_general(
+        scene_map, downsample_voxel_size=args.downsample_voxel_size
+    )
 
     # Construct a weighted adjacency matrix based on similarity scores
     weights = []
@@ -746,11 +768,9 @@ def build_scenegraph(args):
                     """
 
                     start_time = time.time()
-                    chat_completion = openai.ChatCompletion.create(
-                        # model="gpt-3.5-turbo",
-                        model="gpt-4",
+                    chat_completion = llm_client.chat.completions.create(
+                        model=llm_client.model,
                         messages=[{"role": "user", "content": DEFAULT_PROMPT + "\n\n" + input_json_str}],
-                        timeout=TIMEOUT,  # Timeout in seconds
                     )
                     elapsed_time = time.time() - start_time
                     output_dict = input_dict

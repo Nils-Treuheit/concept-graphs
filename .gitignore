@@ -1,3 +1,24 @@
+.agentic_workflow
+.codex
+.aws
+AGENTS.md
+*_REVIEW.md
+*_PLAN.md
+*_RESEARCH.md
+
+.venv
+.vscode
+.agents
+weights
+*.pt
+
+# Local workflow and generated artifacts
+*.log
+opencode_session.protocol.json
+latest_pcd_save
+my_office_*.png
+
+
 conceptgraph/outputs
 conceptgraph/scripts/wandb
 conceptgraph/results

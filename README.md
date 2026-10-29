@@ -382,6 +382,157 @@ cd /path/to/code/concept-graphs/conceptgraph/
 python /slam/r3d_stream_rerun_realtime_mapping.py
 ```
 
+## Streaming a live Intel RealSense camera
+
+The live mapper also accepts a RealSense RGB-D camera through `pyrealsense2`.
+Install the optional adapter with `uv sync --extra realsense`, connect the camera
+by USB, then start a bounded capture with:
+
+```bash
+uv run python -m conceptgraph.slam.r3d_stream_rerun_realtime_mapping \
+  --config-name realsense_stream \
+  force_detection=true save_detections=true device=cuda \
+  dataset_root=/path/to/live_data scene_id=room_sweep \
+  exp_suffix=room_sweep_mapping detections_exp_suffix=room_sweep_detections
+```
+
+`realsense_stream` defaults to 640x480 at 30 FPS and 1,800 frames. It records
+aligned RGB-D frames, sensor intrinsics, depth scale, and RGB-D-odometry poses
+for replay with `RealsenseDataset`. Set `realsense_serial=<serial>` to select a
+specific camera. `realsense_odometry_device=CUDA:0` requires a CUDA-enabled
+Open3D build; `auto` uses CUDA when available and otherwise warns before CPU
+odometry. Hand-guided sweeps can accumulate odometry drift, especially when the
+camera moves quickly or sees few textured surfaces. The existing live mapping
+path does not generate VLM captions or relation edges during capture.
+
+### Record, archive, then map sampled frames
+
+Use the desktop recorder for a synchronized 1280×720 RGB-D capture at 30 FPS.
+It displays the live camera stream and the observed capture rate.
+
+```bash
+uv run python -m conceptgraph.scripts.record_realsense_gui \
+  --output-dir /mnt/HDD1/Project_Data/realsense_live/my_corner_office_capture
+```
+
+Start/Stop Recording finalizes one segment. Take Image stores a still with
+sensor timestamps and its recording ID. Save and close finalizes the active
+segment and writes `capture_session.json`.
+
+For headless or time-limited recording, use the same archive-first path without
+the button interface:
+
+```bash
+uv run python -m conceptgraph.scripts.record_realsense_bag \
+  --output-dir /mnt/HDD1/Project_Data/realsense_live/my_corner_office_capture \
+  --no-preview \
+  --duration-seconds 60
+```
+
+The recorder temporarily writes each segment to
+`.recording_tmp/recording_NNN.db3`. It exports the DB3 into
+`recording_NNN_archive/`, verifies the archive against the source, then removes
+the temporary DB3. It does not encode a duplicate video during capture; the
+exporter creates the final review video from the archived RGB stream. The
+archive contains chunked RGB/depth arrays, compressed metadata, a manifest,
+and `review.mp4`. If export, verification, or capture-session metadata saving
+fails, the temporary DB3 remains in `.recording_tmp/` for recovery.
+
+Replay the archive directly. Open3D estimates motion from every timestamp-paired
+RGB-D frame on CUDA; preparation samples every 15 pairs for the mapping dataset.
+The archive supplies CameraInfo, sensor extrinsics, depth scale, and camera
+timestamps. Depth is projected into the color camera before pose estimation.
+
+```bash
+uv run python -m conceptgraph.scripts.prepare_realsense_bag \
+  --archive /mnt/HDD1/Project_Data/realsense_live/my_corner_office_capture/recording_001_archive \
+  --dataset-root /mnt/HDD1/Project_Data/realsense_live/prepared \
+  --scene-id my_corner_office \
+  --capture-session /mnt/HDD1/Project_Data/realsense_live/my_corner_office_capture/capture_session.json \
+  --sample-every 15 \
+  --sample-offset 0 \
+  --odometry-device CUDA:0
+```
+
+The optional capture-session file adds the nearest odometry pose to still images
+within 50 ms. Omit it when no capture session exists; missing session metadata
+skips still-image pose association without invalidating the prepared dataset.
+Archive preparation does not need librealsense playback. It requires
+CUDA-enabled Open3D by default and fails clearly if that build is unavailable.
+Choose another offset from 0 through 14 and a new scene ID to create a different
+temporal sample. Separate sample sets are not merged automatically.
+
+Map the prepared dataset with the existing batch mapper. The source recording
+is 16:9, so 640×360 keeps its aspect ratio while reducing mapping cost.
+
+```bash
+uv run python -m conceptgraph.slam.rerun_realtime_mapping \
+  --config-name rerun_realtime_mapping \
+  force_detection=true save_detections=true device=cuda \
+  dataset_root=/mnt/HDD1/Project_Data/realsense_live/prepared \
+  scene_id=my_corner_office \
+  dataset_config=/mnt/HDD1/Project_Data/realsense_live/prepared/my_corner_office/dataconfig.yaml \
+  stride=1 image_height=360 image_width=640 \
+  exp_suffix=my_corner_office_mapping \
+  detections_exp_suffix=my_corner_office_detections
+```
+
+Current librealsense records to `.db3`; the recorder treats it as a temporary
+source and publishes only the verified archive. Native recording requires SDK
+2.58.1 or newer. Install it through `uv sync --extra realsense`. Preparation
+also accepts legacy `.bag` and `.db3` recordings through `--bag`. See the [official release
+notes](https://github.com/realsenseai/librealsense/wiki/Release-Notes) and
+[record/playback guide](https://github.com/realsenseai/librealsense/blob/master/doc/record-and-playback.md).
+The recorder’s `--no-preview` option supports
+headless capture, and `--duration-seconds N` stops automatically after N
+seconds. See [recording_guideline.md](recording_guideline.md) for a suggested
+room sweep and capture-rate interpretation.
+
+To convert an existing `.db3` manually into chunked Python-readable streams
+plus a playable HEVC review video, run:
+
+```bash
+uv run python -m conceptgraph.scripts.export_realsense_recording \
+  --recording /mnt/HDD1/Project_Data/realsense_live/my_corner_office.db3 \
+  --output-dir /mnt/HDD1/Project_Data/realsense_live/my_corner_office_archive
+```
+
+The export keeps the exact original compressed RGB image payloads, whether
+PNG or JPEG, in packed `.npz` chunks with offsets. The container does not
+recompress those already compressed payloads. Depth frames and other DB3
+messages, including camera metadata, remain compressed NPZ chunks. Export
+verification checks RGB bytes, decoded image pixels, depth arrays, and
+metadata against the read-only source. The source recording is preserved.
+
+Archive readers can retrieve original RGB bytes or decode frames on demand,
+without touching SQLite:
+
+```python
+from conceptgraph.utils.realsense_archive import NumpyArchiveReader
+
+reader = NumpyArchiveReader(
+    "/mnt/HDD1/Project_Data/realsense_live/my_corner_office_archive"
+)
+for frame in reader.iter_images("rgb"):
+    rgb_array = frame.frame  # decoded uint8 RGB pixels
+    timestamp_ns = frame.timestamp_ns
+
+for encoded in reader.iter_encoded_images():
+    encoded_bytes = encoded.payload  # original compressed PNG/JPEG bytes
+    image_format = encoded.format
+
+for message in reader.iter_metadata(topic_name="/device_0/sensor_1/Color_0/image/metadata"):
+    payload = message.payload  # exact CDR bytes, parsed only if needed
+```
+
+Chunks are loaded one at a time. The exporter has already verified their
+hashes; pass `verify_hashes=True` to `NumpyArchiveReader` for another full hash
+check during reading.
+
+The archive does not store color-aligned depth or estimated camera poses.
+`prepare_realsense_bag --archive` derives calibration from archived metadata,
+aligns depth, estimates odometry, and writes the sampled dataset directly.
+
 ## Debugging
 
 We've commited a pre-made vscode debug config file to the repo to make debugging simple. You can find it at `concept-graphs/.vscode/launch.json`. Here you'll find launch commands to run the core scripts talked about in this README. If you're not familiar with the vscode debugger, check out the getting started video, or the vscode [docs](https://code.visualstudio.com/docs/python/debugging).

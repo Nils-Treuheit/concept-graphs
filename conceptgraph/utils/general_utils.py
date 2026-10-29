@@ -117,6 +117,21 @@ def get_stream_data_out_path(dataset_root, scene_id, make_dir=True):
         
     return stream_rgb_path, stream_depth_path, stream_poses_path
 
+def get_weights_dir(repo_root=None) -> Path:
+    """Directory that holds the local model weights (YOLO-World, SAM, ...).
+
+    The location can be overridden with the ``CG_WEIGHTS_DIR`` environment
+    variable; by default the ``weights/`` folder of the repository is used.
+    """
+    env_dir = os.environ.get("CG_WEIGHTS_DIR")
+    if env_dir:
+        return Path(env_dir)
+    if repo_root is None:
+        # conceptgraph/utils/general_utils.py -> repository root
+        repo_root = Path(__file__).resolve().parents[2]
+    return Path(repo_root) / "weights"
+
+
 def get_exp_out_path(dataset_root, scene_id, exp_suffix, make_dir=True):
     exp_out_path = Path(dataset_root) / scene_id / "exps" / f"{exp_suffix}"
     if make_dir:
@@ -384,6 +399,18 @@ def filter_detections(
         if keep:
             filtered_detections.append(current_det)
 
+    if not filtered_detections:
+        height, width = image.shape[:2]
+        return (
+            sv.Detections(
+                xyxy=np.empty((0, 4), dtype=np.float32),
+                confidence=np.empty((0,), dtype=np.float32),
+                class_id=np.empty((0,), dtype=np.int64),
+                mask=np.empty((0, height, width), dtype=np.bool_),
+            ),
+            [],
+        )
+
     # Unzip the filtered results
     confidences, class_ids, xyxy, masks, indices = zip(*filtered_detections)
     filtered_labels = [given_labels[i] for i in indices]
@@ -410,7 +437,7 @@ def get_vlm_annotated_image_path(det_exp_vis_path, color_path, w_edges=False, su
     )
     return str(vis_save_path)
 
-def make_vlm_edges_and_captions(image, curr_det, obj_classes, detection_class_labels, det_exp_vis_path, color_path, make_edges_flag, openai_client):
+def make_vlm_edges_and_captions(image, curr_det, obj_classes, detection_class_labels, det_exp_vis_path, color_path, make_edges_flag, vlm_client):
     """
     Process detections by filtering, annotating, and extracting object relationships.
 
@@ -422,7 +449,7 @@ def make_vlm_edges_and_captions(image, curr_det, obj_classes, detection_class_la
         det_exp_vis_path (str): Directory path for saving visualizations.
         color_path (str): Additional path element for creating unique save paths.
         make_edges_flag (bool): Flag indicating whether to create edges between detected objects.
-        openai_client (OpenAIClient): Client object for OpenAI used in relationship extraction.
+        vlm_client (LocalLLMClient): Client of the locally served VLM used in relationship extraction.
 
     Returns:
         tuple: A tuple containing the following elements:
@@ -444,6 +471,7 @@ def make_vlm_edges_and_captions(image, curr_det, obj_classes, detection_class_la
     
     edges = []
     edge_image = None
+    captions = None
     if make_edges_flag:
         vis_save_path_for_vlm = get_vlm_annotated_image_path(det_exp_vis_path, color_path)
         vis_save_path_for_vlm_edges = get_vlm_annotated_image_path(det_exp_vis_path, color_path, w_edges=True)
@@ -459,8 +487,12 @@ def make_vlm_edges_and_captions(image, curr_det, obj_classes, detection_class_la
         cv2.imwrite(str(vis_save_path_for_vlm), annotated_image_for_vlm)
         print(f"Line 313, vis_save_path_for_vlm: {vis_save_path_for_vlm}")
         
-        edges = get_obj_rel_from_image_gpt4v(openai_client, vis_save_path_for_vlm, label_list)
-        captions = get_obj_captions_from_image_gpt4v(openai_client, vis_save_path_for_vlm, label_list)
+        try:
+            edges = get_obj_rel_from_image_gpt4v(vlm_client, vis_save_path_for_vlm, label_list)
+            captions = get_obj_captions_from_image_gpt4v(vlm_client, vis_save_path_for_vlm, label_list)
+        finally:
+            if getattr(vlm_client, "unload_after_frame", False):
+                vlm_client.unload()
         edge_image = plot_edges_from_vlm(annotated_image_for_vlm, edges, filtered_detections, obj_classes, labels, sorted_indices, save_path=vis_save_path_for_vlm_edges)
     
     return labels, edges, edge_image, captions
@@ -685,7 +717,7 @@ def save_obj_json(exp_suffix, exp_out_path, objects):
         obj_dict = {
             "id": curr_obj['curr_obj_num'],
             "object_tag": curr_obj['class_name'],
-            "object_caption": curr_obj['consolidated_caption'],
+            "object_caption": curr_obj.get('consolidated_caption', None),
             "bbox_extent": bbox_extent,
             "bbox_center": bbox_center,
             "bbox_volume": bbox_volume  # Add the volume to the dictionary

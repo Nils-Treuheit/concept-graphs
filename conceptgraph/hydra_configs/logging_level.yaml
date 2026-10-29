@@ -1,2 +1,2 @@
 hydra:
-  verbose : true
+  verbose: false

@@ -28,24 +28,35 @@ class OptionalReRun:
             logging.info("rerun functionality is disabled in the config. Not using rerun for logging.")
 
     def __getattr__(self, name):
+        if self._config_use_rerun and self._rerun:
+            attribute = getattr(self._rerun, name, None)
+            if attribute is not None:
+                return attribute
+
         def method(*args, **kwargs):
             if self._config_use_rerun and self._rerun:
-                func = getattr(self._rerun, name, None)
-                if func:
-                    return func(*args, **kwargs)
-                else:
-                    logging.debug(f"'{name}' is not a valid rerun method.")
+                logging.debug(f"'{name}' is not a valid rerun attribute.")
+            elif not self._config_use_rerun:
+                logging.debug(f"Skipping optional rerun call to '{name}' because rerun usage is disabled.")
             else:
-                if not self._config_use_rerun:
-                    logging.debug(f"Skipping optional rerun call to '{name}' because rerun usage is disabled.")
-                elif self._rerun is None:
-                    logging.debug(f"Skipping optional rerun call to '{name}' because rerun is not installed.")
+                logging.debug(f"Skipping optional rerun call to '{name}' because rerun is not installed.")
         return method
 
 # basically the import statement 
 orr = OptionalReRun()
 prev_logged_entities = set()
 counter = 0
+
+
+def orr_log_world_view_coordinates(dataset_name):
+    """Tell Rerun that Replica world geometry uses a Y-up coordinate frame."""
+    if (
+        str(dataset_name).lower() == "replica"
+        and orr._config_use_rerun
+        and orr._rerun is not None
+    ):
+        orr.log("world", orr.ViewCoordinates.RIGHT_HAND_Y_UP, static=True)
+
 
 def orr_log_camera(intrinsics, adjusted_pose, prev_adjusted_pose, img_width, img_height, frame_idx):
     # Extract intrinsic camera parameters
@@ -66,9 +77,18 @@ def orr_log_camera(intrinsics, adjusted_pose, prev_adjusted_pose, img_width, img
     # Convert the current adjusted pose to translation and quaternion for logging
     translation = adjusted_pose[:3, 3].tolist()
     quaternion = rotation_matrix_to_quaternion(adjusted_pose[:3, :3])
+    transform_relation = (
+        orr._rerun.TransformRelation.ParentFromChild
+        if orr._config_use_rerun and orr._rerun is not None
+        else None
+    )
     orr.log(
         "world/camera",
-        orr.Transform3D(translation=translation, rotation=quaternion, from_parent=False)
+        orr.Transform3D(
+            translation=translation,
+            rotation=orr.Quaternion(xyzw=quaternion.tolist()),
+            relation=transform_relation,
+        )
     )
 
     # Log trajectory if not the first frame
@@ -92,7 +112,7 @@ def orr_log_rgb_image(color_path):
     color_path = color_path
     orr.log(
         "world/camera/rgb_image_encoded",
-        orr.ImageEncoded(path=str(color_path))
+        orr.EncodedImage(path=str(color_path))
     )
     
 def orr_log_depth_image(depth_tensor):
@@ -119,14 +139,14 @@ def orr_log_annotated_image(color_path, det_exp_vis_path):
     if existing_vis_save_path:
         orr.log(
             "world/camera/rgb_image_annotated",
-            orr.ImageEncoded(path=existing_vis_save_path)
+            orr.EncodedImage(path=existing_vis_save_path)
         )
 
 def orr_log_vlm_image(vlm_image_path, label=""):
     if os.path.exists(vlm_image_path):
         orr.log(
             f"world/camera/vlm_image_{label}",
-            orr.ImageEncoded(path=vlm_image_path)
+            orr.EncodedImage(path=vlm_image_path)
         )
     else:
         logging.warning(f"VLM image not found at path: {vlm_image_path}")

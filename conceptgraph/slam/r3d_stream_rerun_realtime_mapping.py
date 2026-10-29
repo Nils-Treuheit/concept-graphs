@@ -11,7 +11,7 @@ import pickle
 import gzip
 
 # Third-party imports
-from conceptgraph.utils.record3d_utils import DemoApp
+from conceptgraph.utils.realsense_utils import RealSenseDemoApp
 import cv2
 import numpy as np
 import scipy.ndimage as ndi
@@ -39,7 +39,8 @@ from conceptgraph.utils.optional_rerun_wrapper import (
 from conceptgraph.utils.optional_wandb_wrapper import OptionalWandB
 from conceptgraph.utils.geometry import rotation_matrix_to_quaternion
 from conceptgraph.utils.logging_metrics import DenoisingTracker, MappingTracker
-from conceptgraph.utils.vlm import get_obj_rel_from_image_gpt4v, get_openai_client
+from conceptgraph.utils.vlm import get_obj_rel_from_image_gpt4v
+from conceptgraph.utils.llm_client import get_vlm_client
 from conceptgraph.utils.ious import mask_subtract_contained
 from conceptgraph.utils.general_utils import (
     ObjectClasses, 
@@ -100,13 +101,8 @@ from conceptgraph.utils.general_utils import get_vis_out_path, cfg_to_dict, chec
 torch.set_grad_enabled(False)
 
 # A logger for this file
-@hydra.main(version_base=None, config_path="../hydra_configs/", config_name="rerun_realtime_mapping")
 # @profile
-def main(cfg : DictConfig):
-    
-    app = DemoApp()
-    app.connect_to_device(dev_idx=0)
-    
+def _run_mapping(cfg: DictConfig, app, camera_backend: str):
     tracker = MappingTracker()
     
     orr = OptionalReRun()
@@ -175,7 +171,8 @@ def main(cfg : DictConfig):
         # Set the classes for the detection model
         detection_model.set_classes(obj_classes.get_classes_arr())
 
-        openai_client = get_openai_client()
+        # Local vision-language model (Qwen3-VL served with vLLM)
+        vlm_client = get_vlm_client()
         
     else:
         print("\n".join(["NOT Running detections..."] * 10))
@@ -190,11 +187,11 @@ def main(cfg : DictConfig):
     exit_early_flag = False
     counter = 0
     frame_idx = 0
-    total_frames = 500 # adjust as you like
+    total_frames = int(cfg.get("total_frames", 500))
     for frame_idx in trange(total_frames):
         tracker.curr_frame_idx = frame_idx
         counter+=1
-        orr.set_time_sequence("frame", frame_idx)
+        orr.set_time("frame", sequence=frame_idx)
 
         # Check if we should exit early only if the flag hasn't been set yet
         if not exit_early_flag and should_exit_early(cfg.exit_early_file):
@@ -213,15 +210,23 @@ def main(cfg : DictConfig):
         cv2.imwrite(str(curr_stream_rgb_path), s_rgb)
         color_path = curr_stream_rgb_path
         
-        if cfg.save_detections:
+        if cfg.save_detections or camera_backend == "realsense":
         
             # save depth to the stream folder with an appropriate name
             curr_stream_depth_path = stream_depth_path / f"{frame_idx}.png"
-            cv2.imwrite(str(curr_stream_depth_path), s_depth)
+            if camera_backend == "realsense":
+                depth_mm = np.clip(np.rint(s_depth * 1000.0), 0, 65535).astype(np.uint16)
+                cv2.imwrite(str(curr_stream_depth_path), depth_mm)
+            else:
+                cv2.imwrite(str(curr_stream_depth_path), s_depth)
             
             # save the camera pose to the stream folder with an appropriate name 
-            curr_stream_pose_path = stream_poses_path / f"{frame_idx}.npz"
-            np.savez(str(curr_stream_pose_path), s_camera_pose)
+            if camera_backend == "realsense":
+                curr_stream_pose_path = stream_poses_path / f"{frame_idx}.npy"
+                np.save(str(curr_stream_pose_path), s_camera_pose)
+            else:
+                curr_stream_pose_path = stream_poses_path / f"{frame_idx}.npz"
+                np.savez(str(curr_stream_pose_path), s_camera_pose)
 
         # Read info about current frame from stream
         # color image
@@ -268,7 +273,7 @@ def main(cfg : DictConfig):
 
                 masks_np = masks_tensor.cpu().numpy()
             else:
-                masks_np = np.empty((0, *color_tensor.shape[:2]), dtype=np.float64)
+                masks_np = np.empty((0, *color_tensor.shape[:2]), dtype=np.bool_)
                 
             # Create a detections object that we will save later
             curr_det = sv.Detections(
@@ -279,7 +284,17 @@ def main(cfg : DictConfig):
             )
             
             # No edges during streaming for now
-            labels, edges, edge_image = make_vlm_edges(image, curr_det, obj_classes, detection_class_labels, det_exp_vis_path, color_path, make_edges_flag=False, openai_client=openai_client)
+            make_edges_flag = False
+            labels, edges, edge_image, captions = make_vlm_edges_and_captions(
+                image,
+                curr_det,
+                obj_classes,
+                detection_class_labels,
+                det_exp_vis_path,
+                color_path,
+                make_edges_flag=make_edges_flag,
+                vlm_client=vlm_client,
+            )
             
             image_crops, image_feats, text_feats = compute_clip_features_batched(
                 image_rgb, curr_det, clip_model, clip_preprocess, clip_tokenizer, obj_classes.get_classes_arr(), cfg.device)
@@ -302,6 +317,7 @@ def main(cfg : DictConfig):
                 "detection_class_labels": detection_class_labels,
                 "labels": labels,
                 "edges": edges,
+                "captions": captions,
             }
 
             raw_gobs = results
@@ -342,8 +358,10 @@ def main(cfg : DictConfig):
         orr_log_rgb_image(color_path)
         orr_log_annotated_image(color_path, det_exp_vis_path)
         orr_log_depth_image(depth_tensor)
-        orr_log_vlm_image(vis_save_path_for_vlm)
-        orr_log_vlm_image(vis_save_path_for_vlm_edges, label="w_edges")
+        if os.path.isfile(vis_save_path_for_vlm):
+            orr_log_vlm_image(vis_save_path_for_vlm)
+        if os.path.isfile(vis_save_path_for_vlm_edges):
+            orr_log_vlm_image(vis_save_path_for_vlm_edges, label="w_edges")
 
         # resize the observation if needed
         resized_gobs = resize_gobs(raw_gobs, image_rgb)
@@ -445,7 +463,9 @@ def main(cfg : DictConfig):
             device=cfg['device']
             # Note: Removed 'match_method' and 'phys_bias' as they do not appear in the provided merge function
         )
-        map_edges = process_edges(match_indices, gobs, len(objects), objects, map_edges)
+        map_edges = process_edges(
+            match_indices, gobs, len(objects), objects, map_edges, frame_idx
+        )
 
         is_final_frame = frame_idx == total_frames - 1
         if is_final_frame:
@@ -600,6 +620,34 @@ def main(cfg : DictConfig):
             save_video_detections(det_exp_path)
 
     owandb.finish()
+
+@hydra.main(version_base=None, config_path="../hydra_configs/", config_name="rerun_realtime_mapping")
+def main(cfg: DictConfig):
+    camera_backend = cfg.get("camera_backend", "record3d")
+    if camera_backend == "realsense":
+        app = RealSenseDemoApp(
+            serial=cfg.realsense_serial,
+            width=cfg.realsense_width,
+            height=cfg.realsense_height,
+            fps=cfg.realsense_fps,
+            odometry_device=cfg.realsense_odometry_device,
+            odometry_max_depth=cfg.realsense_odometry_max_depth,
+            odometry_min_fitness=cfg.realsense_odometry_min_fitness,
+        )
+    elif camera_backend == "record3d":
+        from conceptgraph.utils.record3d_utils import DemoApp
+
+        app = DemoApp()
+    else:
+        raise ValueError(f"Unknown camera_backend: {camera_backend}")
+    app.connect_to_device(dev_idx=0)
+    try:
+        if camera_backend == "realsense":
+            app.write_dataset_config(Path(cfg.dataset_config))
+        _run_mapping(cfg, app, camera_backend)
+    finally:
+        app.stop()
+
 
 if __name__ == "__main__":
     main()

@@ -14,6 +14,7 @@ from conceptgraph.utils.ious import (
 )
 from conceptgraph.slam.utils import (
     compute_overlap_matrix_general,
+    compute_overlap_matrix_general_torch,
     merge_obj2_into_obj1, 
     compute_overlap_matrix_2set
 )
@@ -36,8 +37,8 @@ def compute_spatial_similarities(spatial_sim_type: str, detection_list: Detectio
     elif spatial_sim_type == "giou_accurate":
         spatial_sim = compute_3d_giou_accurate_batch(det_bboxes, obj_bboxes)
     elif spatial_sim_type == "overlap":
-        spatial_sim = compute_overlap_matrix_general(objects, detection_list, downsample_voxel_size)
-        spatial_sim = torch.from_numpy(spatial_sim).T
+        spatial_sim = compute_overlap_matrix_general_torch(objects, detection_list, downsample_voxel_size)
+        spatial_sim = spatial_sim.T
     else:
         raise ValueError(f"Invalid spatial similarity type: {spatial_sim_type}")
     
@@ -74,6 +75,8 @@ def aggregate_similarities(match_method: str, phys_bias: float, spatial_sim: tor
         A MxN tensor of aggregated similarities
     '''
     if match_method == "sim_sum":
+        if spatial_sim.device != visual_sim.device:
+            visual_sim = visual_sim.to(spatial_sim.device)
         sims = (1 + phys_bias) * spatial_sim + (1 - phys_bias) * visual_sim
     else:
         raise ValueError(f"Unknown matching method: {match_method}")

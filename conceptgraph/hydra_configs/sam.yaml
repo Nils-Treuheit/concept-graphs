@@ -1,4 +1,11 @@
+defaults:
+  - base_paths
+
 sam_variant: sam # sam
 sam_encoder_version: "vit_h"
-sam_checkpoint_path: /home/kuwajerw/repos/new_segment_anything/Grounded-Segment-Anything/sam_vit_h_4b8939.pth
-mobile_sam_path: /home/kuwajerw/repos/new_segment_anything/Grounded-Segment-Anything/mobile_sam.pt
+# Local weights (see weights/ in the repository, override with CG_WEIGHTS_DIR).
+# Note: the ultraLytics checkpoints (.pt) are used by the streamlined pipeline,
+# the original Segment-Anything format (.pth) is only needed for the
+# "normal SAM" code path.
+sam_checkpoint_path: ${repo_root}/weights/sam_l.pt
+mobile_sam_path: ${repo_root}/weights/mobile_sam.pt

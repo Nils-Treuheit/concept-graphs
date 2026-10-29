@@ -1,0 +1,113 @@
+# Copyright (c) Meta AI Research.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+#
+# Local build configuration for faiss with GPU (CUDA) support.
+#
+# Derived from upstream's `pyproject-gpu.toml` (faiss v1.15.1), with:
+#   * CMAKE_CUDA_ARCHITECTURES set to the local GPU (sm_120 / RTX 5090)
+#     instead of the upstream 70-real;75-real;...;90 list, so the resulting
+#     kernels actually run on this machine.
+#   * FAISS_OPT_LEVEL=avx2 (this host is an AMD Zen 4: AVX2, no AVX-512).
+#   * FAISS_USE_LTO=OFF (keeps the build time and memory footprint down).
+#   * CUDA 13 runtime wheels as dependencies (the local CUDA toolkit is 13.2).
+
+[build-system]
+requires = ["scikit-build-core>=0.10", "swig>=4.2,<5", "numpy>=2.0", "cmake>=3.24", "ninja"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "faiss-gpu-cu12"
+version = "1.15.1"
+description = "A library for efficient similarity search and clustering of dense vectors (GPU support, sm_120)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES"]
+requires-python = ">=3.10"
+authors = [
+    {name = "Meta AI Research"},
+]
+keywords = [
+    "Search",
+    "Indexing",
+    "Nearest neighbors",
+    "Similarity search",
+    "Clustering",
+    "Vector search",
+    "GPU",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "numpy>=1.25",
+    "packaging",
+    "nvidia-cuda-runtime>=13.0,<14",
+    "nvidia-cublas>=13.0,<14",
+    # the CUDA 13 build of cuRAND is published under the plain `nvidia-curand`
+    # name with a 10.4.x version (the CUDA 12 one is `nvidia-curand-cu12`)
+    "nvidia-curand>=10.4,<11",
+    "nvidia-nvjitlink>=13.0,<14",
+]
+
+[project.urls]
+Homepage = "https://github.com/facebookresearch/faiss"
+Documentation = "https://github.com/facebookresearch/faiss/wiki"
+Source = "https://github.com/facebookresearch/faiss"
+Issues = "https://github.com/facebookresearch/faiss/issues"
+Discussions = "https://github.com/facebookresearch/faiss/discussions"
+
+[tool.scikit-build]
+cmake.build-type = "Release"
+# MAX_JOBS=4 from ~/.bashrc: every nvcc job wants 6-8 GB of RAM, so ninja's
+# default (one job per core) does not fit into this machine's 92 GB.
+build.tool-args = ["-j4"]
+
+# The version is kept in sync with CMakeLists.txt's project(VERSION 1.15.1).
+# It is declared statically so that `uv lock` can read the metadata of this
+# path source without having to run the full CUDA build first.
+
+# Exclude C++ headers, cmake configs, static libs, and binaries from the wheel.
+# Only the Python package (faiss/) and bundled shared libs remain.
+wheel.exclude = ["include/**", "share/**", "lib/**", "lib64/**", "bin/**"]
+
+[tool.scikit-build.cmake.define]
+FAISS_OPT_LEVEL = "avx2"
+FAISS_ENABLE_GPU = "ON"
+FAISS_ENABLE_CUVS = "OFF"
+FAISS_ENABLE_PYTHON = "ON"
+FAISS_ENABLE_MKL = "OFF"
+FAISS_ENABLE_C_API = "OFF"
+FAISS_ENABLE_EXTRAS = "OFF"
+FAISS_ENABLE_SVS = "OFF"
+FAISS_USE_LTO = "OFF"
+# sm_120 == compute capability 12.0 == RTX 5090 (see TORCH_CUDA_ARCH_LIST in ~/.bashrc)
+CMAKE_CUDA_ARCHITECTURES = "120"
+# /usr/bin/nvcc on this host is Ubuntu's CUDA 11.5 wrapper, so the toolkit from
+# ~/.bashrc (CUDA_HOME=/usr/local/cuda-13.2) has to be selected explicitly.
+CMAKE_CUDA_COMPILER = "/usr/local/cuda-13.2/bin/nvcc"
+CMAKE_CUDA_FLAGS_RELEASE = "-O3 -Xfatbin=-compress-all --threads 1 -Xcompiler=-fdata-sections,-ffunction-sections"
+CMAKE_C_FLAGS = "-fdata-sections -ffunction-sections"
+CMAKE_CXX_FLAGS = "-fdata-sections -ffunction-sections"
+CMAKE_SHARED_LINKER_FLAGS = "-Wl,--gc-sections -Wl,--strip-all"
+CMAKE_MODULE_LINKER_FLAGS = "-Wl,--gc-sections -Wl,--strip-all"
+BUILD_TESTING = "OFF"
+BUILD_SHARED_LIBS = "ON"
