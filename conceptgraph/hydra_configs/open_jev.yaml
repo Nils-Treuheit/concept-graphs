@@ -1,0 +1,14 @@
+# Optional typed relation proposals. This does not change the default pipeline.
+open_jev:
+  enabled: false
+  endpoint: ${oc.env:OPEN_JEV_ENDPOINT,http://127.0.0.1:8792}
+  model: Qwen/Qwen3.5-2B
+  checkpoint: ${oc.env:OPEN_JEV_CHECKPOINT,.agentic_workflow/workspace/models-smoke-20261021/open-jev/models/Open-Jev-2B/package/checkpoint}
+  base_revision: 15852e8c16360a2fea060d615a32b45270f8a8fc
+  package_revision: 0c7aa498b1627be8da4acf34c863ff0ee0a92785
+  device: cuda:0
+  dtype: bfloat16
+  batch_size: 1
+  max_length: 4096
+  prefix_cache: false
+  advisory_only: true

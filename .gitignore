@@ -1,14 +1,37 @@
+.agentic_workflow
+.codex
+.aws
+AGENTS.md
 README_private.md
+*_REVIEW.md
+*_PLAN.md
+*_RESEARCH.md
+
+.venv
+.vscode
+.agents
+weights
+*.pt
+env_vars.bash
+
+# Local workflow and generated artifacts
+*.log
+opencode_session.protocol.json
+latest_pcd_save
+my_office_*.png
+
+
 conceptgraph/outputs
 conceptgraph/scripts/wandb
 conceptgraph/results
 conceptgraph/tmp
-.vscode/launch.json
 manipulation/contact_graspnet/examples
 manipulation/contact_graspnet/test_data
 manipulation/contact_graspnet/checkpoints
 manipulation/dataset
-env_vars.bash
+
+outputs
+wandb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -176,3 +199,4 @@ cfslam/tmp.bash
 cfslam/wandb
 cfslam/tmp.png
 cfslam/temp.json
+outputs

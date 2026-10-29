@@ -1,0 +1,21 @@
+defaults:
+  - rerun_realtime_mapping
+  - _self_
+
+# Select the live Intel RealSense RGB-D source. The existing Record3D stream
+# remains the default in rerun_realtime_mapping.yaml.
+camera_backend: realsense
+dataset_root: ${data_root}/realsense_live
+scene_id: room_live
+dataset_config: ${dataset_root}/${scene_id}/dataconfig.yaml
+exp_suffix: room_live_mapping
+detections_exp_suffix: room_live_detections
+
+realsense_serial: null
+realsense_width: 640
+realsense_height: 480
+realsense_fps: 30
+realsense_odometry_device: auto
+realsense_odometry_max_depth: 4.0
+realsense_odometry_min_fitness: 0.25
+total_frames: 1800

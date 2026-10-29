@@ -30,7 +30,6 @@ from conceptgraph.utils.vis import OnlineObjectRenderer
 from conceptgraph.utils.ious import (
     compute_2d_box_contained_batch
 )
-from conceptgraph.utils.general_utils import to_tensor
 
 from conceptgraph.slam.slam_classes import MapObjectList, DetectionList
 from conceptgraph.slam.utils import (
@@ -40,6 +39,8 @@ from conceptgraph.slam.utils import (
     filter_objects,
     merge_objects, 
     gobs_to_detection_list,
+    prepare_objects_save_vis,
+    process_cfg,
 )
 from conceptgraph.slam.mapping import (
     compute_spatial_similarities,
@@ -79,43 +80,6 @@ def compute_match_batch(cfg, spatial_sim: torch.Tensor, visual_sim: torch.Tensor
     
     return assign_mat
 
-def prepare_objects_save_vis(objects: MapObjectList, downsample_size: float=0.025):
-    objects_to_save = copy.deepcopy(objects)
-            
-    # Downsample the point cloud
-    for i in range(len(objects_to_save)):
-        objects_to_save[i]['pcd'] = objects_to_save[i]['pcd'].voxel_down_sample(downsample_size)
-
-    # Remove unnecessary keys
-    for i in range(len(objects_to_save)):
-        for k in list(objects_to_save[i].keys()):
-            if k not in [
-                'pcd', 'bbox', 'clip_ft', 'text_ft', 'class_id', 'num_detections', 'inst_color'
-            ]:
-                del objects_to_save[i][k]
-                
-    return objects_to_save.to_serializable()
-    
-def process_cfg(cfg: DictConfig):
-    cfg.dataset_root = Path(cfg.dataset_root)
-    cfg.dataset_config = Path(cfg.dataset_config)
-    
-    if cfg.dataset_config.name != "multiscan.yaml":
-        # For datasets whose depth and RGB have the same resolution
-        # Set the desired image heights and width from the dataset config
-        dataset_cfg = omegaconf.OmegaConf.load(cfg.dataset_config)
-        if cfg.image_height is None:
-            cfg.image_height = dataset_cfg.camera_params.image_height
-        if cfg.image_width is None:
-            cfg.image_width = dataset_cfg.camera_params.image_width
-        print(f"Setting image height and width to {cfg.image_height} x {cfg.image_width}")
-    else:
-        # For dataset whose depth and RGB have different resolutions
-        assert cfg.image_height is not None and cfg.image_width is not None, \
-            "For multiscan dataset, image height and width must be specified"
-
-    return cfg
-    
 @hydra.main(version_base=None, config_path="../configs/slam_pipeline", config_name="base")
 def main(cfg : DictConfig):
     cfg = process_cfg(cfg)
@@ -248,7 +212,17 @@ def main(cfg : DictConfig):
                 else:
                     matched_obj = bg_objects[class_name]
                     matched_det = detected_object
-                    bg_objects[class_name] = merge_obj2_into_obj1(cfg, matched_obj, matched_det, run_dbscan=False)
+                    bg_objects[class_name] = merge_obj2_into_obj1(
+                        obj1=matched_obj,
+                        obj2=matched_det,
+                        downsample_voxel_size=cfg.downsample_voxel_size,
+                        dbscan_remove_noise=cfg.dbscan_remove_noise,
+                        dbscan_eps=cfg.dbscan_eps,
+                        dbscan_min_points=cfg.dbscan_min_points,
+                        spatial_sim_type=cfg.spatial_sim_type,
+                        device=cfg.device,
+                        run_dbscan=False,
+                    )
             
         if len(fg_detection_list) == 0:
             continue

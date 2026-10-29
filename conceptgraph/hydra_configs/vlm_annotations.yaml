@@ -1,0 +1,21 @@
+defaults:
+  - base
+  - base_detections
+  - record3d # replica
+  - classes
+  - logging_level
+  - _self_
+
+# The detections that shall be annotated (stage 1)
+detections_exp_suffix: s_detections_stride50
+
+# Ask the VLM for the relations and the captions
+make_edges: !!bool True
+# Re-annotate frames that already have captions
+overwrite: !!bool False
+
+start: 0
+end: -1
+stride: 50
+desired_height: 480
+desired_width: 640

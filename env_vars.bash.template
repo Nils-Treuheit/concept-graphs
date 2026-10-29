@@ -1,15 +1,57 @@
 #!/bin/bash
-# Example script setting up the rnv variables needed for running ConceptGraphs
+# Example script setting up the env variables needed for running ConceptGraphs
 # Please adapt it to your own paths!
 
-export CG_FOLDER=/path/to/conceptgraph/
+export CG_FOLDER=/mnt/HDD1/Project_Code/concept-graphs
+
+# Local model weights (YOLO-World, SAM) that are downloaded into this folder.
+export CG_WEIGHTS_DIR=${CG_FOLDER}/weights
 
 export GSA_PATH=/path/to/Grounded-Segment-Anything
+# options:
+# SAM3.1 - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3.1
+# SAM3 - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3
+# You may have to download Grounding SAM if it is necessary so far only Grounding DINO exist:
+# Grounding DINO - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--IDEA-Research--grounding-dino-tiny
 
-export REPLICA_ROOT=/path/to/Replica
+
+export REPLICA_ROOT=/mnt/HDD1/Project_Data/public_datasets/Replica/
 export REPLICA_CONFIG_PATH=${CG_FOLDER}/conceptgraph/dataset/dataconfigs/replica/replica.yaml
 
-export OPENAI_API_KEY=<your GPT-4 API KEY here>
+# No cloud API key is needed any more: the LLMs run locally.
+#
+# Text model (captions, scene-graph bookkeeping) -> Ollama
+export LLM_BASE_URL=http://127.0.0.1:20261/v1
+export LLM_MODEL=qwen3.8:27b-mtp4-ud_q4_K_XL-128k
+export LLM_REASONING_EFFORT=xhigh
+export LLM_API_KEY=EMPTY
+export LLM_TIMEOUT=600
+#
+# Vision requests use the same local Ollama endpoint and primary model.
+export VLM_BASE_URL=http://127.0.0.1:20261/v1
+export VLM_MODEL=qwen3.8:27b-mtp4-ud_q4_K_XL-128k
+export VLM_REASONING_EFFORT=xhigh
+export VLM_API_KEY=EMPTY
+export VLM_TIMEOUT=600
+# Retain the per-frame response cap for these short relation/caption lists.
+export VLM_MAX_TOKENS=4096
+# Release the Ollama Qwen runner after each frame's relation/caption work so
+# it is not resident during the per-frame CUDA geometry that follows.
+export VLM_UNLOAD_AFTER_FRAME=1
 
-export LLAVA_PYTHON_PATH=/path/to/llava
-export LLAVA_CKPT_PATH=/path/to/llava/checkpoint/folder
+# Hugging Face hub of this machine - all models are read from the local disk
+export HF_HOME=/mnt/HDD1/unsloth_and_hugging_face_models/huggingface
+export HF_HUB_OFFLINE=1
+
+# LLaVA (used to caption the cropped objects in the cfslam scene-graph stage).
+# The checkpoints live in the Hugging Face format, they are loaded with
+# transformers (conceptgraph/llava/llava_hf_model.py).
+export LLAVA_PYTHON_PATH=${CG_FOLDER}/conceptgraph/llava
+export LLAVA_MODEL_PATH=llava-hf/llava-v1.6-mistral-7b-hf
+export LLAVA_CKPT_PATH=${LLAVA_MODEL_PATH}
+# LLAVA model options:
+# LLAVA Small NeXT Video - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--llava-hf--LLaVA-NeXT-Video-7B-hf
+# LLAVA NeXT Video - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--llava-hf--LLaVA-NeXT-Video-34B-DPO-hf
+# LLAVA OneVision - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--llava-hf--llava-onevision-qwen2-7b-ov-hf
+# LLAVA Mistral - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--llava-hf--llava-v1.6-mistral-7b-hf
+# LLAVA Phi3 - /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--xtuner--llava-phi-3-mini-hf
