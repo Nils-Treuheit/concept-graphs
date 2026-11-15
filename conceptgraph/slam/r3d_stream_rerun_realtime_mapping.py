@@ -412,6 +412,11 @@ def _run_mapping(cfg: DictConfig, app, camera_backend: str):
             obj_pcds_and_bboxes, gobs, color_path, obj_classes, frame_idx
         )
 
+        gobs_to_detection_indices = {
+            detection["mask_idx"][0]: detection_idx
+            for detection_idx, detection in enumerate(detection_list)
+        }
+
         if len(detection_list) == 0: # no detections, skip
             continue
 
@@ -421,6 +426,15 @@ def _run_mapping(cfg: DictConfig, app, camera_backend: str):
         if len(objects) == 0:
             objects.extend(detection_list)
             tracker.increment_total_objects(len(detection_list))
+            map_edges = process_edges(
+                [None] * len(detection_list),
+                gobs,
+                0,
+                objects,
+                map_edges,
+                frame_idx,
+                gobs_to_detection_indices=gobs_to_detection_indices,
+            )
             owandb.log({
                     "total_objects_so_far": tracker.get_total_objects(),
                     "objects_this_frame": len(detection_list),
@@ -451,6 +465,7 @@ def _run_mapping(cfg: DictConfig, app, camera_backend: str):
         )
 
         # Now merge the detected objects into the existing objects based on the match indices
+        initial_objects_count = len(objects)
         objects = merge_obj_matches(
             detection_list=detection_list, 
             objects=objects, 
@@ -464,7 +479,13 @@ def _run_mapping(cfg: DictConfig, app, camera_backend: str):
             # Note: Removed 'match_method' and 'phys_bias' as they do not appear in the provided merge function
         )
         map_edges = process_edges(
-            match_indices, gobs, len(objects), objects, map_edges, frame_idx
+            match_indices,
+            gobs,
+            initial_objects_count,
+            objects,
+            map_edges,
+            frame_idx,
+            gobs_to_detection_indices=gobs_to_detection_indices,
         )
 
         is_final_frame = frame_idx == total_frames - 1

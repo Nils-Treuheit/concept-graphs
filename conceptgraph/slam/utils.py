@@ -1814,67 +1814,80 @@ def prepare_objects_save_vis(objects: MapObjectList, downsample_size: float=0.02
                 
     return objects_to_save.to_serializable()
 
-def process_edges(match_indices, gobs, initial_objects_count, objects, map_edges, frame_idx):
-    # Step 1: Generate match_indices_w_new_obj with indices for new objects
-    # Initial count of objects before processing new detections
-    new_object_count = 0  # Counter for new objects
+def process_edges(
+    match_indices,
+    gobs,
+    initial_objects_count,
+    objects,
+    map_edges,
+    frame_idx,
+    gobs_to_detection_indices=None,
+):
+    """Propagate frame relations to map objects after association.
 
-    # Create a list of match indices with new objects index instead of None
-    match_indices_w_new_obj = []
+    ``detection_class_labels`` stays aligned with filtered ``gobs`` rows,
+    while detection construction can omit rows with invalid point clouds. The
+    optional row-to-detection map accounts for those omissions.
+    """
+    if gobs_to_detection_indices is None:
+        gobs_to_detection_indices = {
+            row_index: row_index
+            for row_index in range(len(gobs['detection_class_labels']))
+        }
+
+    detection_to_object_indices = []
+    new_object_count = 0
     for match_index in match_indices:
         if match_index is None:
-            # Assign the future index for new objects and increment the counter
-            new_obj_index = initial_objects_count + new_object_count
-            match_indices_w_new_obj.append(new_obj_index)
+            detection_to_object_indices.append(
+                initial_objects_count + new_object_count
+            )
             new_object_count += 1
         else:
-            match_indices_w_new_obj.append(match_index)
+            detection_to_object_indices.append(match_index)
 
-    # Step 2: Create a mapping from detection_class_labels numbers to the detection_list indices
-    detection_label_to_index = {}
-    for index, detection_class_label in enumerate(gobs['detection_class_labels']):
-        label_key = detection_class_label.split(" ")[-1]
-        detection_label_to_index[label_key] = index
-    
-    # Step 3: Use match_indices_w_new_obj for translating 2D edges to indices in the existing objects list
-    curr_edges_3d_by_index = []
-    for edge in gobs['edges']:
-        obj1_label, relation, obj2_label = edge
-        obj1_index = detection_label_to_index.get(obj1_label, None)
-        obj2_index = detection_label_to_index.get(obj2_label, None)        
-        
-        # check that the object indices are not out of range
-        if (obj1_index is None) or (obj1_index >= len(match_indices_w_new_obj)):
-            continue
-        if (obj2_index is None) or (obj2_index >= len(match_indices_w_new_obj)):
-            continue
-        
-        # Directly map 2D detection indices to object list indices using match_indices_w_new_obj
-        obj1_objects_index = match_indices_w_new_obj[obj1_index] if obj1_index is not None else None
-        obj2_objects_index = match_indices_w_new_obj[obj2_index] if obj2_index is not None else None
-        
-        if obj1_objects_index >= len(objects) or obj2_objects_index >= len(objects):
+    label_to_gobs_row = {}
+    for gobs_row, detection_class_label in enumerate(gobs['detection_class_labels']):
+        label_parts = detection_class_label.rsplit(maxsplit=1)
+        if len(label_parts) == 2:
+            label_to_gobs_row[label_parts[1]] = gobs_row
+
+    valid_edges = 0
+    frame_edges = gobs.get('edges') or []
+    for obj1_label, relation, obj2_label in frame_edges:
+        obj1_row = label_to_gobs_row.get(str(obj1_label))
+        obj2_row = label_to_gobs_row.get(str(obj2_label))
+        if obj1_row is None or obj2_row is None:
             continue
 
-        curr_edges_3d_by_index.append((obj1_objects_index, relation, obj2_objects_index))
+        obj1_detection = gobs_to_detection_indices.get(obj1_row)
+        obj2_detection = gobs_to_detection_indices.get(obj2_row)
+        if obj1_detection is None or obj2_detection is None:
+            continue
+        if (
+            obj1_detection >= len(detection_to_object_indices)
+            or obj2_detection >= len(detection_to_object_indices)
+        ):
+            continue
 
-    print(f"Line 624, curr_edges_3d_by_index: {curr_edges_3d_by_index}")
-    
-    # Add the new edges to the map
-    for (obj_1_idx, rel_type, obj_2_idx) in curr_edges_3d_by_index:
-        if obj_1_idx == obj_2_idx: # skip loop edges
+        obj1_index = detection_to_object_indices[obj1_detection]
+        obj2_index = detection_to_object_indices[obj2_detection]
+        if (
+            obj1_index < 0
+            or obj2_index < 0
+            or obj1_index >= len(objects)
+            or obj2_index >= len(objects)
+            or obj1_index == obj2_index
+        ):
             continue
-        map_edges.add_or_update_edge(obj_1_idx, obj_2_idx, rel_type, frame_idx)
-        
-    # Just making a copy of the edges by object number for viz
-    map_edges_by_curr_obj_num = []
-    for (obj1_idx, obj2_idx), map_edge in map_edges.edges_by_index.items():
-        # check if the idxes are more than the length of the objects, if so, continue
-        if obj1_idx >= len(objects) or obj2_idx >= len(objects):
-            continue
-        obj1_curr_obj_num = objects[obj1_idx]['curr_obj_num']
-        obj2_curr_obj_num = objects[obj2_idx]['curr_obj_num']
-        rel_type = map_edge.rel_type
-        map_edges_by_curr_obj_num.append((obj1_curr_obj_num, rel_type, obj2_curr_obj_num))
-        
+
+        map_edges.add_or_update_edge(obj1_index, obj2_index, relation, frame_idx)
+        valid_edges += 1
+
+    logging.debug(
+        "Mapped %d/%d frame relations to map objects at frame %s",
+        valid_edges,
+        len(frame_edges),
+        frame_idx,
+    )
     return map_edges
