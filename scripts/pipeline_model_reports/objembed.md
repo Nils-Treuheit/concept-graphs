@@ -1,20 +1,29 @@
-# ObjEmbed object-region embedding feasibility report
+# ObjEmbed and WeDetect experiment status
 
-**Status date:** 2026-11-15
-**Benchmark:** Not run. No GPU/model job was started.
+## Completed ObjEmbed encoder runs
 
-## Finding
+The official ObjEmbed object-token path has now run on the frozen, five-scene ReplicaSSG subset using oracle GT boxes. Two model-specific reports contain exact configuration, metrics, runtime, memory, and artifacts:
 
-The project plan treats ObjEmbed as a separate object-region experiment. It uses its own proposal and object-scoring path. No ObjEmbed integration, installed dependency, or checkpoint was found in this checkout or the inspected local model cache. Pooling current YOLOE crops would not evaluate ObjEmbed's intended path. This is an unavailable-method result, not a negative accuracy result.
+- [ObjEmbed-2B benchmark](objembed_2b_test5.md): cross-view identity top-1 `0.3805`, Recall@5 `0.7195`, oracle relation-triplet recall `0.1429`; peak allocated memory `4.716 GiB`.
+- [ObjEmbed-4B benchmark](objembed_4b_test5.md): cross-view identity top-1 `0.3782`, Recall@5 `0.7342`, oracle relation-triplet recall `0.1837`; peak allocated memory `9.417 GiB`.
 
-## Evaluation protocol
+Both runs share manifest SHA-256 `b04b2e90e15a96d5a1e04154c7fbe1935135336b1aee5e8903c1e5aab77ab277`, 250 frame views, 2,204 visible object views, and 49 categories. Each loads BF16 weights locally from `HF_HOME` and uses SDPA on CUDA 0. The reports are separate because the checkpoints represent separate model choices.
 
-When the official code and weights are available, run the method's object proposal/scoring path on the same held-out images and object queries as deployed encoders. Preserve its proposal features and scoring. Compare with SigLIP2 So400m and FG-CLIP2 So400m on fixed query sets and the same split. Evaluate multi-view map association only if the official path produces comparable object features.
+The two checkpoints yield mixed outcomes. 2B has slightly better identity top-1 and category-text macro AP. 4B has higher category accuracy, cross-view Recall@5, and oracle graph triplet recall, at roughly twice the peak allocated memory and longer total run time. These metrics do not identify one overall winner.
 
-- **Dataset/split:** same labeled object/query split as template retrieval; ReplicaSSG held-out test scans may support cross-view evaluation if GT object regions can be processed with the official method. No split was executed.
-- **Metrics:** per-category macro AP, Recall@K, object attribution, valid cross-view identity association/graph-edge recovery, throughput, and peak GPU memory.
-- **Runtime/resources:** wall time, throughput, and peak allocated/reserved GPU memory. **Not measured.**
-- **Failures/blocker:** no method-specific source, dependency, or weights located. The required proposal/scoring path is absent.
-- **Artifacts:** no model outputs or benchmark artifacts generated. Intended report path: `scripts/pipeline_model_reports/objembed.md`.
+The earlier SigLIP2/FG-CLIP2 reference uses mask-isolated or padded crops, while ObjEmbed consumes full frames plus GT boxes through its official object-token path. Those scores are contextual and are not a controlled encoder substitution. The evidence does not justify replacing the current feature encoder or tuning map thresholds.
+
+## WeDetect proposal path
+
+The WeDetect repository and local HF checkpoint are installed, but its official proposal-conditioned inference arm has not yet produced a benchmark result. It is distinct from the oracle-box ObjEmbed measurements above. Do not read the ObjEmbed scores as WeDetect results. The frozen data and environment details are in `data/optional-assets/asset-hashes.json` and the per-model result JSONs.
+
+## Protocol and artifacts
+
+The frozen input is the local-complete subset of ReplicaSSG `test_scans.txt`: `office_1`, `office_3`, `office_4`, `room_1`, and `room_2`; six requested scenes were unavailable locally. Source repository commit: `9df13ff912bbb21ced3dcf46ee32e236ce1ae105`. Runtime: Python 3.10.12, Torch 2.7.1+cu128, torchvision 0.22.1+cu128, Transformers 4.57.1. The GPU-only runner is `models/experiments/objembed/adapter/benchmark_gt_object_embeddings.py`.
+
+- ObjEmbed-2B raw JSON: `models/experiments/objembed/results/replicassg-five-scene-20261115-objembed-2b-run1/2b-metrics.json`.
+- ObjEmbed-4B raw JSON: `models/experiments/objembed/results/replicassg-five-scene-20261115-objembed-4b-run1/4b-metrics.json`.
+- Manifest and crops: `models/experiments/objembed/data/replicassg-five-scene-v1.json` and `models/experiments/objembed/data/gt-crops-v1/`.
+- Model snapshots and shard hashes are recorded in each result JSON.
 
 Protocol source: `MODERNIZED_PIPELINE_IMPLEMENTATION_PLAN.md`, “Further embedding research” and “Evaluation plan.”
