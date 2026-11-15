@@ -1,6 +1,6 @@
 # SAM 3.1 mask-refinement experiment
 
-**Status:** the official source and checkpoint are installed, and a 100-item paired COCO validation proxy is frozen. Inference has not run. The GPU release attempt made from the sandbox failed; no model was started.
+**Result:** the full 100-item paired experiment completed on the RTX 5090. SAM 3.1 reduced aggregate mask IoU, so template-mask refinement should remain disabled.
 
 ## Installed model and implementation
 
@@ -19,19 +19,31 @@ This is a conditional segmentation refinement proxy, not map-template evaluation
 - **Source data:** YOLOE-26-L-seg prediction run `scripts/pipeline_model_reports/data/yoloe26/rerun_20261115_1912/yoloe-26l-seg.json`; exact COCO subset labels are in its scorer folder.
 - **Preparation utility:** `models/experiments/sam3/adapter/prepare_coco_refinement_manifest.py`.
 
-## Preflight blocker
+## Final run
 
-The SAM runner resolves the user-supplied checkpoint path before checking that its filename is the official `sam3.1_multiplex.pt`. Hugging Face snapshots expose that filename as a symlink to a hash-named blob. The runner consequently sees the blob filename and rejects the valid cached checkpoint. The required behavior is to validate the visible official snapshot path while hashing and loading its resolved file. This narrow runner fix is pending.
+Run 6 used the frozen manifest without changes, SAM repository commit `eef6839bcfc3458dd52ea80535dc6bd62aea86b1`, the checkpoint SHA above, CUDA 0, and explicit PyTorch SDPA (`torch.nn.functional.scaled_dot_product_attention`). The default Flash Attention 3 backend was unavailable because `flash_attn_interface` was not installed. The report therefore applies specifically to the SDPA backend.
 
-The release command attempted at 2026-11-15 19:45 UTC returned `deep_cleanup=cleanup_failed` and `fast_cleanup=cleanup_failed` when invoked in sandbox context. A subsequent host-side read-only controller check showed no loaded model or active session and controller-reported aggregate device use of 1,115 MiB. This was the required model-control status check, not a direct `nvidia-smi` or model-specific residency probe. The host release retry is scheduled no earlier than 20:45 UTC. No SAM import, checkpoint load, or inference occurred.
+| Measure | Result |
+|---|---:|
+| Prompts processed / failures | 100 / 0 |
+| Prompts with selected mask / no candidate | 73 / 27 |
+| Baseline mean mask IoU | 0.774529 |
+| Refined mean mask IoU | 0.589640 |
+| Paired mean IoU change | -0.184888 |
+| Median prompt latency | 0.07506 s |
+| Model load / full run wall time | 11.611 s / 39.633 s |
+| Peak allocated / reserved CUDA memory | 5.64 / 6.09 GiB |
+| Whole-device baseline / peak memory | 1,634 / 8,006 MiB |
 
-## Planned metrics and unmeasured fields
+All 100 rows were scored, including 27 aligned all-zero SAM outputs with no candidate. Row-level CSV recomputation matches the JSON mean delta. The aggregate result is substantially worse even though the selected-mask subset improves slightly; excluding missing predictions would bias the result. The 27 empty outputs are counted as zero IoU.
 
-The paired primary metric is mean mask IoU against the fixed COCO ground-truth mask, before and after refinement, with paired delta. The runner also records per-item prompt latency, SAM score, candidate count, and selected-box overlap. **Mask IoU, runtime, throughput, memory, and failure rates are not measured yet.** The paired set conditions on a correctly localized same-category detection; it cannot measure SAM's effect on detector recall or full COCO AP.
+Earlier attempts are retained in sibling run directories: run 1 stopped at repository ownership validation; run 2 exposed 64 derived RoPE buffers rejected by strict checkpoint loading; run 3 exposed an upstream multiplex-session API mismatch; run 4 lacked Flash Attention 3; run 5 completed only 73 rows before empty-output handling was fixed. These attempts are diagnostic history, not benchmark scores.
+
+The paired set conditions on a correctly localized same-category detection. It cannot measure detector recall, full COCO AP, or full pipeline map acceptance. Runtime and memory describe this single 100-prompt run and SDPA configuration.
 
 ## Artifacts
 
 - Frozen inputs: `models/experiments/sam3/data/coco-yoloe-l-seg-matched100-v1/`.
 - Runner and protocol: `models/experiments/sam3/adapter/benchmark_template_refinement.py` and `models/experiments/sam3/adapter/README.md`.
 - Model repository and checkpoint: paths above; additional asset inventory is in `scripts/pipeline_model_reports/data/optional-assets/asset-hashes.json`.
-- **Result files:** not produced; inference is blocked pending runner preflight correction and successful host release/controller gate.
+- **Final result:** `models/experiments/sam3/results/coco-yoloe-l-seg-matched100-20261115-run6-sdpa/results.json` and `per_object.csv`; per-item masks are in the sibling `masks/` directory. Run 1–5 logs and partial outputs remain in the parent `results/` folder.
