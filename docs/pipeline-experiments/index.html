@@ -285,6 +285,7 @@
         <a href="reports/feature_encoders.md">Feature encoder benchmark<small>Masked and padded proposal retrieval</small></a>
         <a href="reports/detector.md">Detector benchmark<small>YOLOE-26-L-seg and YOLOE-26-M-seg</small></a>
         <a href="reports/yoloe26_l_seg_run1_failure.md">YOLOE-26-L COCO run 1<small>All images inferred; provenance serialization failed before scoring</small></a>
+        <a href="reports/yoloe26_detection_only_checkpoint_status.md">YOLOE-26-L/M detect-only<small>Derived heads; L box AP 0.4440, M 0.4351</small></a>
         <a href="../../scripts/pipeline_model_reports/yoloe26_four_arm_coco_comparison.md">YOLOE-26 four-arm COCO comparison<small>Completed box and mask AP on 500 shared validation images</small></a>
         <a href="reports/caption_consolidation.md">Caption consolidation benchmark<small>Four-case reliability pilot and 40-case comparison</small></a>
         <a href="reports/vlm_roles.md">VLM roles and open comparisons<small>Annotation and query-time evaluations</small></a>
@@ -298,8 +299,8 @@
         <a href="reports/optional/template_retrieval_fgclip2_so400m.md">FG-CLIP2 held-out retrieval<small>Category retrieval leader; separate proposal role</small></a>
         <a href="reports/optional/dinov3_visual_association_test5.md">DINOv3 held-out association<small>Corrected FP32; visual-only, not DINOde</small></a>
         <a href="reports/optional/dinode_template_retrieval_status.md">DINOde text retrieval<small>Not run; learned text-transport assets unavailable</small></a>
-        <a href="reports/optional/native_mask_yoloe26l.md">YOLOE-26-L native mask report<small>Custom metric only; COCO segmentation AP not measured</small></a>
-        <a href="reports/optional/native_mask_yoloe26m.md">YOLOE-26-M native mask report<small>Custom metric only; COCO segmentation AP not measured</small></a>
+        <a href="../../scripts/pipeline_model_reports/native_mask_evaluation.md">YOLOE-26 native mask evaluation<small>Standard COCO mask AP for L/M segmentation arms</small></a>
+        <a href="reports/optional/native_mask_evaluation.md">Native box and mask summary<small>Four arms scored on shared COCO images</small></a>
       </div>
       <p class="note" style="margin-top:13px">Component scores summarize prior benchmarks. Per-model VLM reports preserve each candidate's exact configuration and limitations. The map report separates component selection from measured relation flow and unresolved identity accuracy.</p>
     </section>

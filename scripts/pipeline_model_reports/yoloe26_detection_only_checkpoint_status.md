@@ -1,36 +1,18 @@
-# YOLOE-26 detection-only L/M checkpoint status
+# YOLOE-26-L/M detection-only benchmark status
 
-## Requested comparison
+**Status:** completed for the derived L and M detection-only heads on the shared 500-image COCO val2017 subset.
 
-The requested candidates are pretrained YOLOE-26-L and YOLOE-26-M detection-only checkpoints for the FG-CLIP2 padded-proposal path. No benchmark score is reported for these exact candidates because their checkpoints are unavailable.
+No official unsuffixed YOLOE-26-L/M detection-only checkpoints are released. These two heads were constructed from the matching official segmentation checkpoints using the documented YOLOE architecture path. They are derived heads, not separate downloadable checkpoint variants.
 
-## Checkpoint evidence
+| Model | Source checkpoint | Box AP@[.50:.95] | AP50 | AP75 | AR100 | Inference window | Images/s |
+|---|---|---:|---:|---:|---:|---:|---:|
+| YOLOE-26-L detect-only, derived | `models/yoloe-26l-seg.pt` | 0.444025 | 0.604450 | 0.477425 | 0.603962 | 6.290 s | 79.49 |
+| YOLOE-26-M detect-only, derived | `models/yoloe-26m-seg.pt` | 0.435064 | 0.600023 | 0.464945 | 0.593889 | 5.435 s | 92.00 |
 
-The official Ultralytics YOLOE-26 documentation lists released checkpoints with `-seg` and `-seg-pf` suffixes. The official asset resolver likewise generates only those two suffixes for YOLOE-26. It does not list `yoloe-26l.pt` or `yoloe-26m.pt` as assets. Neither unsuffixed file is present under this project's `weights/` or `models/` directories.
+Both heads used 640-pixel inputs, confidence 0.001, IoU 0.7, maximum 300 detections, batch one, and CUDA:0. The shared COCO subset contains 500 images, 3,245 ground-truth instances, and 80 categories. Exact checkpoint hashes, derived prompt profile hashes, software versions, memory, failures, and prediction artifacts appear in the [L report](yoloe26_l_detect_only_coco_report.md), [M report](yoloe26_m_detect_only_coco_report.md), and [four-arm comparison](yoloe26_four_arm_coco_comparison.md).
 
-Available official L/M weights are segmentation checkpoints:
+The L head leads by about 0.90 percentage points in box AP; the M head was faster in these runs. Each derived head reproduced its matching scale's segmentation-head box AP to below 0.000001. This component comparison does not establish map-level association or full-scene acceptance.
 
-| Size | Official checkpoint | Status |
-|---|---|---|
-| L | [`yoloe-26l-seg.pt`](https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-26l-seg.pt) | Present under `weights/`; copied into `models/` for this task |
-| M | [`yoloe-26m-seg.pt`](https://github.com/ultralytics/assets/releases/download/v8.4.0/yoloe-26m-seg.pt) | Present under `weights/`; copied into `models/` for this task |
+## Checkpoint provenance
 
-The copied model files are local working assets and are excluded from this report commit. Their SHA-256 values are:
-
-| File | Size | SHA-256 |
-|---|---:|---|
-| `models/yoloe-26l-seg.pt` | 79,417,413 bytes | `a612d2d505f24e14d87ec82d688b823b6cb600646664f16125ce6c84ce360da9` |
-| `models/yoloe-26m-seg.pt` | 70,443,185 bytes | `585f5ec9028fd358035da8d860c27c56be285a795cba2076fba536a4391c2c83` |
-
-These copies duplicate the files already in `weights/`; no new download was required. The segmentation checkpoints include mask and prompt components, so their architecture is not equivalent to a detect-only checkpoint.
-
-## What can be measured with available weights
-
-The existing detector benchmark records box AP@0.5 for the segmentation checkpoints, and the existing proposal pipeline can discard masks and produce rectangular map masks while FG-CLIP2 embeds padded boxes. A rerun of that path with `models/yoloe-26l-seg.pt` and `models/yoloe-26m-seg.pt` would measure box-only outputs from segmentation weights. Such a result must not be labeled as a detection-only checkpoint benchmark. The exact requested pretrained detect-only comparison remains unavailable until matching official weights are released or supplied.
-
-## Evidence sources
-
-- [Official YOLOE documentation](https://docs.ultralytics.com/models/yoloe/): released YOLOE-26 checkpoints are segmentation variants.
-- [Official Ultralytics asset resolver](https://github.com/ultralytics/ultralytics/blob/main/ultralytics/utils/downloads.py): YOLOE-26 asset names are generated with `-seg` and `-seg-pf` suffixes.
-- Local original files: `weights/yoloe-26l-seg.pt`, `weights/yoloe-26m-seg.pt`.
-- Local copies: `models/yoloe-26l-seg.pt`, `models/yoloe-26m-seg.pt`.
+The official L/M segmentation weights are also present under `weights/`. Repository copies under `models/` are local working assets. Their SHA-256 values are `a612d2d505f24e14d87ec82d688b823b6cb600646664f16125ce6c84ce360da9` for L and `585f5ec9028fd358035da8d860c27c56be285a795cba2076fba536a4391c2c83` for M.
