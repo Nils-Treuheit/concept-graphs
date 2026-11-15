@@ -1,0 +1,180 @@
+{
+  "benchmark": "ReplicaSSG visual-only DINOv3 cross-view association and graph identity impact",
+  "created_at_utc": "2026-11-15T01:11:12.038379+00:00",
+  "dataset": {
+    "rgb_sequence_root": "/mnt/HDD1/Project_Data/public_datasets/Replica",
+    "semantic_mesh_root": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/replica_v1",
+    "replicassg_annotations": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/ReplicaSSG/files",
+    "scenes": {
+      "office_1": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 41,
+        "visible_object_observations": 338,
+        "gt_relationship_edges": 7,
+        "frames_with_visible_objects": 50
+      },
+      "office_3": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 91,
+        "visible_object_observations": 553,
+        "gt_relationship_edges": 19,
+        "frames_with_visible_objects": 50
+      },
+      "office_4": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 58,
+        "visible_object_observations": 402,
+        "gt_relationship_edges": 18,
+        "frames_with_visible_objects": 50
+      },
+      "room_1": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 52,
+        "visible_object_observations": 505,
+        "gt_relationship_edges": 16,
+        "frames_with_visible_objects": 50
+      },
+      "room_2": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 59,
+        "visible_object_observations": 406,
+        "gt_relationship_edges": 31,
+        "frames_with_visible_objects": 50
+      }
+    },
+    "held_out_test_scans_requested": [
+      "apartment_1",
+      "apartment_2",
+      "office_1",
+      "office_3",
+      "office_4",
+      "room_1",
+      "room_2",
+      "hotel_0",
+      "frl_apartment_3",
+      "frl_apartment_4",
+      "frl_apartment_5"
+    ],
+    "held_out_test_scans_evaluated": [
+      "office_1",
+      "office_3",
+      "office_4",
+      "room_1",
+      "room_2"
+    ],
+    "held_out_test_scans_excluded": [
+      {
+        "scene": "apartment_1",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/apartment1"
+      },
+      {
+        "scene": "apartment_2",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/apartment2"
+      },
+      {
+        "scene": "hotel_0",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/hotel0"
+      },
+      {
+        "scene": "frl_apartment_3",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/frlapartment3"
+      },
+      {
+        "scene": "frl_apartment_4",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/frlapartment4"
+      },
+      {
+        "scene": "frl_apartment_5",
+        "reason": "local RGB result directory or trajectory is missing",
+        "expected_sequence_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/frlapartment5"
+      }
+    ],
+    "frames_used": 250,
+    "object_observations": 2204,
+    "object_categories": 49,
+    "proposal_source": "Replica semantic-mesh face object IDs raycast at the matching RGB camera poses",
+    "label_source": "ReplicaSSG objects.json",
+    "relationship_source": "ReplicaSSG relationships.json; predicates held fixed",
+    "split": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/ReplicaSSG/files/test_scans.txt"
+  },
+  "measurement": {
+    "primary": "leave-one-frame-out cross-view object identity retrieval top-1, MRR, Recall@1/5/10",
+    "secondary": "scene-graph node identity accuracy and oracle-predicate triplet recall",
+    "scope": "visual object identity association only; no text query retrieval, detector evaluation, predicate generation, or end-to-end map acceptance",
+    "conditions": "GT padded-box crops and GT-mask-isolated crops, matching replica_clip_benchmark.py"
+  },
+  "settings": {
+    "batch_size": 16,
+    "max_frames_per_scene": 50,
+    "device": "cuda:0"
+  },
+  "results": [
+    {
+      "name": "dinov3-vitl16",
+      "model_id": "facebook/dinov3-vitl16-pretrain-lvd1689m",
+      "model_revision": "ea8dc2863c51be0a264bab82070e3e8836b02d51",
+      "feature_source": "final-layer pooler_output, falling back to CLS token; L2-normalized",
+      "model_load_seconds": 1.2317531410371885,
+      "model_resident_cuda_allocated_gib": 1.1302227973937988,
+      "peak_cuda_allocated_gib": 1.3186116218566895,
+      "peak_cuda_reserved_gib": 1.40234375,
+      "vram_measurement_scope": "per-process PyTorch CUDA allocated/reserved bytes; excludes other processes",
+      "preprocessing": {
+        "resize": "224x224 bicubic",
+        "normalization_mean_rgb": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "normalization_std_rgb": [
+          0.229,
+          0.224,
+          0.225
+        ],
+        "metadata_limitation": "HF processor metadata was absent from local snapshot; preprocessing is explicitly recorded and should be checked against the upstream model card before interpreting absolute scores."
+      },
+      "text_retrieval": "not evaluated; DINOv3 visual features have no shared text-image space; this is not DINOde",
+      "feature_dimension": 1024,
+      "input_conditions": {
+        "ground-truth-padded-box": {
+          "cross_view_instance_retrieval_top1": 0.21418701059419623,
+          "cross_view_instance_retrieval_mrr": 0.3702109663671973,
+          "cross_view_instance_retrieval_recall_at_1": 0.21418701059419623,
+          "cross_view_instance_retrieval_recall_at_5": 0.54721326577614,
+          "cross_view_instance_retrieval_recall_at_10": 0.7231690465223399,
+          "scene_graph_node_identity_accuracy": 0.21418701059419623,
+          "scene_graph_oracle_predicate_triplet_recall": 0.0,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 16.01524858700577,
+          "object_views_per_second": 137.61884419254352
+        },
+        "ground-truth-mask-isolated": {
+          "cross_view_instance_retrieval_top1": 0.3800092123445417,
+          "cross_view_instance_retrieval_mrr": 0.5239219402460495,
+          "cross_view_instance_retrieval_recall_at_1": 0.3800092123445417,
+          "cross_view_instance_retrieval_recall_at_5": 0.6978350990327038,
+          "cross_view_instance_retrieval_recall_at_10": 0.8134500230308613,
+          "scene_graph_node_identity_accuracy": 0.3800092123445417,
+          "scene_graph_oracle_predicate_triplet_recall": 0.32653061224489793,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 16.84891607996542,
+          "object_views_per_second": 130.80960161115144
+        }
+      }
+    }
+  ]
+}
