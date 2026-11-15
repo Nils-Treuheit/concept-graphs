@@ -1,0 +1,115 @@
+{
+  "created_utc": "2026-10-30T15:23:54.037912+00:00",
+  "map_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/room0/exps/r_modernized_yoloe26l_stride50/pcd_r_modernized_yoloe26l_stride50.pkl.gz",
+  "map_sha256": "0b0c6f03db84270f21866e03ae84a394fe9f13d81d203ff3499bbd783a7fa502",
+  "baseline": {
+    "model": "qwen3.8:27b-mtp4-ud_q4_K_XL-128k",
+    "source": "/mnt/HDD1/Project_Data/public_datasets/Replica/room0/exps/r_modernized_yoloe26l_stride50/qwen_caption_baseline_failed_groups.json"
+  },
+  "candidate": {
+    "id": "qwen35-9b-q8",
+    "name": "Qwen3.5 9B UD-Q8_K_XL",
+    "model_alias": "edge-compatible-qwen35-9b-q8",
+    "base_url": "http://127.0.0.1:20263",
+    "max_tokens": 256,
+    "reasoning_effort": null,
+    "server_reasoning_mode": "off"
+  },
+  "metric_note": "Four-group failure-focused pilot. Word F1 and exact match measure agreement with Qwen, not ground-truth accuracy.",
+  "groups": [
+    {
+      "object_index": 100,
+      "object_id": 101,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square throw pillow with a white background and green leaf pattern resting on the couch.",
+        "A seating couch with white pillows visible at the bottom-left of the room."
+      ],
+      "baseline_caption": "A white square throw pillow with a green leaf pattern resting on the couch.",
+      "status": "complete",
+      "candidate_caption": "A square white throw pillow with a green leaf pattern resting on a couch.",
+      "response_seconds": 0.349,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9285714285714286,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": true,
+        "unsupported_claims": false,
+        "concise": true,
+        "notes": "Faithfully consolidates the pillow and leaf pattern; it omits the white background detail."
+      }
+    },
+    {
+      "object_index": 278,
+      "object_id": 283,
+      "class_name": "desk",
+      "source_captions": [
+        "A desk set against the wall near the window, partially behind the sofa.",
+        "A white throw pillow on the sofa near the center."
+      ],
+      "baseline_caption": "A white throw pillow on the sofa near the center.",
+      "status": "complete",
+      "candidate_caption": "A desk set against the wall near the window, partially behind a sofa with a white throw pillow near its center.",
+      "response_seconds": 0.365,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.5806451612903225,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": false,
+        "unsupported_claims": false,
+        "concise": true,
+        "notes": "Retains the desk but also folds in the sofa and pillow, which appear to be separate objects in the source captions."
+      }
+    },
+    {
+      "object_index": 348,
+      "object_id": 354,
+      "class_name": "cup",
+      "source_captions": [
+        "A small white ceramic vessel/cup with a dark interior, placed on the coffee table.",
+        "A flat magazine or book lying on a small tray on the coffee table."
+      ],
+      "baseline_caption": "A small white ceramic vessel with a dark interior on the coffee table, next to a flat magazine on a small tray.",
+      "status": "complete",
+      "candidate_caption": "A small white ceramic vessel with a dark interior and a flat magazine or book lying on a tray, both placed on the coffee table.",
+      "response_seconds": 0.407,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.8085106382978724,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": false,
+        "unsupported_claims": false,
+        "concise": true,
+        "notes": "Combines the cup and magazine descriptions for one stored cup instance; the source captions appear to refer to different objects."
+      }
+    },
+    {
+      "object_index": 419,
+      "object_id": 425,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square decorative pillow with a landscape and tree print resting on the white sofa.",
+        "A pale blue square accent pillow placed on the seat of the right white wingback chair."
+      ],
+      "baseline_caption": "A square decorative pillow with a landscape and tree print on a pale blue base, placed on a white sofa.",
+      "status": "complete",
+      "candidate_caption": "A square pale blue accent pillow with a landscape and tree print resting on the white sofa.",
+      "response_seconds": 0.321,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.7567567567567567,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": true,
+        "unsupported_claims": false,
+        "concise": true,
+        "notes": "Combines pillow attributes and chooses the sofa location despite a conflicting chair location."
+      }
+    }
+  ],
+  "summary": {
+    "selected_groups": 4,
+    "valid_outputs": 4,
+    "mean_response_seconds": 0.3605,
+    "mean_word_f1_to_qwen": 0.7686209962290951
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "edge_0": {
+    "edge_id": 0,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 1358,
+    "object_1_tag": "pillow",
+    "object_2_id": 1344,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_1": {
+    "edge_id": 1,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 1677,
+    "object_1_tag": "pillow",
+    "object_2_id": 1661,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_2": {
+    "edge_id": 2,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 2012,
+    "object_1_tag": "pillow",
+    "object_2_id": 2001,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_3": {
+    "edge_id": 3,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 2158,
+    "object_1_tag": "pillow",
+    "object_2_id": 2185,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_4": {
+    "edge_id": 4,
+    "edge_description": "pillow on top of pillow",
+    "num_detections": 3,
+    "object_1_id": 2157,
+    "object_1_tag": "pillow",
+    "object_2_id": 1745,
+    "object_2_tag": "pillow",
+    "relationship": "on top of"
+  },
+  "edge_5": {
+    "edge_id": 5,
+    "edge_description": "pillow on top of pillow",
+    "num_detections": 2,
+    "object_1_id": 2160,
+    "object_1_tag": "pillow",
+    "object_2_id": 1745,
+    "object_2_tag": "pillow",
+    "relationship": "on top of"
+  },
+  "edge_6": {
+    "edge_id": 6,
+    "edge_description": "pillow on top of pillow",
+    "num_detections": 2,
+    "object_1_id": 2137,
+    "object_1_tag": "pillow",
+    "object_2_id": 1745,
+    "object_2_tag": "pillow",
+    "relationship": "on top of"
+  },
+  "edge_7": {
+    "edge_id": 7,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 1745,
+    "object_1_tag": "pillow",
+    "object_2_id": 2389,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_8": {
+    "edge_id": 8,
+    "edge_description": "couch under pillow",
+    "num_detections": 2,
+    "object_1_id": 2389,
+    "object_1_tag": "couch",
+    "object_2_id": 1745,
+    "object_2_tag": "pillow",
+    "relationship": "under"
+  },
+  "edge_9": {
+    "edge_id": 9,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 5,
+    "object_1_id": 1745,
+    "object_1_tag": "pillow",
+    "object_2_id": 2397,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_10": {
+    "edge_id": 10,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3121,
+    "object_1_tag": "pillow",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_11": {
+    "edge_id": 11,
+    "edge_description": "blanket on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3125,
+    "object_1_tag": "blanket",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_12": {
+    "edge_id": 12,
+    "edge_description": "book on top of book",
+    "num_detections": 1,
+    "object_1_id": 3126,
+    "object_1_tag": "book",
+    "object_2_id": 3128,
+    "object_2_tag": "book",
+    "relationship": "on top of"
+  },
+  "edge_13": {
+    "edge_id": 13,
+    "edge_description": "book on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3128,
+    "object_1_tag": "book",
+    "object_2_id": 3137,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_14": {
+    "edge_id": 14,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3131,
+    "object_1_tag": "pillow",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_15": {
+    "edge_id": 15,
+    "edge_description": "blanket on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3135,
+    "object_1_tag": "blanket",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_16": {
+    "edge_id": 16,
+    "edge_description": "pillow on top of blanket",
+    "num_detections": 1,
+    "object_1_id": 3141,
+    "object_1_tag": "pillow",
+    "object_2_id": 3145,
+    "object_2_tag": "blanket",
+    "relationship": "on top of"
+  },
+  "edge_17": {
+    "edge_id": 17,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 2,
+    "object_1_id": 3141,
+    "object_1_tag": "pillow",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_18": {
+    "edge_id": 18,
+    "edge_description": "blanket on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3145,
+    "object_1_tag": "blanket",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_19": {
+    "edge_id": 19,
+    "edge_description": "shelf on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3137,
+    "object_1_tag": "shelf",
+    "object_2_id": 3151,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_20": {
+    "edge_id": 20,
+    "edge_description": "pillow on top of blanket",
+    "num_detections": 1,
+    "object_1_id": 3141,
+    "object_1_tag": "pillow",
+    "object_2_id": 3157,
+    "object_2_tag": "blanket",
+    "relationship": "on top of"
+  },
+  "edge_21": {
+    "edge_id": 21,
+    "edge_description": "blanket on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3157,
+    "object_1_tag": "blanket",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_22": {
+    "edge_id": 22,
+    "edge_description": "shelf on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3151,
+    "object_1_tag": "shelf",
+    "object_2_id": 3173,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_23": {
+    "edge_id": 23,
+    "edge_description": "potted plant on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3174,
+    "object_1_tag": "potted plant",
+    "object_2_id": 3173,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_24": {
+    "edge_id": 24,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3163,
+    "object_1_tag": "pillow",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_25": {
+    "edge_id": 25,
+    "edge_description": "pillow on top of couch",
+    "num_detections": 1,
+    "object_1_id": 3167,
+    "object_1_tag": "pillow",
+    "object_2_id": 3113,
+    "object_2_tag": "couch",
+    "relationship": "on top of"
+  },
+  "edge_26": {
+    "edge_id": 26,
+    "edge_description": "book on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3128,
+    "object_1_tag": "book",
+    "object_2_id": 3183,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_27": {
+    "edge_id": 27,
+    "edge_description": "book on top of shelf",
+    "num_detections": 1,
+    "object_1_id": 3179,
+    "object_1_tag": "book",
+    "object_2_id": 3180,
+    "object_2_tag": "shelf",
+    "relationship": "on top of"
+  },
+  "edge_28": {
+    "edge_id": 28,
+    "edge_description": "pillow on top of lamp",
+    "num_detections": 1,
+    "object_1_id": 3176,
+    "object_1_tag": "pillow",
+    "object_2_id": 172,
+    "object_2_tag": "lamp",
+    "relationship": "on top of"
+  },
+  "edge_29": {
+    "edge_id": 29,
+    "edge_description": "pillow on top of lamp",
+    "num_detections": 1,
+    "object_1_id": 3181,
+    "object_1_tag": "pillow",
+    "object_2_id": 172,
+    "object_2_tag": "lamp",
+    "relationship": "on top of"
+  }
+}

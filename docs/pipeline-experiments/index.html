@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ConceptGraphs Pipeline Experiments</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211f;
+      --muted: #5a6965;
+      --line: #dce5e1;
+      --paper: #f6f8f5;
+      --card: #fff;
+      --green: #176b52;
+      --green-soft: #e5f3ed;
+      --amber: #80520b;
+      --amber-soft: #fff3d9;
+      --red: #8f342d;
+      --red-soft: #fbe9e6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.55 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(1100px, calc(100% - 36px)); margin: 0 auto; padding: 52px 0 72px; }
+    .eyebrow { color: var(--green); font-size: .78rem; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { max-width: 800px; margin: 10px 0 12px; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.04; letter-spacing: -.045em; }
+    h2 { margin: 0 0 14px; font-size: 1.45rem; line-height: 1.2; letter-spacing: -.02em; }
+    h3 { margin: 0 0 7px; font-size: 1.03rem; }
+    p { margin: 0 0 12px; }
+    .lede { max-width: 760px; color: var(--muted); font-size: 1.12rem; }
+    .notice {
+      display: flex; gap: 12px; align-items: flex-start; margin: 26px 0 32px; padding: 16px 18px;
+      border: 1px solid #e9c978; border-radius: 12px; background: var(--amber-soft); color: #563c0d;
+    }
+    .notice strong { display: block; margin-bottom: 2px; }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    section, article { min-width: 0; }
+    .panel { padding: 22px; border: 1px solid var(--line); border-radius: 15px; background: var(--card); box-shadow: 0 3px 12px #13291d08; }
+    .span-12 { grid-column: span 12; }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    .component { min-height: 106px; padding: 14px; border-radius: 11px; background: #f0f5f2; }
+    .component small { display: block; margin-bottom: 6px; color: var(--muted); font-size: .72rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .component b { display: block; font-size: .98rem; line-height: 1.3; }
+    .metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0 14px; }
+    .metric { padding: 13px; border-radius: 10px; background: #f4f7f5; }
+    .metric b { display: block; font-size: 1.45rem; letter-spacing: -.04em; }
+    .metric span { color: var(--muted); font-size: .82rem; }
+    .status {
+      display: inline-flex; align-items: center; gap: 7px; padding: 5px 9px; border-radius: 999px;
+      font-size: .76rem; font-weight: 750; letter-spacing: .025em;
+    }
+    .status::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; content: ""; }
+    .pending { background: var(--amber-soft); color: var(--amber); }
+    .issue { background: var(--red-soft); color: var(--red); }
+    .measured { background: var(--green-soft); color: var(--green); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: 9px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: .73rem; letter-spacing: .06em; text-transform: uppercase; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .note { color: var(--muted); font-size: .87rem; }
+    .links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .links a {
+      display: block; padding: 13px 14px; border: 1px solid var(--line); border-radius: 10px;
+      color: var(--green); font-weight: 700; text-decoration: none; overflow-wrap: anywhere;
+    }
+    .links a:hover, .links a:focus-visible { border-color: var(--green); background: #f3faf6; text-decoration: underline; }
+    .links small { display: block; margin-top: 3px; color: var(--muted); font-weight: 450; }
+    code { padding: 2px 5px; border-radius: 5px; background: #eef2ef; font-size: .88em; }
+    footer { margin-top: 25px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+    @media (max-width: 760px) {
+      main { width: min(100% - 24px, 600px); padding-top: 32px; }
+      .span-7, .span-5, .span-6 { grid-column: span 12; }
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+      .component:last-child { grid-column: span 2; }
+      .metric-row { grid-template-columns: 1fr; }
+      .links { grid-template-columns: 1fr; }
+      .panel { padding: 18px; }
+      table { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">ConceptGraphs · Local experiment report</div>
+    <h1>Modernized pipeline results</h1>
+    <p class="lede">A compact view of the selected detector, feature encoders, and VLM roles alongside the measured component benchmarks and open map-level checks.</p>
+  </header>
+
+  <div class="notice" role="status">
+    <span class="status pending">In progress</span>
+    <div><strong>Component selection is fixed; map-level results now cover 200 sampled frames.</strong>
+      Relation propagation works in the saved CUDA map. The longer run exposes frequent class disagreement across repeated tracks; identity accuracy remains unmeasured without instance ground truth.</div>
+  </div>
+
+  <div class="grid">
+    <section class="panel span-12" aria-labelledby="pipeline-title">
+      <h2 id="pipeline-title">Current fixed component pipeline</h2>
+      <div class="pipeline">
+        <div class="component"><small>Detector</small><b>YOLOE-26-L-seg</b></div>
+        <div class="component"><small>Masked features</small><b>SigLIP2 So400m</b></div>
+        <div class="component"><small>Padded proposal features</small><b>FG-CLIP2 So400m</b></div>
+        <div class="component"><small>Frame annotation</small><b>Qwen3.8 (provisional)</b></div>
+        <div class="component"><small>Caption consolidation</small><b>Gemma 4 12B QAT Q4</b></div>
+      </div>
+      <p class="note" style="margin-top:13px">Detector, feature, and consolidation settings are fixed from the recorded component experiments. Qwen3.8 remains the provisional per-frame default because the shortlist evaluates schema reliability and agreement, not semantic truth. The map audit is descriptive because this scene has no ready-to-use instance IDs.</p>
+    </section>
+
+    <section class="panel span-7" aria-labelledby="features-title">
+      <span class="status measured">Measured component benchmark</span>
+      <h2 id="features-title" style="margin-top:12px">Feature encoders</h2>
+      <p class="note">Category-macro retrieval mAP on 36,335 COCO val objects across 80 categories.</p>
+      <table>
+        <thead><tr><th>Model</th><th>Padded mAP</th><th>Masked mAP</th><th>Objects/s</th><th>Peak VRAM</th></tr></thead>
+        <tbody>
+          <tr><td>SigLIP2 So400m</td><td>0.6417</td><td><b>0.6833</b></td><td>182.9</td><td>2.47 GiB</td></tr>
+          <tr><td>FG-CLIP2 So400m</td><td><b>0.7399</b></td><td>0.6569</td><td>231.1</td><td>8.63 GiB</td></tr>
+          <tr><td>SigLIP2 Base</td><td>0.6978</td><td>0.6044</td><td><b>1,531.4</b></td><td><b>0.94 GiB</b></td></tr>
+          <tr><td>CLIP ViT-H/14</td><td>0.6167</td><td>0.2336</td><td>367.8</td><td>2.12 GiB</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">FG-CLIP2's 0.8146 native RoI score uses a different feature path; the selected padded crop score is 0.7399. Embedding spaces stay separate.</p>
+    </section>
+
+    <section class="panel span-5" aria-labelledby="detector-title">
+      <span class="status pending">Mask metric provisional</span>
+      <h2 id="detector-title" style="margin-top:12px">Detector comparison</h2>
+      <p class="note">Same seeded 500-image COCO val2017 sample; 3,206 instances, 79 categories.</p>
+      <table>
+        <thead><tr><th>Model</th><th>Mask AP@0.5*</th><th>Box AP@0.5</th><th>Images/s</th></tr></thead>
+        <tbody>
+          <tr><td>YOLOE-26-L-seg</td><td><b>0.5881</b></td><td><b>0.5972</b></td><td>79.4</td></tr>
+          <tr><td>YOLOE-26-M-seg</td><td>0.5805</td><td>0.5931</td><td><b>100.6</b></td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">*Custom polygon metric, not standard COCO mask AP. Native-mask re-evaluation remains optional validation.</p>
+    </section>
+
+    <section class="panel span-6" aria-labelledby="caption-title">
+      <span class="status measured">40-case pilot</span>
+      <h2 id="caption-title" style="margin-top:12px">Caption consolidation</h2>
+      <p class="note">CUDA, reasoning off. Agreement to Qwen3.8 is lexical overlap, not correctness.</p>
+      <table>
+        <thead><tr><th>Candidate</th><th>Valid</th><th>Mean latency</th><th>Word F1, 40</th><th>Multi-caption F1, 5</th></tr></thead>
+        <tbody>
+          <tr><td>Qwen3.5 9B Q4</td><td>40/40</td><td><b>0.201 s</b></td><td>0.946</td><td>0.730</td></tr>
+          <tr><td>Qwen3.5 9B Q8</td><td>40/40</td><td>0.300 s</td><td>0.940</td><td>0.754</td></tr>
+          <tr><td>Gemma 4 12B Q4</td><td>40/40</td><td>0.302 s</td><td><b>0.966</b></td><td><b>0.893</b></td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">The five multi-caption cases are small and include caption-to-track inconsistencies. The pilot does not prove a semantic winner.</p>
+    </section>
+
+    <section class="panel span-6" aria-labelledby="mapping-title">
+      <span class="status measured">40-frame relation propagation confirmed</span>
+      <h2 id="mapping-title" style="margin-top:12px">Relation propagation check</h2>
+      <div class="metric-row">
+        <div class="metric"><b>40</b><span>sampled frames, stride 50</span></div>
+        <div class="metric"><b>626</b><span>objects in saved map</span></div>
+        <div class="metric"><b>199 → 32</b><span>cached 2D relations → final map edges</span></div>
+      </div>
+      <p>The CUDA rerun retained 32 map edges from the 199 cached 2D relations. All endpoint IDs and object tags resolve in the saved object JSON, and the edge relation type matches the cached input vocabulary. Each edge has <code>num_detections=1</code>.</p>
+      <p class="note">The retry JSON is retained, but its successful console log is not. Runtime and GPU headroom are transcript-reported. Semantic relation ground truth is absent. An earlier same-config PCD links one plant/table relation to a couch-tagged track, suggesting association/class confusion; the retry did not save observation history.</p>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="coverage-title">
+      <span class="status issue">Association needs improvement</span>
+      <h2 id="coverage-title" style="margin-top:12px">Broader Replica room0 run</h2>
+      <p>One fixed-configuration pass covered 200 of 2,000 frames at stride 10 (10%). Detector, annotation, and CUDA mapping completed. The detector cache contains 4,502 detections; all 200 frames have relation and caption outputs, totaling 1,109 relation tuples and 3,606 caption records. Mapping took 30:12 in the CUDA frame loop and peaked at about 14.58 GiB total GPU use.</p>
+      <div class="metric-row">
+        <div class="metric"><b>2,794</b><span>final map tracks; 3,185 retained observations</span></div>
+        <div class="metric"><b>48.3%</b><span>of 211 repeated tracks contain differing class IDs</span></div>
+        <div class="metric"><b>30 edges</b><span>all endpoint IDs and tags resolve; 29 “on top of”, 1 “under”</span></div>
+      </div>
+      <p>There are 31 tracks with duplicate frame IDs. Per-observation caption names differ from the final track class on 144/3,185 records (4.52%), across 102 tracks. Caption consolidation was disabled, so the map has no consolidated captions. No instance ground truth is available; these checks cannot establish association precision/recall or caption accuracy. The difference between 4,502 detections and 3,185 retained observations spans multiple filtering and projection stages; available artifacts lack counters to isolate it.</p>
+      <p class="note">The 1,109 source relations and 30 output edges do not define a recall score: edges aggregate exact ordered object pairs and weak edges are pruned. Thresholds were not retuned. Full scene coverage and another scene remain open.</p>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="vlm-results-title">
+      <span class="status measured">40-frame CUDA comparison complete</span>
+      <h2 id="vlm-results-title" style="margin-top:12px">Per-frame VLM comparison</h2>
+      <p>Each model used the same 40 Replica room0 frames, cached YOLOE detections and masks, object IDs, prompts, and Qwen3.8 reference outputs. Agreement is with cached Qwen3.8 outputs, not semantic ground truth. Mean request time combines relation and caption requests per frame; total wall time is shown where recorded. Managed endpoint times include server and HTTP work; Transformers generation latency excludes preprocessing. Transformers used greedy decoding; Qwen3.8 and LFM3 service sampling defaults were not captured.</p>
+      <table>
+        <thead><tr><th>Model</th><th>Relations / validity</th><th>Captions / IDs</th><th>Agreement to Qwen3.8</th><th>Runtime</th></tr></thead>
+        <tbody>
+          <tr><td><b>Qwen3.8</b><br><span class="note">provisional default</span></td><td>339 saved relations</td><td>763/763 caption IDs</td><td>Relation F1 0.498<br>Caption word F1 0.646</td><td>13.3 s/frame requests<br>532 s summed requests</td></tr>
+          <tr><td><code>LiquidAI/LFM3-VL-2B-GGUF:NVFP4</code></td><td>36/40 relation lists valid<br>183/186 tuples; both IDs resolve</td><td>28/40 caption lists valid<br>526/763 caption IDs; no extras or duplicates</td><td>Relation F1 0.398<br>Caption word F1 0.509</td><td>14.3 s/frame requests<br>571 s summed requests</td></tr>
+          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code></td><td>0/40 relation parses valid</td><td>0/40 caption parses valid<br>0/763 IDs</td><td>Not meaningful: structured outputs failed</td><td>8.4 s/frame requests<br>435.5 s wall; 85.9 s load</td></tr>
+          <tr><td><code>Qwen/Qwen2.5-VL-7B-Instruct</code></td><td>149 relations<br>38/40 relation parses valid<br>149/149 valid tuples</td><td>762/763 caption IDs<br>40/40 after fence-aware reparse</td><td>Relation F1 0.331<br>Caption word F1 0.338</td><td>8.9 s/frame requests<br>537.6 s wall; 177.5 s load</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">External VLM leaderboard scores motivated the shortlist only. Qwen3.8 remains provisional, not a production winner. The raw Qwen2.5 summary reports 0/40 strict caption parses; the 40/40 above comes from post-hoc fence-aware re-parsing of retained responses. Raw runs: <a href="data/vlm-qwen38-baseline-40.json">Qwen3.8</a>, <a href="data/vlm-lfm3-vl-2b-nvfp4-40.json">LFM3-VL</a>, <a href="data/vlm-llava-onevision-qwen2-7b-40.json">LLaVA OneVision</a>, <a href="data/vlm-qwen2.5-vl-7b-40.json">Qwen2.5-VL</a>.</p>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="optional-title">
+      <span class="status measured">Optional experiments reviewed</span>
+      <h2 id="optional-title" style="margin-top:12px">Template retrieval, query VQA, and optional components</h2>
+      <p>The matched held-out retrieval run used the five locally available ReplicaSSG test scenes (250 frames, 2,204 GT object views). On mask-isolated crops, SigLIP2 led cross-view identity top-1 (0.3966) and oracle graph triplet recall (0.3878); FG-CLIP2 led category macro AP (0.0403). Visual-only DINOv3 FP32 reached identity top-1 0.3800 and triplet recall 0.3265, while using 1.402 GiB peak reserved CUDA memory. Keep SigLIP2 as the map-association feature and FG-CLIP2 in the separate padded-proposal retrieval role; do not substitute DINOv3 for DINOde.</p>
+      <p class="note">This is an oracle-mask representation comparison, not detector-backed map retrieval or end-to-end VQA. Earlier FP16 DINOv3 scores were invalidated after a CUDA diagnostic found non-finite embeddings. Only corrected FP32 scores are used. DINOde, EOVSAM, ObjEmbed, and T-REN could not be benchmarked because required method code/checkpoints were unavailable. SAM 3.1 has a cached checkpoint blob but no runnable project integration. Native COCO mask metrics remain blocked because prediction records and configured YOLOE checkpoints are absent.</p>
+      <div class="links">
+        <a href="reports/optional/template_retrieval_test5.md">Matched retrieval comparison<small>SigLIP2, FG-CLIP2, and visual-only DINOv3</small></a>
+        <a href="reports/optional/dinov3_visual_association_test5.md">DINOv3 association report<small>Corrected FP32 result and invalid attempt audit</small></a>
+        <a href="reports/optional/dinode_template_retrieval_status.md">DINOde retrieval feasibility<small>Text-aligned ODE path unavailable locally</small></a>
+        <a href="reports/optional/template_vqa_query_vlm_status.md">Template-matching VQA readiness<small>Qwen3.8 and Qwen3-VL answerers; no held-out VQA score yet</small></a>
+        <a href="reports/optional/query_qwen38.md">Qwen3.8 query answerer<small>Provisional baseline; target role not measured</small></a>
+        <a href="reports/optional/query_qwen3vl_8b_instruct.md">Qwen3-VL 8B Instruct query answerer<small>Generic panel evidence is not ConceptGraphs VQA</small></a>
+        <a href="reports/optional/query_qwen3vl_30b_thinking.md">Qwen3-VL 30B Thinking query answerer<small>Complex-question candidate; serving preflight pending</small></a>
+        <a href="reports/optional/native_mask_evaluation.md">Native detector-mask validation<small>Official COCO mask AP unavailable; custom polygon metric remains provisional</small></a>
+        <a href="reports/optional/eovsam_fusion.md">EOVSAM fusion feasibility<small>Deferred; no local implementation or weights</small></a>
+        <a href="reports/optional/sam31_template_refinement.md">SAM 3.1 template refinement<small>Checkpoint cached; runnable integration unavailable</small></a>
+        <a href="reports/optional/objembed.md">ObjEmbed feasibility<small>Method-specific proposal path unavailable</small></a>
+        <a href="reports/optional/t_ren.md">T-REN feasibility<small>Region-token implementation and weights unavailable</small></a>
+      </div>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="reports-title">
+      <h2 id="reports-title">Separate benchmark reports</h2>
+      <div class="links">
+        <a href="reports/vlm_qwen38_27b.md">Qwen3.8 27B report<small>Provisional baseline; reference agreement is self-favoring</small></a>
+        <a href="reports/vlm_llava_onevision_qwen2_7b.md">LLaVA OneVision Qwen2 7B report<small>Structured output failure analysis</small></a>
+        <a href="reports/vlm_lfm3_vl_2b_nvfp4.md">LFM3-VL-2B NVFP4 report<small>Graph-output candidate</small></a>
+        <a href="reports/vlm_qwen2_5_vl_7b.md">Qwen2.5-VL 7B report<small>Fence-aware strict output counts</small></a>
+        <a href="reports/feature_encoders.md">Feature encoder benchmark<small>Masked and padded proposal retrieval</small></a>
+        <a href="reports/detector.md">Detector benchmark<small>YOLOE-26-L-seg and YOLOE-26-M-seg</small></a>
+        <a href="reports/caption_consolidation.md">Caption consolidation benchmark<small>Four-case reliability pilot and 40-case comparison</small></a>
+        <a href="reports/vlm_roles.md">VLM roles and open comparisons<small>Annotation and query-time evaluations</small></a>
+        <a href="reports/map_level_validation.md">Map-level validation<small>40-frame propagation and 200-frame CUDA association audit</small></a>
+        <a href="reports/experiment_evaluation.md">Experiment decisions<small>Baseline comparisons, acceptance limits, and choices carried forward</small></a>
+        <a href="reports/caption_qwen38_baseline.md">Qwen3.8 caption reference<small>Cached baseline; candidate latency not measured</small></a>
+        <a href="reports/caption_qwen35_9b_q4.md">Qwen3.5 9B Q4 captions<small>Fastest accepted candidate; per-model result</small></a>
+        <a href="reports/caption_qwen35_9b_q8.md">Qwen3.5 9B Q8 captions<small>Per-model result and paired sample</small></a>
+        <a href="reports/caption_gemma4_12b.md">Gemma 4 12B captions<small>Highest lexical agreement in the 40-track pilot</small></a>
+        <a href="reports/optional/template_retrieval_siglip2_so400m.md">SigLIP2 held-out retrieval<small>Per-model association and graph identity results</small></a>
+        <a href="reports/optional/template_retrieval_fgclip2_so400m.md">FG-CLIP2 held-out retrieval<small>Category retrieval leader; separate proposal role</small></a>
+        <a href="reports/optional/dinov3_visual_association_test5.md">DINOv3 held-out association<small>Corrected FP32; visual-only, not DINOde</small></a>
+        <a href="reports/optional/dinode_template_retrieval_status.md">DINOde text retrieval<small>Not run; learned text-transport assets unavailable</small></a>
+        <a href="reports/optional/native_mask_yoloe26l.md">YOLOE-26-L native mask report<small>Custom metric only; COCO segmentation AP not measured</small></a>
+        <a href="reports/optional/native_mask_yoloe26m.md">YOLOE-26-M native mask report<small>Custom metric only; COCO segmentation AP not measured</small></a>
+      </div>
+      <p class="note" style="margin-top:13px">Component scores summarize prior benchmarks. Per-model VLM reports preserve each candidate's exact configuration and limitations. The map report separates component selection from measured relation flow and unresolved identity accuracy.</p>
+    </section>
+  </div>
+  <footer>Sources: <code>scripts/MODERNIZED_COMPONENT_RESULTS.md</code>, <code>scripts/MODERNIZED_COMPONENT_BENCHMARKS.md</code>, and the saved Replica room0 experiment artifacts. This page is local and not published.</footer>
+</main>
+</body>
+</html>

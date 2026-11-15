@@ -1,0 +1,2463 @@
+{
+  "benchmark": "ReplicaSSG ground-truth object crop, cross-view association, and scene-graph node impact",
+  "created_at_utc": "2026-11-15T00:59:41.491374+00:00",
+  "dataset": {
+    "rgb_sequence_root": "/mnt/HDD1/Project_Data/public_datasets/Replica",
+    "semantic_mesh_root": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/replica_v1",
+    "replicassg_annotations": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/ReplicaSSG/files",
+    "proposal_source": "Replica semantic mesh face object IDs raycast at local Replica RGB sequence camera poses",
+    "label_source": "ReplicaSSG objects.json",
+    "relationship_source": "ReplicaSSG relationships.json",
+    "frames_used": 250,
+    "object_observations": 2204,
+    "object_categories": 49,
+    "scenes": {
+      "office_1": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 41,
+        "visible_object_observations": 338,
+        "gt_relationship_edges": 7,
+        "frames_with_visible_objects": 50
+      },
+      "office_3": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 91,
+        "visible_object_observations": 553,
+        "gt_relationship_edges": 19,
+        "frames_with_visible_objects": 50
+      },
+      "office_4": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 58,
+        "visible_object_observations": 402,
+        "gt_relationship_edges": 18,
+        "frames_with_visible_objects": 50
+      },
+      "room_1": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 52,
+        "visible_object_observations": 505,
+        "gt_relationship_edges": 16,
+        "frames_with_visible_objects": 50
+      },
+      "room_2": {
+        "input_frames": 2000,
+        "frames_sampled": 50,
+        "annotated_objects": 59,
+        "visible_object_observations": 406,
+        "gt_relationship_edges": 31,
+        "frames_with_visible_objects": 50
+      }
+    },
+    "caption_note": "ReplicaSSG supplies object categories and scene relationships, not reference object captions. CLIP-family models rank label text; they do not generate captions."
+  },
+  "measurement": {
+    "primary": "macro AP for each observed Replica category text query retrieving matching GT object views from the full observation bank",
+    "secondary": "zero-shot label accuracy; leave-one-view-out cross-view instance retrieval; scene-graph node identity and oracle-predicate triplet recall",
+    "graph_interpretation": "The relation labels are ground truth and held fixed. The graph score isolates propagation of CLIP-based object association errors into scene-graph nodes and edge triplets; it is not a predicate-generation score.",
+    "inputs": {
+      "ground-truth-padded-box": "GT semantic instance mask-derived box with 20-pixel context",
+      "ground-truth-mask-isolated": "same box and pixels outside its GT instance mask filled with this model's processor mean RGB, which normalizes to approximately zero",
+      "ground-truth-native-roi": "FG-CLIP2-only supplemental input: the full source RGB frame and oracle GT box are passed through FG-CLIP2's native RoIAlign feature API, paired with walk_type=box text embeddings; this is separate from the direct shared-crop pipeline comparison"
+    }
+  },
+  "settings": {
+    "models": [
+      "siglip2-so400m",
+      "fg-clip2-so400m"
+    ],
+    "batch_size": 16,
+    "device": "cuda:0",
+    "text_prompt_template": "a photo of a {category}"
+  },
+  "results": [
+    {
+      "name": "siglip2-so400m",
+      "model_id": "google/siglip2-so400m-patch14-384",
+      "model_revision": null,
+      "processor_image_mean_rgb_0_1": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "mask_background_rgb_8bit": [
+        128,
+        128,
+        128
+      ],
+      "model_load_seconds": 19.138255540980026,
+      "model_resident_cuda_allocated_gib": 2.1379480361938477,
+      "peak_cuda_allocated_gib": 2.4714441299438477,
+      "peak_cuda_reserved_gib": 2.650390625,
+      "vram_measurement_scope": "per-process PyTorch CUDA allocated/reserved bytes; excludes VRAM owned by concurrent processes",
+      "category_text_encode_seconds": 0.4395381429931149,
+      "feature_dimension": 1152,
+      "input_conditions": {
+        "ground-truth-padded-box": {
+          "zero_shot_top1_micro": 0.04582577132486389,
+          "zero_shot_top1_macro_category": 0.0399202868819783,
+          "zero_shot_top5_micro": 0.1996370235934664,
+          "object_query_retrieval_map_macro_category": 0.022641717011426272,
+          "object_query_retrieval_recall_at_1_macro_query": 0.02040816326530612,
+          "object_query_retrieval_recall_at_5_macro_query": 0.04081632653061224,
+          "object_query_retrieval_recall_at_10_macro_query": 0.061224489795918366,
+          "object_query_retrieval_recall_at_50_macro_query": 0.24489795918367346,
+          "per_category": {
+            "anonymize_picture": {
+              "ground_truth_objects": 50,
+              "zero_shot_top1_accuracy": 0.04,
+              "query_average_precision": 0.024080327496124907,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "anonymize_text": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.75,
+              "query_average_precision": 0.0017582280882666881,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "basket": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0031633586185074642,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bed": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004124416133852138,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bench": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0027839631369885797,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bin": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.003565032129808047,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blanket": {
+              "ground_truth_objects": 23,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009703215166724491,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blinds": {
+              "ground_truth_objects": 172,
+              "zero_shot_top1_accuracy": 0.11627906976744186,
+              "query_average_precision": 0.0815575745313361,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "book": {
+              "ground_truth_objects": 30,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.018192972459183433,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bottle": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0013407416648884654,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bowl": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0008680555555555555,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "box": {
+              "ground_truth_objects": 5,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.011101861601471556,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "cabinet": {
+              "ground_truth_objects": 13,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0050402270893078575,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "camera": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006547928775952167,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "ceiling": {
+              "ground_truth_objects": 234,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.06567242665026563,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "chair": {
+              "ground_truth_objects": 41,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.013722469692653299,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "clock": {
+              "ground_truth_objects": 29,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0237376380789184,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "cloth": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.5,
+              "query_average_precision": 0.0018094434567752433,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "comforter": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001166993986043235,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0010815723498801381,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk-organizer": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0004923682914820286,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "door": {
+              "ground_truth_objects": 69,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.028781294233281574,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "floor": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008527327148824718,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "indoor-plant": {
+              "ground_truth_objects": 35,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.018524145299054724,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "lamp": {
+              "ground_truth_objects": 262,
+              "zero_shot_top1_accuracy": 0.011450381679389313,
+              "query_average_precision": 0.1159765957938348,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "monitor": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0040989512503019345,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "nightstand": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004764417826157519,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "non-plane": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.013054524821068897,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "other-leaf": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0035460992907801418,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "panel": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.013586969049776304,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "picture": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.16666666666666666,
+              "query_average_precision": 0.006176365861947054,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillar": {
+              "ground_truth_objects": 28,
+              "zero_shot_top1_accuracy": 0.03571428571428571,
+              "query_average_precision": 0.009607974452219715,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillow": {
+              "ground_truth_objects": 34,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.015344129491030001,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pipe": {
+              "ground_truth_objects": 52,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.04150702005233134,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "plate": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006344346393417288,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "rug": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0007805288416676357,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "sculpture": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00227883668414998,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "shelf": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008087715824767413,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "switch": {
+              "ground_truth_objects": 54,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.022317358105528328,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "table": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0015643376203331334,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tablet": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.012658227848101266,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tissue-paper": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0018812484960018415,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-screen": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.1875,
+              "query_average_precision": 0.021723105590710997,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-stand": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00797334186079705,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "vase": {
+              "ground_truth_objects": 47,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.02021091561018539,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "vent": {
+              "ground_truth_objects": 102,
+              "zero_shot_top1_accuracy": 0.00980392156862745,
+              "query_average_precision": 0.04705330306273645,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall": {
+              "ground_truth_objects": 554,
+              "zero_shot_top1_accuracy": 0.11010830324909747,
+              "query_average_precision": 0.2810240823770806,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall-plug": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007457777727610231,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "window": {
+              "ground_truth_objects": 175,
+              "zero_shot_top1_accuracy": 0.02857142857142857,
+              "query_average_precision": 0.10308237799220539,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            }
+          },
+          "cross_view_instance_retrieval_top1": 0.23952095808383234,
+          "cross_view_instance_retrieval_mrr": 0.39102325772268326,
+          "cross_view_instance_retrieval_recall_at_1": 0.23952095808383234,
+          "cross_view_instance_retrieval_recall_at_5": 0.5651773376324275,
+          "cross_view_instance_retrieval_recall_at_10": 0.7098111469368954,
+          "scene_graph_node_identity_accuracy": 0.23952095808383234,
+          "scene_graph_oracle_predicate_triplet_recall": 0.04081632653061224,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 17.976369334966876,
+          "category_text_encode_seconds": 0.4395381429931149,
+          "scene_graph_identity_inference_seconds": 18.41590747795999,
+          "object_views_per_second": 122.60540262225655
+        },
+        "ground-truth-mask-isolated": {
+          "zero_shot_top1_micro": 0.053992740471869326,
+          "zero_shot_top1_macro_category": 0.0555370411305324,
+          "zero_shot_top5_micro": 0.21869328493647913,
+          "object_query_retrieval_map_macro_category": 0.031305322184301036,
+          "object_query_retrieval_recall_at_1_macro_query": 0.02040816326530612,
+          "object_query_retrieval_recall_at_5_macro_query": 0.10204081632653061,
+          "object_query_retrieval_recall_at_10_macro_query": 0.10204081632653061,
+          "object_query_retrieval_recall_at_50_macro_query": 0.32653061224489793,
+          "per_category": {
+            "anonymize_picture": {
+              "ground_truth_objects": 50,
+              "zero_shot_top1_accuracy": 0.26,
+              "query_average_precision": 0.01691182621178431,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "anonymize_text": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001233791169181489,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "basket": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005411836489622641,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bed": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008218615232657302,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bench": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0034394693093808193,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bin": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0058049654505792515,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blanket": {
+              "ground_truth_objects": 23,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.02096907486503164,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blinds": {
+              "ground_truth_objects": 172,
+              "zero_shot_top1_accuracy": 0.12209302325581395,
+              "query_average_precision": 0.11163243784165952,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "book": {
+              "ground_truth_objects": 30,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.016409485132388497,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "bottle": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0014111463226500866,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bowl": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0007451564828614009,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "box": {
+              "ground_truth_objects": 5,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0023335011752429963,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "cabinet": {
+              "ground_truth_objects": 13,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005915553340350169,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "camera": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005440670207676902,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "ceiling": {
+              "ground_truth_objects": 234,
+              "zero_shot_top1_accuracy": 0.042735042735042736,
+              "query_average_precision": 0.12420486527060988,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "chair": {
+              "ground_truth_objects": 41,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.016715111067056778,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "clock": {
+              "ground_truth_objects": 29,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.026103190585812862,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "cloth": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.5,
+              "query_average_precision": 0.0017609671889712451,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "comforter": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0014328023328697237,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001080798747499285,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk-organizer": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00045578851412944393,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "door": {
+              "ground_truth_objects": 69,
+              "zero_shot_top1_accuracy": 0.043478260869565216,
+              "query_average_precision": 0.04991165472099144,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "floor": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0625,
+              "query_average_precision": 0.006525921333396044,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "indoor-plant": {
+              "ground_truth_objects": 35,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.020346086101286562,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "lamp": {
+              "ground_truth_objects": 262,
+              "zero_shot_top1_accuracy": 0.011450381679389313,
+              "query_average_precision": 0.11820526975454168,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "monitor": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004640822207096562,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "nightstand": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00508896215632428,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "non-plane": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01612383050739215,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "other-leaf": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 1.0,
+              "query_average_precision": 0.001445086705202312,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "panel": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005425248427641282,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "picture": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.3333333333333333,
+              "query_average_precision": 0.007858705562283338,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillar": {
+              "ground_truth_objects": 28,
+              "zero_shot_top1_accuracy": 0.03571428571428571,
+              "query_average_precision": 0.014580601093632479,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pillow": {
+              "ground_truth_objects": 34,
+              "zero_shot_top1_accuracy": 0.058823529411764705,
+              "query_average_precision": 0.030387935651741648,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pipe": {
+              "ground_truth_objects": 52,
+              "zero_shot_top1_accuracy": 0.038461538461538464,
+              "query_average_precision": 0.09277267132438394,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "plate": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006171673705804507,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "rug": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001786825625267416,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "sculpture": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0038489981155654654,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "shelf": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007170572791274334,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "switch": {
+              "ground_truth_objects": 54,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.05605079478331243,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "table": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0019122549564348963,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tablet": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0007727975270479134,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tissue-paper": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001432721404323474,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-screen": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.028392760982705698,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "tv-stand": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009662877425777946,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "vase": {
+              "ground_truth_objects": 47,
+              "zero_shot_top1_accuracy": 0.06382978723404255,
+              "query_average_precision": 0.11343196488130738,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "vent": {
+              "ground_truth_objects": 102,
+              "zero_shot_top1_accuracy": 0.049019607843137254,
+              "query_average_precision": 0.05812486629198268,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall": {
+              "ground_truth_objects": 554,
+              "zero_shot_top1_accuracy": 0.08844765342960288,
+              "query_average_precision": 0.39905985166754065,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall-plug": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0032034414334237288,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "window": {
+              "ground_truth_objects": 175,
+              "zero_shot_top1_accuracy": 0.011428571428571429,
+              "query_average_precision": 0.09199453695505215,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            }
+          },
+          "cross_view_instance_retrieval_top1": 0.39659143251957624,
+          "cross_view_instance_retrieval_mrr": 0.5372635926550204,
+          "cross_view_instance_retrieval_recall_at_1": 0.39659143251957624,
+          "cross_view_instance_retrieval_recall_at_5": 0.7056655918931368,
+          "cross_view_instance_retrieval_recall_at_10": 0.8198986642100414,
+          "scene_graph_node_identity_accuracy": 0.39659143251957624,
+          "scene_graph_oracle_predicate_triplet_recall": 0.3877551020408163,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 18.77208291995339,
+          "category_text_encode_seconds": 0.4395381429931149,
+          "scene_graph_identity_inference_seconds": 19.211621062946506,
+          "object_views_per_second": 117.40838826453853
+        }
+      }
+    },
+    {
+      "name": "fg-clip2-so400m",
+      "model_id": "qihoo360/fg-clip2-so400m",
+      "model_revision": null,
+      "processor_image_mean_rgb_0_1": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "mask_background_rgb_8bit": [
+        128,
+        128,
+        128
+      ],
+      "model_load_seconds": 49.38600330799818,
+      "model_resident_cuda_allocated_gib": 2.203761100769043,
+      "peak_cuda_allocated_gib": 6.7100830078125,
+      "peak_cuda_reserved_gib": 7.7421875,
+      "vram_measurement_scope": "per-process PyTorch CUDA allocated/reserved bytes; excludes VRAM owned by concurrent processes",
+      "category_text_encode_seconds": 0.03906752506736666,
+      "feature_dimension": 1152,
+      "input_conditions": {
+        "ground-truth-padded-box": {
+          "zero_shot_top1_micro": 0.07849364791288566,
+          "zero_shot_top1_macro_category": 0.020285992699689004,
+          "zero_shot_top5_micro": 0.24682395644283123,
+          "object_query_retrieval_map_macro_category": 0.024663577581553846,
+          "object_query_retrieval_recall_at_1_macro_query": 0.02040816326530612,
+          "object_query_retrieval_recall_at_5_macro_query": 0.10204081632653061,
+          "object_query_retrieval_recall_at_10_macro_query": 0.12244897959183673,
+          "object_query_retrieval_recall_at_50_macro_query": 0.2857142857142857,
+          "per_category": {
+            "anonymize_picture": {
+              "ground_truth_objects": 50,
+              "zero_shot_top1_accuracy": 0.1,
+              "query_average_precision": 0.02358342462210271,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "anonymize_text": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.25,
+              "query_average_precision": 0.023630628217182256,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "basket": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0034666544753344433,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bed": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004025865262363705,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bench": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005119856317034739,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bin": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0077041697061459745,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blanket": {
+              "ground_truth_objects": 23,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.012066172168445756,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blinds": {
+              "ground_truth_objects": 172,
+              "zero_shot_top1_accuracy": 0.1511627906976744,
+              "query_average_precision": 0.09316476774690916,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "book": {
+              "ground_truth_objects": 30,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01494066223558472,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bottle": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0022093721453681514,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bowl": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0007849293563579278,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "box": {
+              "ground_truth_objects": 5,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009676667849130401,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "cabinet": {
+              "ground_truth_objects": 13,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0038990949851982408,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "camera": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.015795572144412278,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "ceiling": {
+              "ground_truth_objects": 234,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.06022368036368274,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "chair": {
+              "ground_truth_objects": 41,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.013234590174777908,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "clock": {
+              "ground_truth_objects": 29,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.018984622589192302,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "cloth": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0027375282872293717,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "comforter": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0012753758773974763,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001676232247312875,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk-organizer": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0005083884087442806,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "door": {
+              "ground_truth_objects": 69,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.04153016436770538,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "floor": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008815874255153884,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "indoor-plant": {
+              "ground_truth_objects": 35,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.02570028829845597,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "lamp": {
+              "ground_truth_objects": 262,
+              "zero_shot_top1_accuracy": 0.007633587786259542,
+              "query_average_precision": 0.0959307802710076,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "monitor": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007303741174447715,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "nightstand": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006051450308681674,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "non-plane": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.02197199613739826,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "other-leaf": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0012658227848101266,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "panel": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.010421621068548919,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "picture": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.16666666666666666,
+              "query_average_precision": 0.006819446001731876,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillar": {
+              "ground_truth_objects": 28,
+              "zero_shot_top1_accuracy": 0.03571428571428571,
+              "query_average_precision": 0.01666558335655833,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillow": {
+              "ground_truth_objects": 34,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01444851225161542,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pipe": {
+              "ground_truth_objects": 52,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.07587176856118359,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "plate": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.015563528639270966,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "rug": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0007739411140285949,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "sculpture": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.003498318200884956,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "shelf": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01428140430647876,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "switch": {
+              "ground_truth_objects": 54,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0287919722651728,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "table": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001796906557762072,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tablet": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00390625,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tissue-paper": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004300731907500261,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-screen": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009411971554277096,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-stand": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008970170515350012,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "vase": {
+              "ground_truth_objects": 47,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.025872377395694836,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "vent": {
+              "ground_truth_objects": 102,
+              "zero_shot_top1_accuracy": 0.0196078431372549,
+              "query_average_precision": 0.05004795296551584,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall": {
+              "ground_truth_objects": 554,
+              "zero_shot_top1_accuracy": 0.23465703971119134,
+              "query_average_precision": 0.27254247369934836,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall-plug": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008111670543719906,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "window": {
+              "ground_truth_objects": 175,
+              "zero_shot_top1_accuracy": 0.02857142857142857,
+              "query_average_precision": 0.10914032781392798,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            }
+          },
+          "cross_view_instance_retrieval_top1": 0.24458774758175955,
+          "cross_view_instance_retrieval_mrr": 0.38344146718261485,
+          "cross_view_instance_retrieval_recall_at_1": 0.24458774758175955,
+          "cross_view_instance_retrieval_recall_at_5": 0.5356978350990327,
+          "cross_view_instance_retrieval_recall_at_10": 0.6798710271764163,
+          "scene_graph_node_identity_accuracy": 0.24458774758175955,
+          "scene_graph_oracle_predicate_triplet_recall": 0.061224489795918366,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 26.313763480982743,
+          "category_text_encode_seconds": 0.03906752506736666,
+          "scene_graph_identity_inference_seconds": 26.35283100605011,
+          "object_views_per_second": 83.75844837219336
+        },
+        "ground-truth-mask-isolated": {
+          "zero_shot_top1_micro": 0.07985480943738657,
+          "zero_shot_top1_macro_category": 0.05201409842669147,
+          "zero_shot_top5_micro": 0.2731397459165154,
+          "object_query_retrieval_map_macro_category": 0.04030684361874575,
+          "object_query_retrieval_recall_at_1_macro_query": 0.02040816326530612,
+          "object_query_retrieval_recall_at_5_macro_query": 0.08163265306122448,
+          "object_query_retrieval_recall_at_10_macro_query": 0.12244897959183673,
+          "object_query_retrieval_recall_at_50_macro_query": 0.3877551020408163,
+          "per_category": {
+            "anonymize_picture": {
+              "ground_truth_objects": 50,
+              "zero_shot_top1_accuracy": 0.08,
+              "query_average_precision": 0.023611342679081125,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "anonymize_text": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0019502091144121478,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "basket": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007703375742613327,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bed": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009730694974560763,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "bench": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007505823524871592,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "bin": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007096117225800996,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blanket": {
+              "ground_truth_objects": 23,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.03013353295110209,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blinds": {
+              "ground_truth_objects": 172,
+              "zero_shot_top1_accuracy": 0.1511627906976744,
+              "query_average_precision": 0.11207806824190882,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "book": {
+              "ground_truth_objects": 30,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.015254529652217798,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bottle": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008009563008398024,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bowl": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006097560975609756,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "box": {
+              "ground_truth_objects": 5,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01268429021842831,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "cabinet": {
+              "ground_truth_objects": 13,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008876346109555688,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "camera": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007507028507809079,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "ceiling": {
+              "ground_truth_objects": 234,
+              "zero_shot_top1_accuracy": 0.008547008547008548,
+              "query_average_precision": 0.08469323768562437,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "chair": {
+              "ground_truth_objects": 41,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.019283944632383098,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "clock": {
+              "ground_truth_objects": 29,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.029747648843725976,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "cloth": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 1.0,
+              "query_average_precision": 0.0028612843016560105,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "comforter": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.002695203970338481,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0013951055422552333,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk-organizer": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0004967709885742673,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "door": {
+              "ground_truth_objects": 69,
+              "zero_shot_top1_accuracy": 0.057971014492753624,
+              "query_average_precision": 0.07602026813408012,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "floor": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.010062059381472161,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "indoor-plant": {
+              "ground_truth_objects": 35,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.032447872609975045,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "lamp": {
+              "ground_truth_objects": 262,
+              "zero_shot_top1_accuracy": 0.007633587786259542,
+              "query_average_precision": 0.10736298734480858,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "monitor": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006843248619345341,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "nightstand": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0071814892520983276,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "non-plane": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.007159317069294958,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "other-leaf": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0035587188612099642,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "panel": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.1,
+              "query_average_precision": 0.014335093651842509,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "picture": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.16666666666666666,
+              "query_average_precision": 0.020561863093775484,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pillar": {
+              "ground_truth_objects": 28,
+              "zero_shot_top1_accuracy": 0.14285714285714285,
+              "query_average_precision": 0.03233109787911274,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pillow": {
+              "ground_truth_objects": 34,
+              "zero_shot_top1_accuracy": 0.14705882352941177,
+              "query_average_precision": 0.03975261355191874,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pipe": {
+              "ground_truth_objects": 52,
+              "zero_shot_top1_accuracy": 0.19230769230769232,
+              "query_average_precision": 0.3853758522897473,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "plate": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.023734100483135026,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "rug": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.002144756838905775,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "sculpture": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.019813792006456867,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "shelf": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.1111111111111111,
+              "query_average_precision": 0.008278387903306237,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "switch": {
+              "ground_truth_objects": 54,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.04752111585300115,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "table": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0021041123514400216,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tablet": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0011792452830188679,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tissue-paper": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0022491402668432725,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-screen": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0625,
+              "query_average_precision": 0.07430390527503969,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "tv-stand": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.012698778905249801,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "vase": {
+              "ground_truth_objects": 47,
+              "zero_shot_top1_accuracy": 0.10638297872340426,
+              "query_average_precision": 0.11268984654136063,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "vent": {
+              "ground_truth_objects": 102,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.03977408363932309,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall": {
+              "ground_truth_objects": 554,
+              "zero_shot_top1_accuracy": 0.18592057761732853,
+              "query_average_precision": 0.370878502923392,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall-plug": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00757272211977421,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "window": {
+              "ground_truth_objects": 175,
+              "zero_shot_top1_accuracy": 0.02857142857142857,
+              "query_average_precision": 0.10768868629868678,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            }
+          },
+          "cross_view_instance_retrieval_top1": 0.3790879778903731,
+          "cross_view_instance_retrieval_mrr": 0.5207159024730698,
+          "cross_view_instance_retrieval_recall_at_1": 0.3790879778903731,
+          "cross_view_instance_retrieval_recall_at_5": 0.6890833717181023,
+          "cross_view_instance_retrieval_recall_at_10": 0.8074619990787656,
+          "scene_graph_node_identity_accuracy": 0.3790879778903731,
+          "scene_graph_oracle_predicate_triplet_recall": 0.32653061224489793,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 27.378830109955743,
+          "category_text_encode_seconds": 0.03906752506736666,
+          "scene_graph_identity_inference_seconds": 27.41789763502311,
+          "object_views_per_second": 80.50015253203098
+        },
+        "ground-truth-native-roi": {
+          "zero_shot_top1_micro": 0.13702359346642468,
+          "zero_shot_top1_macro_category": 0.01295989542078175,
+          "zero_shot_top5_micro": 0.3262250453720508,
+          "object_query_retrieval_map_macro_category": 0.023235578848167446,
+          "object_query_retrieval_recall_at_1_macro_query": 0.04081632653061224,
+          "object_query_retrieval_recall_at_5_macro_query": 0.08163265306122448,
+          "object_query_retrieval_recall_at_10_macro_query": 0.12244897959183673,
+          "object_query_retrieval_recall_at_50_macro_query": 0.1836734693877551,
+          "per_category": {
+            "anonymize_picture": {
+              "ground_truth_objects": 50,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.017362481769025804,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "anonymize_text": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.003095883106106881,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "basket": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0024974530368522463,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bed": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.003448897244812931,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bench": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.002323406628406681,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bin": {
+              "ground_truth_objects": 8,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0026738610193459654,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blanket": {
+              "ground_truth_objects": 23,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00930277285766649,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "blinds": {
+              "ground_truth_objects": 172,
+              "zero_shot_top1_accuracy": 0.11046511627906977,
+              "query_average_precision": 0.10793298411867093,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "book": {
+              "ground_truth_objects": 30,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009888265773672245,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bottle": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0026760565678714426,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "bowl": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00048449612403100775,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "box": {
+              "ground_truth_objects": 5,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0015772514458027881,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "cabinet": {
+              "ground_truth_objects": 13,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0038073752364825918,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "camera": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.004651196714363554,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "ceiling": {
+              "ground_truth_objects": 234,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.061445896576343785,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "chair": {
+              "ground_truth_objects": 41,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.010389079896061498,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "clock": {
+              "ground_truth_objects": 29,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.010520812241573198,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "cloth": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001955678891800995,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "comforter": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0016034961876242725,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0012242520208058324,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "desk-organizer": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001182033096926714,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "door": {
+              "ground_truth_objects": 69,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.03435986040235243,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "floor": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005163752762253302,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "indoor-plant": {
+              "ground_truth_objects": 35,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.017285398237911476,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "lamp": {
+              "ground_truth_objects": 262,
+              "zero_shot_top1_accuracy": 0.003816793893129771,
+              "query_average_precision": 0.11551796041941059,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "monitor": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.006852568904898753,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "nightstand": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0033588058301393456,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "non-plane": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.002290272621978405,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "other-leaf": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00047961630695443646,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "panel": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.008187534001386287,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "picture": {
+              "ground_truth_objects": 6,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.005502413229645386,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pillar": {
+              "ground_truth_objects": 28,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.05412347571612998,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "pillow": {
+              "ground_truth_objects": 34,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.013966233581116613,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "pipe": {
+              "ground_truth_objects": 52,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.017616240052005287,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "plate": {
+              "ground_truth_objects": 10,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0027411581089986717,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "rug": {
+              "ground_truth_objects": 2,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0009266944374843398,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "sculpture": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.003350132954247024,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "shelf": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0027432169207294963,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "switch": {
+              "ground_truth_objects": 54,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.01427770385825274,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "table": {
+              "ground_truth_objects": 3,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001152436441115339,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tablet": {
+              "ground_truth_objects": 1,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0005293806246691371,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tissue-paper": {
+              "ground_truth_objects": 4,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.001471950187520251,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-screen": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.009293417330029497,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "tv-stand": {
+              "ground_truth_objects": 16,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.00415400180255486,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "vase": {
+              "ground_truth_objects": 47,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.02102172932948285,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 1.0
+            },
+            "vent": {
+              "ground_truth_objects": 102,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.04886047379120223,
+              "query_recall_at_1": 1.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall": {
+              "ground_truth_objects": 554,
+              "zero_shot_top1_accuracy": 0.5036101083032491,
+              "query_average_precision": 0.38124459732724564,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 1.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            },
+            "wall-plug": {
+              "ground_truth_objects": 9,
+              "zero_shot_top1_accuracy": 0.0,
+              "query_average_precision": 0.0029426103569839324,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 0.0,
+              "query_recall_at_50": 0.0
+            },
+            "window": {
+              "ground_truth_objects": 175,
+              "zero_shot_top1_accuracy": 0.017142857142857144,
+              "query_average_precision": 0.09908609746925878,
+              "query_recall_at_1": 0.0,
+              "query_recall_at_5": 0.0,
+              "query_recall_at_10": 1.0,
+              "query_recall_at_50": 1.0
+            }
+          },
+          "cross_view_instance_retrieval_top1": 0.16812528788576692,
+          "cross_view_instance_retrieval_mrr": 0.34894325054438546,
+          "cross_view_instance_retrieval_recall_at_1": 0.16812528788576692,
+          "cross_view_instance_retrieval_recall_at_5": 0.5674804237678489,
+          "cross_view_instance_retrieval_recall_at_10": 0.7586365730078305,
+          "scene_graph_node_identity_accuracy": 0.16812528788576692,
+          "scene_graph_oracle_predicate_triplet_recall": 0.04081632653061224,
+          "scene_graph_node_observations_scored": 2171,
+          "scene_graph_edge_observations_scored": 49,
+          "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation.",
+          "image_encode_seconds": 3.6534857359947637,
+          "category_text_encode_seconds": 0.04998685501050204,
+          "scene_graph_identity_inference_seconds": 3.7034725910052657,
+          "object_views_per_second": 603.2595059249354,
+          "text_space": "FG-CLIP2 region-caption alignment: RoIAlign region features against walk_type=box text features"
+        }
+      }
+    }
+  ]
+}

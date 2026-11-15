@@ -1,0 +1,10018 @@
+{
+  "object_1": {
+    "id": 0,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.43,
+      0.22
+    ],
+    "bbox_center": [
+      4.58,
+      0.18,
+      1.94
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_2": {
+    "id": 1,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.42,
+      0.28
+    ],
+    "bbox_center": [
+      5.13,
+      0.19,
+      1.45
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_3": {
+    "id": 2,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.63,
+      0.5,
+      0.24
+    ],
+    "bbox_center": [
+      4.15,
+      2.27,
+      2.29
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_4": {
+    "id": 3,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.69,
+      0.65,
+      0.54
+    ],
+    "bbox_center": [
+      4.68,
+      1.62,
+      2.44
+    ],
+    "bbox_volume": 0.24
+  },
+  "object_5": {
+    "id": 4,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.39,
+      0.17
+    ],
+    "bbox_center": [
+      4.65,
+      -0.02,
+      1.9
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_6": {
+    "id": 5,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      1.21,
+      0.03
+    ],
+    "bbox_center": [
+      6.47,
+      3.57,
+      1.17
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_7": {
+    "id": 6,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.41,
+      0.36,
+      0.1
+    ],
+    "bbox_center": [
+      4.89,
+      0.57,
+      2.07
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_8": {
+    "id": 7,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.28,
+      0.2,
+      0.17
+    ],
+    "bbox_center": [
+      6.62,
+      2.95,
+      1.9
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_9": {
+    "id": 8,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.26,
+      0.03
+    ],
+    "bbox_center": [
+      6.07,
+      3.75,
+      2.02
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_10": {
+    "id": 9,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.43,
+      0.27
+    ],
+    "bbox_center": [
+      5.09,
+      0.27,
+      2.05
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_11": {
+    "id": 10,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.15,
+      0.01
+    ],
+    "bbox_center": [
+      6.17,
+      0.56,
+      1.52
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_12": {
+    "id": 11,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      1.18,
+      1.04,
+      0.34
+    ],
+    "bbox_center": [
+      6.16,
+      3.32,
+      2.37
+    ],
+    "bbox_volume": 0.42
+  },
+  "object_13": {
+    "id": 12,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.19,
+      1.16,
+      0.04
+    ],
+    "bbox_center": [
+      7.31,
+      1.43,
+      1.6
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_14": {
+    "id": 13,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      2.39,
+      2.35,
+      0.08
+    ],
+    "bbox_center": [
+      5.87,
+      0.34,
+      1.41
+    ],
+    "bbox_volume": 0.45
+  },
+  "object_15": {
+    "id": 14,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.42,
+      0.16
+    ],
+    "bbox_center": [
+      5.21,
+      0.57,
+      1.18
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_16": {
+    "id": 15,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.47,
+      0.32
+    ],
+    "bbox_center": [
+      5.68,
+      0.6,
+      0.66
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_17": {
+    "id": 16,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.41,
+      0.08
+    ],
+    "bbox_center": [
+      5.45,
+      0.92,
+      1.32
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_18": {
+    "id": 17,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.18,
+      0.14,
+      0.03
+    ],
+    "bbox_center": [
+      5.14,
+      0.74,
+      1.26
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_19": {
+    "id": 18,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.45,
+      0.16
+    ],
+    "bbox_center": [
+      5.67,
+      0.68,
+      1.26
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_20": {
+    "id": 19,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.23,
+      1.18,
+      0.03
+    ],
+    "bbox_center": [
+      6.7,
+      4.08,
+      0.42
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_21": {
+    "id": 20,
+    "object_tag": "coffee maker",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.19,
+      0.15
+    ],
+    "bbox_center": [
+      6.91,
+      3.48,
+      1.14
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_22": {
+    "id": 21,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.48,
+      0.16
+    ],
+    "bbox_center": [
+      5.14,
+      1.98,
+      1.53
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_23": {
+    "id": 22,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.15,
+      0.04
+    ],
+    "bbox_center": [
+      4.67,
+      2.65,
+      1.47
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_24": {
+    "id": 23,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.36,
+      0.03
+    ],
+    "bbox_center": [
+      6.32,
+      4.24,
+      1.26
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_25": {
+    "id": 24,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.93,
+      0.76,
+      0.61
+    ],
+    "bbox_center": [
+      6.51,
+      3.92,
+      1.59
+    ],
+    "bbox_volume": 0.43
+  },
+  "object_26": {
+    "id": 25,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.18,
+      0.13,
+      0.01
+    ],
+    "bbox_center": [
+      6.7,
+      1.05,
+      0.76
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_27": {
+    "id": 26,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.18,
+      1.07,
+      0.02
+    ],
+    "bbox_center": [
+      7.76,
+      2.07,
+      0.83
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_28": {
+    "id": 27,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.13,
+      0.89,
+      0.11
+    ],
+    "bbox_center": [
+      7.34,
+      1.62,
+      0.79
+    ],
+    "bbox_volume": 0.21
+  },
+  "object_29": {
+    "id": 28,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.2,
+      0.21
+    ],
+    "bbox_center": [
+      5.74,
+      0.78,
+      1.19
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_30": {
+    "id": 29,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.84,
+      0.83,
+      0.52
+    ],
+    "bbox_center": [
+      6.03,
+      4.4,
+      1.57
+    ],
+    "bbox_volume": 0.36
+  },
+  "object_31": {
+    "id": 30,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      4.14,
+      2.13,
+      0.05
+    ],
+    "bbox_center": [
+      6.66,
+      3.27,
+      -0.81
+    ],
+    "bbox_volume": 0.44
+  },
+  "object_32": {
+    "id": 31,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.9,
+      0.94,
+      0.6
+    ],
+    "bbox_center": [
+      7.02,
+      3.33,
+      1.58
+    ],
+    "bbox_volume": 0.51
+  },
+  "object_33": {
+    "id": 32,
+    "object_tag": "light",
+    "object_caption": "",
+    "bbox_extent": [
+      1.23,
+      0.77,
+      0.02
+    ],
+    "bbox_center": [
+      5.96,
+      3.08,
+      -0.79
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_34": {
+    "id": 33,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.57,
+      0.3,
+      0.14
+    ],
+    "bbox_center": [
+      5.27,
+      0.31,
+      1.08
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_35": {
+    "id": 34,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.2,
+      1.02,
+      0.02
+    ],
+    "bbox_center": [
+      8.22,
+      0.66,
+      0.78
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_36": {
+    "id": 35,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.01,
+      0.0
+    ],
+    "bbox_center": [
+      6.22,
+      -0.23,
+      0.97
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_37": {
+    "id": 36,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      4.7,
+      1.68,
+      0.05
+    ],
+    "bbox_center": [
+      6.1,
+      2.1,
+      -0.84
+    ],
+    "bbox_volume": 0.39
+  },
+  "object_38": {
+    "id": 37,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.21,
+      0.19,
+      0.2
+    ],
+    "bbox_center": [
+      5.88,
+      0.13,
+      1.15
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_39": {
+    "id": 38,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.24,
+      0.16,
+      0.12
+    ],
+    "bbox_center": [
+      7.81,
+      2.49,
+      1.16
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_40": {
+    "id": 39,
+    "object_tag": "bottle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.19,
+      0.15
+    ],
+    "bbox_center": [
+      7.88,
+      2.28,
+      1.09
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_41": {
+    "id": 40,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.28,
+      1.28,
+      0.03
+    ],
+    "bbox_center": [
+      7.9,
+      2.92,
+      0.36
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_42": {
+    "id": 41,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.35,
+      0.3
+    ],
+    "bbox_center": [
+      5.76,
+      0.03,
+      0.62
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_43": {
+    "id": 42,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.38,
+      0.04
+    ],
+    "bbox_center": [
+      7.59,
+      3.2,
+      1.21
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_44": {
+    "id": 43,
+    "object_tag": "closet door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.18,
+      1.01,
+      0.09
+    ],
+    "bbox_center": [
+      7.74,
+      0.42,
+      0.76
+    ],
+    "bbox_volume": 0.2
+  },
+  "object_45": {
+    "id": 44,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      1.87,
+      0.49,
+      0.16
+    ],
+    "bbox_center": [
+      5.88,
+      4.58,
+      0.06
+    ],
+    "bbox_volume": 0.15
+  },
+  "object_46": {
+    "id": 45,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.09,
+      0.03
+    ],
+    "bbox_center": [
+      5.88,
+      0.23,
+      1.21
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_47": {
+    "id": 46,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      1.08,
+      1.0,
+      0.38
+    ],
+    "bbox_center": [
+      7.51,
+      2.79,
+      1.54
+    ],
+    "bbox_volume": 0.41
+  },
+  "object_48": {
+    "id": 47,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.6,
+      0.25
+    ],
+    "bbox_center": [
+      5.34,
+      2.05,
+      2.11
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_49": {
+    "id": 48,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.66,
+      0.67,
+      0.54
+    ],
+    "bbox_center": [
+      5.65,
+      1.23,
+      2.25
+    ],
+    "bbox_volume": 0.24
+  },
+  "object_50": {
+    "id": 49,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.48,
+      0.15
+    ],
+    "bbox_center": [
+      5.53,
+      0.11,
+      1.9
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_51": {
+    "id": 50,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.14,
+      0.02
+    ],
+    "bbox_center": [
+      5.68,
+      -0.09,
+      1.29
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_52": {
+    "id": 51,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.36,
+      0.19
+    ],
+    "bbox_center": [
+      5.6,
+      -0.12,
+      1.88
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_53": {
+    "id": 52,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.13,
+      1.05,
+      0.03
+    ],
+    "bbox_center": [
+      8.03,
+      2.44,
+      0.99
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_54": {
+    "id": 53,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.2,
+      1.14,
+      0.02
+    ],
+    "bbox_center": [
+      8.12,
+      0.17,
+      1.4
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_55": {
+    "id": 54,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.29,
+      0.03
+    ],
+    "bbox_center": [
+      7.72,
+      2.72,
+      1.82
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_56": {
+    "id": 55,
+    "object_tag": "doorframe",
+    "object_caption": "",
+    "bbox_extent": [
+      1.63,
+      0.94,
+      0.1
+    ],
+    "bbox_center": [
+      7.86,
+      0.05,
+      0.64
+    ],
+    "bbox_volume": 0.15
+  },
+  "object_57": {
+    "id": 56,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.14,
+      0.01
+    ],
+    "bbox_center": [
+      6.69,
+      -0.29,
+      1.32
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_58": {
+    "id": 57,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.24,
+      0.16,
+      0.12
+    ],
+    "bbox_center": [
+      7.89,
+      2.02,
+      1.77
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_59": {
+    "id": 58,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.19,
+      0.21
+    ],
+    "bbox_center": [
+      5.71,
+      -0.11,
+      1.76
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_60": {
+    "id": 59,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.4,
+      0.26,
+      0.22
+    ],
+    "bbox_center": [
+      8.07,
+      1.79,
+      1.71
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_61": {
+    "id": 60,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.99,
+      0.86,
+      0.45
+    ],
+    "bbox_center": [
+      7.65,
+      2.33,
+      2.07
+    ],
+    "bbox_volume": 0.38
+  },
+  "object_62": {
+    "id": 61,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.96,
+      0.73,
+      0.48
+    ],
+    "bbox_center": [
+      7.91,
+      1.55,
+      2.03
+    ],
+    "bbox_volume": 0.34
+  },
+  "object_63": {
+    "id": 62,
+    "object_tag": "dresser",
+    "object_caption": "",
+    "bbox_extent": [
+      1.85,
+      0.88,
+      0.54
+    ],
+    "bbox_center": [
+      7.72,
+      2.55,
+      2.32
+    ],
+    "bbox_volume": 0.88
+  },
+  "object_64": {
+    "id": 63,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.34,
+      0.2
+    ],
+    "bbox_center": [
+      4.49,
+      2.65,
+      0.86
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_65": {
+    "id": 64,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.66,
+      0.68,
+      0.59
+    ],
+    "bbox_center": [
+      5.79,
+      1.03,
+      1.4
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_66": {
+    "id": 65,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.9,
+      0.79,
+      0.67
+    ],
+    "bbox_center": [
+      5.74,
+      1.76,
+      1.4
+    ],
+    "bbox_volume": 0.48
+  },
+  "object_67": {
+    "id": 66,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.15,
+      1.36,
+      0.04
+    ],
+    "bbox_center": [
+      8.14,
+      -0.36,
+      0.55
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_68": {
+    "id": 67,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.23,
+      0.13
+    ],
+    "bbox_center": [
+      4.44,
+      2.92,
+      0.79
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_69": {
+    "id": 68,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.39,
+      0.03
+    ],
+    "bbox_center": [
+      8.04,
+      2.17,
+      0.95
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_70": {
+    "id": 69,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      1.19,
+      0.03
+    ],
+    "bbox_center": [
+      8.32,
+      1.92,
+      0.1
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_71": {
+    "id": 70,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.26,
+      0.19,
+      0.14
+    ],
+    "bbox_center": [
+      8.15,
+      1.29,
+      0.82
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_72": {
+    "id": 71,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.96,
+      0.74,
+      0.44
+    ],
+    "bbox_center": [
+      8.0,
+      1.86,
+      1.23
+    ],
+    "bbox_volume": 0.31
+  },
+  "object_73": {
+    "id": 72,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      2.12,
+      1.12,
+      0.21
+    ],
+    "bbox_center": [
+      5.91,
+      3.85,
+      0.17
+    ],
+    "bbox_volume": 0.5
+  },
+  "object_74": {
+    "id": 73,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.25,
+      0.16,
+      0.1
+    ],
+    "bbox_center": [
+      8.11,
+      1.51,
+      0.89
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_75": {
+    "id": 74,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.84,
+      0.72,
+      0.44
+    ],
+    "bbox_center": [
+      8.08,
+      1.14,
+      1.19
+    ],
+    "bbox_volume": 0.27
+  },
+  "object_76": {
+    "id": 75,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.52,
+      0.21
+    ],
+    "bbox_center": [
+      5.3,
+      2.29,
+      0.62
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_77": {
+    "id": 76,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.6,
+      0.59
+    ],
+    "bbox_center": [
+      6.21,
+      1.25,
+      1.08
+    ],
+    "bbox_volume": 0.23
+  },
+  "object_78": {
+    "id": 77,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.66,
+      0.61
+    ],
+    "bbox_center": [
+      6.13,
+      0.39,
+      1.12
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_79": {
+    "id": 78,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.72,
+      0.39,
+      0.17
+    ],
+    "bbox_center": [
+      5.22,
+      2.63,
+      0.56
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_80": {
+    "id": 79,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.2,
+      1.08,
+      0.02
+    ],
+    "bbox_center": [
+      7.94,
+      -1.62,
+      0.23
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_81": {
+    "id": 80,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.18,
+      0.14
+    ],
+    "bbox_center": [
+      8.46,
+      -0.07,
+      0.53
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_82": {
+    "id": 81,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.07,
+      1.01,
+      0.03
+    ],
+    "bbox_center": [
+      8.8,
+      0.49,
+      -0.18
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_83": {
+    "id": 82,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.4,
+      0.19,
+      0.02
+    ],
+    "bbox_center": [
+      8.56,
+      0.89,
+      0.66
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_84": {
+    "id": 83,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.89,
+      0.77,
+      0.38
+    ],
+    "bbox_center": [
+      8.42,
+      0.54,
+      1.02
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_85": {
+    "id": 84,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.82,
+      0.9,
+      0.65
+    ],
+    "bbox_center": [
+      8.61,
+      1.27,
+      1.01
+    ],
+    "bbox_volume": 0.48
+  },
+  "object_86": {
+    "id": 85,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.73,
+      0.64,
+      0.62
+    ],
+    "bbox_center": [
+      6.11,
+      1.35,
+      1.17
+    ],
+    "bbox_volume": 0.29
+  },
+  "object_87": {
+    "id": 86,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.65,
+      0.58
+    ],
+    "bbox_center": [
+      6.09,
+      0.5,
+      1.17
+    ],
+    "bbox_volume": 0.24
+  },
+  "object_88": {
+    "id": 88,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.34,
+      0.15
+    ],
+    "bbox_center": [
+      5.27,
+      2.13,
+      0.84
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_89": {
+    "id": 89,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      1.05,
+      0.02
+    ],
+    "bbox_center": [
+      7.97,
+      -1.39,
+      0.31
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_90": {
+    "id": 90,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.3,
+      0.04
+    ],
+    "bbox_center": [
+      8.51,
+      1.12,
+      0.73
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_91": {
+    "id": 91,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.0,
+      0.87,
+      0.03
+    ],
+    "bbox_center": [
+      8.75,
+      0.75,
+      -0.11
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_92": {
+    "id": 92,
+    "object_tag": "cabinet",
+    "object_caption": "",
+    "bbox_extent": [
+      1.04,
+      0.94,
+      0.45
+    ],
+    "bbox_center": [
+      8.4,
+      0.79,
+      1.07
+    ],
+    "bbox_volume": 0.44
+  },
+  "object_93": {
+    "id": 93,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      1.81,
+      2.1,
+      0.14
+    ],
+    "bbox_center": [
+      7.18,
+      3.22,
+      -0.35
+    ],
+    "bbox_volume": 0.53
+  },
+  "object_94": {
+    "id": 94,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.33,
+      0.04
+    ],
+    "bbox_center": [
+      5.59,
+      -0.44,
+      0.81
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_95": {
+    "id": 95,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.19,
+      0.16
+    ],
+    "bbox_center": [
+      8.43,
+      0.19,
+      0.61
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_96": {
+    "id": 96,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.71,
+      0.57,
+      0.43
+    ],
+    "bbox_center": [
+      8.48,
+      1.51,
+      1.06
+    ],
+    "bbox_volume": 0.17
+  },
+  "object_97": {
+    "id": 97,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.86,
+      0.7,
+      0.53
+    ],
+    "bbox_center": [
+      8.39,
+      -0.04,
+      1.06
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_98": {
+    "id": 98,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.13,
+      0.01
+    ],
+    "bbox_center": [
+      6.52,
+      -1.3,
+      0.23
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_99": {
+    "id": 99,
+    "object_tag": "dresser",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.8,
+      0.54
+    ],
+    "bbox_center": [
+      8.47,
+      0.75,
+      1.05
+    ],
+    "bbox_volume": 0.54
+  },
+  "object_100": {
+    "id": 100,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.64,
+      0.52
+    ],
+    "bbox_center": [
+      5.62,
+      1.32,
+      1.07
+    ],
+    "bbox_volume": 0.21
+  },
+  "object_101": {
+    "id": 101,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.24,
+      0.36
+    ],
+    "bbox_center": [
+      4.98,
+      0.13,
+      0.63
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_102": {
+    "id": 102,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.64,
+      0.39
+    ],
+    "bbox_center": [
+      5.27,
+      2.12,
+      0.98
+    ],
+    "bbox_volume": 0.16
+  },
+  "object_103": {
+    "id": 103,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.25,
+      0.12
+    ],
+    "bbox_center": [
+      5.06,
+      0.28,
+      0.78
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_104": {
+    "id": 104,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.3,
+      0.33
+    ],
+    "bbox_center": [
+      5.62,
+      -0.14,
+      0.1
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_105": {
+    "id": 105,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.41,
+      0.1
+    ],
+    "bbox_center": [
+      5.56,
+      0.19,
+      0.72
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_106": {
+    "id": 106,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.21,
+      0.19
+    ],
+    "bbox_center": [
+      5.75,
+      -0.02,
+      0.6
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_107": {
+    "id": 107,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.44,
+      0.16
+    ],
+    "bbox_center": [
+      5.65,
+      -0.09,
+      0.72
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_108": {
+    "id": 108,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.26,
+      0.17,
+      0.15
+    ],
+    "bbox_center": [
+      7.9,
+      1.99,
+      0.54
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_109": {
+    "id": 109,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      1.08,
+      0.02
+    ],
+    "bbox_center": [
+      8.12,
+      0.36,
+      0.23
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_110": {
+    "id": 110,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.06,
+      0.96,
+      0.03
+    ],
+    "bbox_center": [
+      7.95,
+      2.63,
+      -0.18
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_111": {
+    "id": 111,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.13,
+      0.01
+    ],
+    "bbox_center": [
+      6.75,
+      -0.15,
+      0.16
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_112": {
+    "id": 112,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.89,
+      0.79,
+      0.33
+    ],
+    "bbox_center": [
+      7.57,
+      2.51,
+      1.03
+    ],
+    "bbox_volume": 0.23
+  },
+  "object_113": {
+    "id": 113,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.8,
+      0.76,
+      0.53
+    ],
+    "bbox_center": [
+      7.93,
+      1.88,
+      1.0
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_114": {
+    "id": 114,
+    "object_tag": "cabinet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.93,
+      0.77,
+      0.61
+    ],
+    "bbox_center": [
+      7.4,
+      3.28,
+      1.01
+    ],
+    "bbox_volume": 0.44
+  },
+  "object_115": {
+    "id": 115,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.46,
+      0.34
+    ],
+    "bbox_center": [
+      4.98,
+      0.29,
+      0.08
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_116": {
+    "id": 116,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.36,
+      0.16
+    ],
+    "bbox_center": [
+      4.84,
+      0.56,
+      0.76
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_117": {
+    "id": 117,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.09,
+      0.06
+    ],
+    "bbox_center": [
+      4.43,
+      0.35,
+      0.53
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_118": {
+    "id": 118,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      1.1,
+      0.02
+    ],
+    "bbox_center": [
+      7.13,
+      1.67,
+      0.24
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_119": {
+    "id": 119,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      1.18,
+      0.03
+    ],
+    "bbox_center": [
+      6.15,
+      3.73,
+      -0.16
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_120": {
+    "id": 120,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.24,
+      0.17,
+      0.05
+    ],
+    "bbox_center": [
+      4.75,
+      0.16,
+      0.56
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_121": {
+    "id": 121,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.47,
+      0.19
+    ],
+    "bbox_center": [
+      4.98,
+      0.35,
+      0.74
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_122": {
+    "id": 122,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.39,
+      0.03
+    ],
+    "bbox_center": [
+      5.78,
+      3.89,
+      0.68
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_123": {
+    "id": 123,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.31,
+      0.07
+    ],
+    "bbox_center": [
+      4.58,
+      1.7,
+      0.91
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_124": {
+    "id": 124,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.21,
+      0.15
+    ],
+    "bbox_center": [
+      6.33,
+      3.11,
+      0.56
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_125": {
+    "id": 125,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.12,
+      0.01
+    ],
+    "bbox_center": [
+      6.05,
+      0.7,
+      0.18
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_126": {
+    "id": 126,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.19,
+      0.21
+    ],
+    "bbox_center": [
+      5.08,
+      0.46,
+      0.61
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_127": {
+    "id": 127,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.95,
+      0.89,
+      0.57
+    ],
+    "bbox_center": [
+      5.4,
+      4.07,
+      0.96
+    ],
+    "bbox_volume": 0.48
+  },
+  "object_128": {
+    "id": 128,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      3.93,
+      1.72,
+      0.03
+    ],
+    "bbox_center": [
+      6.06,
+      3.02,
+      -1.37
+    ],
+    "bbox_volume": 0.2
+  },
+  "object_129": {
+    "id": 129,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.88,
+      0.93,
+      0.64
+    ],
+    "bbox_center": [
+      6.42,
+      2.98,
+      1.01
+    ],
+    "bbox_volume": 0.52
+  },
+  "object_130": {
+    "id": 130,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      1.11,
+      1.01,
+      0.62
+    ],
+    "bbox_center": [
+      5.95,
+      3.56,
+      1.0
+    ],
+    "bbox_volume": 0.7
+  },
+  "object_131": {
+    "id": 132,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      2.91,
+      2.36,
+      0.1
+    ],
+    "bbox_center": [
+      6.05,
+      0.7,
+      -0.33
+    ],
+    "bbox_volume": 0.69
+  },
+  "object_132": {
+    "id": 133,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.31,
+      0.3
+    ],
+    "bbox_center": [
+      4.63,
+      0.72,
+      -0.04
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_133": {
+    "id": 134,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.34,
+      0.2,
+      0.03
+    ],
+    "bbox_center": [
+      4.42,
+      1.01,
+      0.58
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_134": {
+    "id": 135,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.24,
+      1.26,
+      0.02
+    ],
+    "bbox_center": [
+      6.1,
+      2.82,
+      0.08
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_135": {
+    "id": 136,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      3.38,
+      1.89,
+      0.02
+    ],
+    "bbox_center": [
+      4.99,
+      3.42,
+      -1.54
+    ],
+    "bbox_volume": 0.13
+  },
+  "object_136": {
+    "id": 137,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.25,
+      1.21,
+      0.03
+    ],
+    "bbox_center": [
+      4.4,
+      4.35,
+      -0.33
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_137": {
+    "id": 138,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.45,
+      0.11
+    ],
+    "bbox_center": [
+      4.62,
+      0.79,
+      0.52
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_138": {
+    "id": 139,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      2.63,
+      2.57,
+      0.07
+    ],
+    "bbox_center": [
+      5.44,
+      1.51,
+      -0.2
+    ],
+    "bbox_volume": 0.47
+  },
+  "object_139": {
+    "id": 140,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.2,
+      0.15
+    ],
+    "bbox_center": [
+      4.8,
+      3.84,
+      0.39
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_140": {
+    "id": 141,
+    "object_tag": "closet door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      0.93,
+      0.12
+    ],
+    "bbox_center": [
+      5.86,
+      2.28,
+      0.06
+    ],
+    "bbox_volume": 0.24
+  },
+  "object_141": {
+    "id": 142,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.18,
+      0.13,
+      0.01
+    ],
+    "bbox_center": [
+      5.46,
+      1.5,
+      0.02
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_142": {
+    "id": 143,
+    "object_tag": "container",
+    "object_caption": "",
+    "bbox_extent": [
+      0.21,
+      0.18,
+      0.19
+    ],
+    "bbox_center": [
+      4.65,
+      0.91,
+      0.45
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_143": {
+    "id": 144,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      3.82,
+      3.25,
+      1.26
+    ],
+    "bbox_center": [
+      4.99,
+      3.5,
+      -0.39
+    ],
+    "bbox_volume": 15.64
+  },
+  "object_144": {
+    "id": 145,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.51,
+      0.37,
+      0.03
+    ],
+    "bbox_center": [
+      3.99,
+      4.34,
+      0.52
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_145": {
+    "id": 146,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.92,
+      0.95,
+      0.63
+    ],
+    "bbox_center": [
+      5.0,
+      3.75,
+      0.86
+    ],
+    "bbox_volume": 0.55
+  },
+  "object_146": {
+    "id": 147,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.07,
+      0.01
+    ],
+    "bbox_center": [
+      4.49,
+      0.54,
+      0.42
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_147": {
+    "id": 148,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      1.12,
+      0.99,
+      0.53
+    ],
+    "bbox_center": [
+      4.23,
+      4.06,
+      0.82
+    ],
+    "bbox_volume": 0.59
+  },
+  "object_148": {
+    "id": 149,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.43,
+      0.38
+    ],
+    "bbox_center": [
+      4.39,
+      1.59,
+      1.31
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_149": {
+    "id": 150,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.83,
+      0.48,
+      0.34
+    ],
+    "bbox_center": [
+      4.41,
+      1.64,
+      1.26
+    ],
+    "bbox_volume": 0.14
+  },
+  "object_150": {
+    "id": 151,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.47,
+      0.33
+    ],
+    "bbox_center": [
+      4.65,
+      2.08,
+      0.71
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_151": {
+    "id": 152,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.22,
+      1.19,
+      0.02
+    ],
+    "bbox_center": [
+      4.57,
+      4.64,
+      0.88
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_152": {
+    "id": 153,
+    "object_tag": "closet door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      1.23,
+      0.1
+    ],
+    "bbox_center": [
+      4.69,
+      4.19,
+      0.86
+    ],
+    "bbox_volume": 0.27
+  },
+  "object_153": {
+    "id": 154,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.3,
+      0.21,
+      0.05
+    ],
+    "bbox_center": [
+      4.43,
+      1.37,
+      1.27
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_154": {
+    "id": 155,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.76,
+      0.49,
+      0.16
+    ],
+    "bbox_center": [
+      4.44,
+      2.1,
+      1.36
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_155": {
+    "id": 156,
+    "object_tag": "ottoman",
+    "object_caption": "",
+    "bbox_extent": [
+      0.79,
+      0.43,
+      0.02
+    ],
+    "bbox_center": [
+      4.19,
+      2.37,
+      1.97
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_156": {
+    "id": 157,
+    "object_tag": "coffee kettle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.28,
+      0.21
+    ],
+    "bbox_center": [
+      2.94,
+      4.81,
+      1.21
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_157": {
+    "id": 158,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.24,
+      0.05
+    ],
+    "bbox_center": [
+      3.31,
+      2.48,
+      1.54
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_158": {
+    "id": 159,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.14,
+      0.01
+    ],
+    "bbox_center": [
+      4.84,
+      3.17,
+      0.81
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_159": {
+    "id": 160,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      0.93,
+      0.5,
+      0.03
+    ],
+    "bbox_center": [
+      2.58,
+      4.89,
+      0.48
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_160": {
+    "id": 161,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      3.59,
+      2.21,
+      0.06
+    ],
+    "bbox_center": [
+      4.82,
+      3.18,
+      0.77
+    ],
+    "bbox_volume": 0.48
+  },
+  "object_161": {
+    "id": 162,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.14,
+      0.09
+    ],
+    "bbox_center": [
+      2.93,
+      4.67,
+      1.25
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_162": {
+    "id": 163,
+    "object_tag": "tissue box",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.34,
+      0.13
+    ],
+    "bbox_center": [
+      2.71,
+      4.75,
+      1.29
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_163": {
+    "id": 164,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.87,
+      1.06,
+      0.69
+    ],
+    "bbox_center": [
+      3.64,
+      3.47,
+      1.12
+    ],
+    "bbox_volume": 1.37
+  },
+  "object_164": {
+    "id": 165,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.46,
+      0.38
+    ],
+    "bbox_center": [
+      3.0,
+      3.28,
+      0.99
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_165": {
+    "id": 166,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.77,
+      0.48,
+      0.16
+    ],
+    "bbox_center": [
+      2.49,
+      3.48,
+      0.97
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_166": {
+    "id": 167,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.62,
+      0.23
+    ],
+    "bbox_center": [
+      3.41,
+      3.25,
+      0.96
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_167": {
+    "id": 168,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.25,
+      1.2,
+      0.03
+    ],
+    "bbox_center": [
+      0.15,
+      4.36,
+      0.53
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_168": {
+    "id": 169,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.41,
+      0.25,
+      0.1
+    ],
+    "bbox_center": [
+      4.28,
+      3.25,
+      0.96
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_169": {
+    "id": 170,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.46,
+      0.32
+    ],
+    "bbox_center": [
+      2.56,
+      3.69,
+      0.36
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_170": {
+    "id": 171,
+    "object_tag": "closet door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.31,
+      1.37,
+      0.1
+    ],
+    "bbox_center": [
+      0.64,
+      4.33,
+      0.44
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_171": {
+    "id": 172,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      5.25,
+      2.71,
+      0.07
+    ],
+    "bbox_center": [
+      2.31,
+      4.08,
+      0.2
+    ],
+    "bbox_volume": 1.0
+  },
+  "object_172": {
+    "id": 173,
+    "object_tag": "light switch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.23,
+      0.12,
+      0.06
+    ],
+    "bbox_center": [
+      1.58,
+      4.17,
+      0.12
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_173": {
+    "id": 174,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.21,
+      0.2,
+      0.23
+    ],
+    "bbox_center": [
+      2.41,
+      3.64,
+      0.9
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_174": {
+    "id": 175,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.12,
+      0.01
+    ],
+    "bbox_center": [
+      1.58,
+      4.19,
+      0.46
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_175": {
+    "id": 176,
+    "object_tag": "picture",
+    "object_caption": "",
+    "bbox_extent": [
+      1.97,
+      1.6,
+      0.06
+    ],
+    "bbox_center": [
+      3.94,
+      3.88,
+      0.06
+    ],
+    "bbox_volume": 0.19
+  },
+  "object_176": {
+    "id": 177,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.55,
+      0.3
+    ],
+    "bbox_center": [
+      3.24,
+      4.67,
+      1.42
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_177": {
+    "id": 178,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.45,
+      0.37
+    ],
+    "bbox_center": [
+      1.94,
+      4.1,
+      1.43
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_178": {
+    "id": 179,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.3,
+      1.1,
+      0.64
+    ],
+    "bbox_center": [
+      2.77,
+      4.48,
+      1.63
+    ],
+    "bbox_volume": 1.62
+  },
+  "object_179": {
+    "id": 180,
+    "object_tag": "door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.17,
+      0.41,
+      0.01
+    ],
+    "bbox_center": [
+      -0.76,
+      3.85,
+      1.0
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_180": {
+    "id": 181,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.45,
+      0.26
+    ],
+    "bbox_center": [
+      2.3,
+      4.3,
+      1.4
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_181": {
+    "id": 182,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.64,
+      0.33
+    ],
+    "bbox_center": [
+      3.59,
+      4.8,
+      1.36
+    ],
+    "bbox_volume": 0.14
+  },
+  "object_182": {
+    "id": 183,
+    "object_tag": "closet door",
+    "object_caption": "",
+    "bbox_extent": [
+      2.1,
+      0.6,
+      0.1
+    ],
+    "bbox_center": [
+      -0.42,
+      4.02,
+      0.93
+    ],
+    "bbox_volume": 0.13
+  },
+  "object_183": {
+    "id": 184,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.23,
+      0.19,
+      0.21
+    ],
+    "bbox_center": [
+      1.24,
+      4.13,
+      1.36
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_184": {
+    "id": 185,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.48,
+      0.33
+    ],
+    "bbox_center": [
+      1.35,
+      4.26,
+      0.81
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_185": {
+    "id": 186,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      5.74,
+      3.09,
+      0.08
+    ],
+    "bbox_center": [
+      2.22,
+      4.98,
+      0.32
+    ],
+    "bbox_volume": 1.42
+  },
+  "object_186": {
+    "id": 187,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.75,
+      0.47,
+      0.18
+    ],
+    "bbox_center": [
+      1.39,
+      4.04,
+      1.41
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_187": {
+    "id": 188,
+    "object_tag": "picture",
+    "object_caption": "",
+    "bbox_extent": [
+      1.89,
+      1.26,
+      0.05
+    ],
+    "bbox_center": [
+      2.54,
+      5.11,
+      0.5
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_188": {
+    "id": 189,
+    "object_tag": "light switch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.18,
+      0.12,
+      0.01
+    ],
+    "bbox_center": [
+      0.25,
+      4.24,
+      0.91
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_189": {
+    "id": 190,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.23,
+      0.02,
+      0.0
+    ],
+    "bbox_center": [
+      1.22,
+      4.63,
+      1.16
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_190": {
+    "id": 191,
+    "object_tag": "light switch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.23,
+      0.12,
+      0.06
+    ],
+    "bbox_center": [
+      0.26,
+      4.22,
+      0.57
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_191": {
+    "id": 192,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.47,
+      1.19,
+      0.74
+    ],
+    "bbox_center": [
+      1.05,
+      4.97,
+      1.65
+    ],
+    "bbox_volume": 2.18
+  },
+  "object_192": {
+    "id": 193,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.58,
+      0.53,
+      0.29
+    ],
+    "bbox_center": [
+      1.38,
+      5.32,
+      1.4
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_193": {
+    "id": 194,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.66,
+      0.54,
+      0.22
+    ],
+    "bbox_center": [
+      0.81,
+      4.52,
+      1.39
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_194": {
+    "id": 195,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.31,
+      0.17
+    ],
+    "bbox_center": [
+      3.13,
+      6.05,
+      1.43
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_195": {
+    "id": 196,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.44,
+      0.36
+    ],
+    "bbox_center": [
+      0.56,
+      4.14,
+      1.39
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_196": {
+    "id": 197,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.64,
+      0.3
+    ],
+    "bbox_center": [
+      1.62,
+      5.6,
+      1.34
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_197": {
+    "id": 198,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.31,
+      0.93,
+      0.58
+    ],
+    "bbox_center": [
+      3.06,
+      5.87,
+      1.4
+    ],
+    "bbox_volume": 0.71
+  },
+  "object_198": {
+    "id": 199,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      5.23,
+      1.9,
+      0.08
+    ],
+    "bbox_center": [
+      1.22,
+      4.65,
+      -0.66
+    ],
+    "bbox_volume": 0.79
+  },
+  "object_199": {
+    "id": 200,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.71,
+      0.17,
+      0.01
+    ],
+    "bbox_center": [
+      2.28,
+      4.53,
+      1.6
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_200": {
+    "id": 201,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.48,
+      0.32
+    ],
+    "bbox_center": [
+      -0.02,
+      4.0,
+      0.79
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_201": {
+    "id": 202,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.76,
+      0.48,
+      0.11
+    ],
+    "bbox_center": [
+      0.11,
+      3.83,
+      1.43
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_202": {
+    "id": 203,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.19,
+      0.24
+    ],
+    "bbox_center": [
+      -0.07,
+      3.85,
+      1.33
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_203": {
+    "id": 204,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      2.24,
+      2.12,
+      0.16
+    ],
+    "bbox_center": [
+      3.08,
+      7.31,
+      0.23
+    ],
+    "bbox_volume": 0.76
+  },
+  "object_204": {
+    "id": 205,
+    "object_tag": "wall",
+    "object_caption": "",
+    "bbox_extent": [
+      4.32,
+      2.73,
+      0.78
+    ],
+    "bbox_center": [
+      0.02,
+      4.16,
+      0.11
+    ],
+    "bbox_volume": 9.2
+  },
+  "object_205": {
+    "id": 206,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.13,
+      0.01
+    ],
+    "bbox_center": [
+      -0.95,
+      3.42,
+      0.9
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_206": {
+    "id": 207,
+    "object_tag": "light switch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.22,
+      0.13,
+      0.06
+    ],
+    "bbox_center": [
+      -0.94,
+      3.41,
+      0.56
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_207": {
+    "id": 208,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.48,
+      1.02,
+      0.41
+    ],
+    "bbox_center": [
+      -0.26,
+      3.69,
+      0.79
+    ],
+    "bbox_volume": 1.04
+  },
+  "object_208": {
+    "id": 209,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.39,
+      0.38
+    ],
+    "bbox_center": [
+      -0.14,
+      2.75,
+      0.71
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_209": {
+    "id": 210,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.55,
+      0.3
+    ],
+    "bbox_center": [
+      -0.14,
+      4.13,
+      0.78
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_210": {
+    "id": 211,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      5.13,
+      2.05,
+      0.03
+    ],
+    "bbox_center": [
+      0.56,
+      3.93,
+      -1.31
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_211": {
+    "id": 212,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.08,
+      0.44,
+      0.55
+    ],
+    "bbox_center": [
+      1.69,
+      5.59,
+      0.76
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_212": {
+    "id": 213,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.69,
+      0.53,
+      0.24
+    ],
+    "bbox_center": [
+      -0.19,
+      3.16,
+      0.75
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_213": {
+    "id": 214,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.55,
+      0.28
+    ],
+    "bbox_center": [
+      -0.11,
+      4.52,
+      0.68
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_214": {
+    "id": 215,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.31,
+      0.34,
+      0.17
+    ],
+    "bbox_center": [
+      1.77,
+      5.71,
+      0.81
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_215": {
+    "id": 216,
+    "object_tag": "chair",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      0.94,
+      0.55
+    ],
+    "bbox_center": [
+      0.9,
+      5.6,
+      0.82
+    ],
+    "bbox_volume": 0.66
+  },
+  "object_216": {
+    "id": 217,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.34,
+      0.2
+    ],
+    "bbox_center": [
+      -0.47,
+      2.22,
+      0.21
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_217": {
+    "id": 218,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.3,
+      0.31,
+      0.11
+    ],
+    "bbox_center": [
+      0.96,
+      5.71,
+      0.77
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_218": {
+    "id": 219,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.31,
+      0.09,
+      0.0
+    ],
+    "bbox_center": [
+      -0.92,
+      2.29,
+      0.45
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_219": {
+    "id": 220,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.14,
+      0.1
+    ],
+    "bbox_center": [
+      -0.44,
+      2.1,
+      0.66
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_220": {
+    "id": 221,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.24,
+      2.48,
+      0.49
+    ],
+    "bbox_center": [
+      0.71,
+      6.63,
+      -0.46
+    ],
+    "bbox_volume": 3.94
+  },
+  "object_221": {
+    "id": 222,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.27,
+      0.06
+    ],
+    "bbox_center": [
+      -0.52,
+      2.29,
+      0.75
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_222": {
+    "id": 223,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.75,
+      0.64,
+      0.02
+    ],
+    "bbox_center": [
+      0.33,
+      5.47,
+      1.41
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_223": {
+    "id": 224,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.17,
+      0.84,
+      0.06
+    ],
+    "bbox_center": [
+      -0.61,
+      2.67,
+      1.36
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_224": {
+    "id": 225,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.47,
+      0.29
+    ],
+    "bbox_center": [
+      -0.74,
+      0.91,
+      1.18
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_225": {
+    "id": 226,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.56,
+      1.3,
+      0.44
+    ],
+    "bbox_center": [
+      -1.52,
+      1.5,
+      1.29
+    ],
+    "bbox_volume": 1.46
+  },
+  "object_226": {
+    "id": 227,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.64,
+      0.29
+    ],
+    "bbox_center": [
+      -0.1,
+      4.23,
+      1.14
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_227": {
+    "id": 228,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.69,
+      0.55,
+      0.23
+    ],
+    "bbox_center": [
+      -1.06,
+      1.16,
+      1.2
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_228": {
+    "id": 229,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.53,
+      0.3
+    ],
+    "bbox_center": [
+      -1.85,
+      1.76,
+      1.19
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_229": {
+    "id": 230,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.33,
+      0.17
+    ],
+    "bbox_center": [
+      -2.54,
+      3.53,
+      1.2
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_230": {
+    "id": 231,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.34,
+      0.24
+    ],
+    "bbox_center": [
+      -1.88,
+      4.31,
+      1.24
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_231": {
+    "id": 232,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.23,
+      1.13,
+      0.35
+    ],
+    "bbox_center": [
+      -0.11,
+      4.18,
+      1.25
+    ],
+    "bbox_volume": 0.49
+  },
+  "object_232": {
+    "id": 233,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.45,
+      0.19
+    ],
+    "bbox_center": [
+      -2.09,
+      2.04,
+      1.08
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_233": {
+    "id": 234,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.3,
+      0.14
+    ],
+    "bbox_center": [
+      -1.16,
+      6.03,
+      1.13
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_234": {
+    "id": 235,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.45,
+      0.1
+    ],
+    "bbox_center": [
+      -0.44,
+      2.48,
+      1.33
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_235": {
+    "id": 236,
+    "object_tag": "chair",
+    "object_caption": "",
+    "bbox_extent": [
+      1.29,
+      0.94,
+      0.51
+    ],
+    "bbox_center": [
+      -2.38,
+      3.47,
+      1.24
+    ],
+    "bbox_volume": 0.62
+  },
+  "object_236": {
+    "id": 237,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.98,
+      0.56
+    ],
+    "bbox_center": [
+      -1.76,
+      4.24,
+      1.23
+    ],
+    "bbox_volume": 0.69
+  },
+  "object_237": {
+    "id": 238,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      5.27,
+      1.63,
+      0.04
+    ],
+    "bbox_center": [
+      -0.94,
+      3.02,
+      -0.89
+    ],
+    "bbox_volume": 0.34
+  },
+  "object_238": {
+    "id": 239,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.37,
+      0.22
+    ],
+    "bbox_center": [
+      -0.4,
+      4.28,
+      1.04
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_239": {
+    "id": 240,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.47,
+      0.31
+    ],
+    "bbox_center": [
+      -0.53,
+      4.85,
+      0.55
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_240": {
+    "id": 241,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.82,
+      1.94,
+      0.22
+    ],
+    "bbox_center": [
+      -3.07,
+      4.37,
+      0.04
+    ],
+    "bbox_volume": 1.63
+  },
+  "object_241": {
+    "id": 242,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.4,
+      0.18,
+      0.09
+    ],
+    "bbox_center": [
+      -0.86,
+      4.57,
+      1.23
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_242": {
+    "id": 243,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      1.84,
+      0.77,
+      0.03
+    ],
+    "bbox_center": [
+      -0.67,
+      5.84,
+      0.04
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_243": {
+    "id": 244,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.08,
+      0.65,
+      0.21
+    ],
+    "bbox_center": [
+      -0.91,
+      2.63,
+      0.85
+    ],
+    "bbox_volume": 0.15
+  },
+  "object_244": {
+    "id": 245,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.36,
+      0.9,
+      0.41
+    ],
+    "bbox_center": [
+      -1.54,
+      1.07,
+      1.15
+    ],
+    "bbox_volume": 0.5
+  },
+  "object_245": {
+    "id": 246,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.54,
+      0.3
+    ],
+    "bbox_center": [
+      -2.07,
+      -0.38,
+      0.86
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_246": {
+    "id": 247,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.16,
+      1.14,
+      0.48
+    ],
+    "bbox_center": [
+      -1.61,
+      -0.28,
+      1.0
+    ],
+    "bbox_volume": 1.18
+  },
+  "object_247": {
+    "id": 248,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.3,
+      1.27,
+      0.42
+    ],
+    "bbox_center": [
+      -1.52,
+      2.67,
+      0.9
+    ],
+    "bbox_volume": 1.23
+  },
+  "object_248": {
+    "id": 249,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.57,
+      0.15
+    ],
+    "bbox_center": [
+      -2.21,
+      2.59,
+      0.8
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_249": {
+    "id": 250,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.39,
+      0.21
+    ],
+    "bbox_center": [
+      -2.93,
+      2.83,
+      0.27
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_250": {
+    "id": 251,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.43,
+      0.22
+    ],
+    "bbox_center": [
+      -3.7,
+      1.56,
+      0.9
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_251": {
+    "id": 252,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.63,
+      0.57,
+      0.14
+    ],
+    "bbox_center": [
+      -1.14,
+      -0.34,
+      0.9
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_252": {
+    "id": 253,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.23,
+      0.92,
+      0.51
+    ],
+    "bbox_center": [
+      -3.56,
+      0.6,
+      0.9
+    ],
+    "bbox_volume": 0.58
+  },
+  "object_253": {
+    "id": 254,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.44,
+      0.1
+    ],
+    "bbox_center": [
+      -2.42,
+      -0.27,
+      0.81
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_254": {
+    "id": 255,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      1.0,
+      0.55
+    ],
+    "bbox_center": [
+      -3.52,
+      1.6,
+      0.89
+    ],
+    "bbox_volume": 0.7
+  },
+  "object_255": {
+    "id": 256,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.49,
+      0.07
+    ],
+    "bbox_center": [
+      -1.42,
+      1.07,
+      1.01
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_256": {
+    "id": 257,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.36,
+      0.3,
+      0.32
+    ],
+    "bbox_center": [
+      -0.56,
+      2.89,
+      0.77
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_257": {
+    "id": 258,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.98,
+      0.5,
+      0.39
+    ],
+    "bbox_center": [
+      -0.65,
+      2.36,
+      1.03
+    ],
+    "bbox_volume": 0.19
+  },
+  "object_258": {
+    "id": 259,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.19,
+      0.12
+    ],
+    "bbox_center": [
+      -2.28,
+      -0.34,
+      0.73
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_259": {
+    "id": 260,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.22,
+      0.14,
+      0.09
+    ],
+    "bbox_center": [
+      -2.97,
+      2.38,
+      0.9
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_260": {
+    "id": 261,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.33,
+      0.13
+    ],
+    "bbox_center": [
+      -2.48,
+      2.47,
+      0.77
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_261": {
+    "id": 262,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.09,
+      0.03
+    ],
+    "bbox_center": [
+      -2.53,
+      2.71,
+      0.66
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_262": {
+    "id": 263,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.22,
+      0.95,
+      0.08
+    ],
+    "bbox_center": [
+      -0.75,
+      -0.21,
+      1.06
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_263": {
+    "id": 264,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.0,
+      0.65,
+      0.2
+    ],
+    "bbox_center": [
+      -0.9,
+      1.47,
+      0.92
+    ],
+    "bbox_volume": 0.13
+  },
+  "object_264": {
+    "id": 265,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.72,
+      0.69,
+      0.55
+    ],
+    "bbox_center": [
+      -1.63,
+      0.81,
+      1.16
+    ],
+    "bbox_volume": 0.65
+  },
+  "object_265": {
+    "id": 267,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.37,
+      0.18
+    ],
+    "bbox_center": [
+      -2.22,
+      -1.76,
+      0.92
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_266": {
+    "id": 268,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.37,
+      0.25
+    ],
+    "bbox_center": [
+      -2.73,
+      -0.89,
+      0.93
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_267": {
+    "id": 269,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.39,
+      0.26
+    ],
+    "bbox_center": [
+      -2.79,
+      0.56,
+      0.31
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_268": {
+    "id": 270,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.41,
+      0.12
+    ],
+    "bbox_center": [
+      -0.49,
+      -1.66,
+      0.84
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_269": {
+    "id": 271,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.68,
+      0.3
+    ],
+    "bbox_center": [
+      -0.55,
+      -1.41,
+      1.17
+    ],
+    "bbox_volume": 0.25
+  },
+  "object_270": {
+    "id": 272,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.29,
+      0.99,
+      0.45
+    ],
+    "bbox_center": [
+      -2.09,
+      -1.61,
+      0.93
+    ],
+    "bbox_volume": 0.57
+  },
+  "object_271": {
+    "id": 273,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      1.04,
+      0.54
+    ],
+    "bbox_center": [
+      -2.64,
+      -0.79,
+      0.94
+    ],
+    "bbox_volume": 0.71
+  },
+  "object_272": {
+    "id": 274,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      5.23,
+      2.21,
+      0.04
+    ],
+    "bbox_center": [
+      -1.36,
+      -0.31,
+      -1.19
+    ],
+    "bbox_volume": 0.46
+  },
+  "object_273": {
+    "id": 277,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.44,
+      0.1
+    ],
+    "bbox_center": [
+      -0.72,
+      -1.79,
+      0.84
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_274": {
+    "id": 278,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.38,
+      0.15
+    ],
+    "bbox_center": [
+      -0.55,
+      -0.06,
+      1.0
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_275": {
+    "id": 279,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.66,
+      0.53,
+      0.31
+    ],
+    "bbox_center": [
+      -2.12,
+      0.76,
+      0.83
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_276": {
+    "id": 280,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.26,
+      0.17
+    ],
+    "bbox_center": [
+      -0.67,
+      1.86,
+      0.79
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_277": {
+    "id": 281,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.45,
+      0.19
+    ],
+    "bbox_center": [
+      -1.17,
+      1.61,
+      0.76
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_278": {
+    "id": 282,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.17,
+      0.55,
+      0.28
+    ],
+    "bbox_center": [
+      -2.07,
+      1.03,
+      0.75
+    ],
+    "bbox_volume": 0.18
+  },
+  "object_279": {
+    "id": 283,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.46,
+      0.14
+    ],
+    "bbox_center": [
+      -2.23,
+      0.46,
+      0.85
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_280": {
+    "id": 284,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.35,
+      0.18,
+      0.08
+    ],
+    "bbox_center": [
+      -2.64,
+      0.17,
+      0.93
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_281": {
+    "id": 285,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.95,
+      0.39,
+      0.13
+    ],
+    "bbox_center": [
+      -0.69,
+      1.37,
+      0.98
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_282": {
+    "id": 286,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.84,
+      0.31
+    ],
+    "bbox_center": [
+      -0.26,
+      -1.33,
+      1.36
+    ],
+    "bbox_volume": 0.31
+  },
+  "object_283": {
+    "id": 287,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.92,
+      0.65,
+      0.2
+    ],
+    "bbox_center": [
+      -1.16,
+      0.1,
+      1.29
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_284": {
+    "id": 288,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.43,
+      1.02,
+      0.6
+    ],
+    "bbox_center": [
+      -1.4,
+      -0.55,
+      1.54
+    ],
+    "bbox_volume": 1.49
+  },
+  "object_285": {
+    "id": 289,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.34,
+      0.19
+    ],
+    "bbox_center": [
+      -0.72,
+      -3.39,
+      1.3
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_286": {
+    "id": 290,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.36,
+      0.2
+    ],
+    "bbox_center": [
+      -1.6,
+      -2.9,
+      1.31
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_287": {
+    "id": 291,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.5,
+      0.35
+    ],
+    "bbox_center": [
+      -1.92,
+      -1.14,
+      1.21
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_288": {
+    "id": 292,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.4,
+      0.41,
+      0.19
+    ],
+    "bbox_center": [
+      -3.46,
+      -2.5,
+      1.19
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_289": {
+    "id": 293,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      1.0,
+      0.55
+    ],
+    "bbox_center": [
+      -1.56,
+      -2.77,
+      1.31
+    ],
+    "bbox_volume": 0.69
+  },
+  "object_290": {
+    "id": 294,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.37,
+      0.14
+    ],
+    "bbox_center": [
+      -1.84,
+      -1.46,
+      1.23
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_291": {
+    "id": 295,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.95,
+      0.52
+    ],
+    "bbox_center": [
+      -0.69,
+      -3.24,
+      1.32
+    ],
+    "bbox_volume": 0.62
+  },
+  "object_292": {
+    "id": 296,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.31,
+      0.19
+    ],
+    "bbox_center": [
+      -1.24,
+      0.52,
+      1.19
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_293": {
+    "id": 297,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.25,
+      0.51,
+      0.29
+    ],
+    "bbox_center": [
+      -1.94,
+      -0.87,
+      1.14
+    ],
+    "bbox_volume": 0.18
+  },
+  "object_294": {
+    "id": 298,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      5.0,
+      2.12,
+      0.04
+    ],
+    "bbox_center": [
+      -0.89,
+      -1.14,
+      -0.82
+    ],
+    "bbox_volume": 0.42
+  },
+  "object_295": {
+    "id": 299,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.12,
+      0.08,
+      0.06
+    ],
+    "bbox_center": [
+      -0.05,
+      -1.19,
+      1.38
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_296": {
+    "id": 300,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.46,
+      0.31
+    ],
+    "bbox_center": [
+      -2.4,
+      -1.7,
+      0.63
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_297": {
+    "id": 301,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.18,
+      0.45,
+      0.21
+    ],
+    "bbox_center": [
+      -1.47,
+      0.07,
+      1.14
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_298": {
+    "id": 302,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.94,
+      0.65,
+      0.2
+    ],
+    "bbox_center": [
+      -1.18,
+      0.75,
+      0.6
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_299": {
+    "id": 303,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.45,
+      1.37,
+      0.7
+    ],
+    "bbox_center": [
+      -1.74,
+      0.29,
+      0.75
+    ],
+    "bbox_volume": 2.35
+  },
+  "object_300": {
+    "id": 304,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.52,
+      0.57,
+      0.14
+    ],
+    "bbox_center": [
+      0.05,
+      -2.15,
+      0.56
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_301": {
+    "id": 305,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.38,
+      0.22
+    ],
+    "bbox_center": [
+      -1.59,
+      -2.72,
+      0.62
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_302": {
+    "id": 306,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.46,
+      0.17
+    ],
+    "bbox_center": [
+      -2.11,
+      -0.25,
+      0.54
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_303": {
+    "id": 307,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.98,
+      0.63,
+      0.35
+    ],
+    "bbox_center": [
+      0.18,
+      -1.68,
+      0.9
+    ],
+    "bbox_volume": 0.44
+  },
+  "object_304": {
+    "id": 308,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.38,
+      0.91,
+      0.53
+    ],
+    "bbox_center": [
+      -0.53,
+      -0.81,
+      0.94
+    ],
+    "bbox_volume": 0.67
+  },
+  "object_305": {
+    "id": 309,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.39,
+      0.17
+    ],
+    "bbox_center": [
+      -2.37,
+      -1.96,
+      0.62
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_306": {
+    "id": 310,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.31,
+      0.16
+    ],
+    "bbox_center": [
+      -2.21,
+      -0.59,
+      0.55
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_307": {
+    "id": 311,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.17,
+      0.84,
+      0.52
+    ],
+    "bbox_center": [
+      -2.24,
+      -1.93,
+      0.57
+    ],
+    "bbox_volume": 0.51
+  },
+  "object_308": {
+    "id": 312,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.15,
+      0.07,
+      0.0
+    ],
+    "bbox_center": [
+      -4.02,
+      -1.18,
+      0.52
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_309": {
+    "id": 313,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.29,
+      1.05,
+      0.53
+    ],
+    "bbox_center": [
+      -1.53,
+      -2.59,
+      0.66
+    ],
+    "bbox_volume": 0.72
+  },
+  "object_310": {
+    "id": 314,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.38,
+      0.07
+    ],
+    "bbox_center": [
+      -0.41,
+      -0.69,
+      0.74
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_311": {
+    "id": 315,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.41,
+      0.09
+    ],
+    "bbox_center": [
+      -0.15,
+      -2.37,
+      0.52
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_312": {
+    "id": 316,
+    "object_tag": "purse",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.48,
+      0.37
+    ],
+    "bbox_center": [
+      -0.85,
+      1.31,
+      1.06
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_313": {
+    "id": 317,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.28,
+      0.2
+    ],
+    "bbox_center": [
+      -2.74,
+      -0.66,
+      0.0
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_314": {
+    "id": 318,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      0.98,
+      0.76,
+      0.5
+    ],
+    "bbox_center": [
+      -0.88,
+      0.75,
+      0.85
+    ],
+    "bbox_volume": 0.37
+  },
+  "object_315": {
+    "id": 319,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.28,
+      0.09
+    ],
+    "bbox_center": [
+      -2.59,
+      -0.97,
+      0.64
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_316": {
+    "id": 320,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.11,
+      0.08,
+      0.07
+    ],
+    "bbox_center": [
+      -0.41,
+      -0.78,
+      0.69
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_317": {
+    "id": 321,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.77,
+      0.63,
+      0.21
+    ],
+    "bbox_center": [
+      -0.34,
+      1.3,
+      1.44
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_318": {
+    "id": 322,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.54,
+      0.17
+    ],
+    "bbox_center": [
+      0.52,
+      -1.74,
+      1.44
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_319": {
+    "id": 323,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.31,
+      0.19
+    ],
+    "bbox_center": [
+      -1.19,
+      -2.17,
+      1.47
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_320": {
+    "id": 324,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.32,
+      0.2
+    ],
+    "bbox_center": [
+      -1.87,
+      -1.42,
+      1.49
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_321": {
+    "id": 325,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.45,
+      1.41,
+      0.75
+    ],
+    "bbox_center": [
+      -1.04,
+      0.87,
+      1.59
+    ],
+    "bbox_volume": 2.59
+  },
+  "object_322": {
+    "id": 326,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.6,
+      0.3
+    ],
+    "bbox_center": [
+      -1.5,
+      0.35,
+      1.4
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_323": {
+    "id": 327,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.44,
+      0.33
+    ],
+    "bbox_center": [
+      -2.19,
+      -0.01,
+      0.81
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_324": {
+    "id": 328,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.49,
+      0.65,
+      0.32
+    ],
+    "bbox_center": [
+      0.52,
+      -1.45,
+      1.73
+    ],
+    "bbox_volume": 0.31
+  },
+  "object_325": {
+    "id": 329,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.4,
+      0.85,
+      0.32
+    ],
+    "bbox_center": [
+      0.08,
+      -0.33,
+      1.5
+    ],
+    "bbox_volume": 0.38
+  },
+  "object_326": {
+    "id": 330,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.42,
+      0.11
+    ],
+    "bbox_center": [
+      0.28,
+      -1.95,
+      1.4
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_327": {
+    "id": 331,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.94,
+      0.52
+    ],
+    "bbox_center": [
+      -1.09,
+      -2.02,
+      1.5
+    ],
+    "bbox_volume": 0.62
+  },
+  "object_328": {
+    "id": 332,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.31,
+      0.94,
+      0.61
+    ],
+    "bbox_center": [
+      -1.73,
+      -1.3,
+      1.47
+    ],
+    "bbox_volume": 0.75
+  },
+  "object_329": {
+    "id": 333,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.1,
+      0.02
+    ],
+    "bbox_center": [
+      -1.75,
+      0.21,
+      1.25
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_330": {
+    "id": 334,
+    "object_tag": "ottoman",
+    "object_caption": "",
+    "bbox_extent": [
+      0.99,
+      0.59,
+      0.51
+    ],
+    "bbox_center": [
+      -0.15,
+      1.21,
+      1.66
+    ],
+    "bbox_volume": 0.3
+  },
+  "object_331": {
+    "id": 335,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.25,
+      0.08,
+      0.08
+    ],
+    "bbox_center": [
+      0.15,
+      -0.37,
+      1.58
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_332": {
+    "id": 336,
+    "object_tag": "candle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.17,
+      0.06
+    ],
+    "bbox_center": [
+      -1.58,
+      -1.56,
+      1.54
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_333": {
+    "id": 337,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.37,
+      0.25,
+      0.05
+    ],
+    "bbox_center": [
+      -1.97,
+      -0.33,
+      1.48
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_334": {
+    "id": 338,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.32,
+      0.11
+    ],
+    "bbox_center": [
+      0.23,
+      -0.2,
+      1.57
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_335": {
+    "id": 339,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.35,
+      0.17
+    ],
+    "bbox_center": [
+      -1.58,
+      0.03,
+      1.39
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_336": {
+    "id": 340,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.58,
+      0.29
+    ],
+    "bbox_center": [
+      0.25,
+      -1.47,
+      2.12
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_337": {
+    "id": 341,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.48,
+      1.43,
+      0.35
+    ],
+    "bbox_center": [
+      0.22,
+      -1.46,
+      2.19
+    ],
+    "bbox_volume": 0.74
+  },
+  "object_338": {
+    "id": 342,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.11,
+      1.34,
+      0.48
+    ],
+    "bbox_center": [
+      -0.94,
+      1.31,
+      2.23
+    ],
+    "bbox_volume": 1.36
+  },
+  "object_339": {
+    "id": 343,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.34,
+      0.2
+    ],
+    "bbox_center": [
+      -2.16,
+      -0.6,
+      2.15
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_340": {
+    "id": 344,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.6,
+      0.31
+    ],
+    "bbox_center": [
+      -1.44,
+      1.06,
+      2.09
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_341": {
+    "id": 345,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.31,
+      0.18
+    ],
+    "bbox_center": [
+      -1.63,
+      -1.48,
+      2.15
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_342": {
+    "id": 346,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.45,
+      0.2
+    ],
+    "bbox_center": [
+      -0.1,
+      -1.61,
+      2.02
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_343": {
+    "id": 347,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.92,
+      0.32
+    ],
+    "bbox_center": [
+      -0.12,
+      -0.01,
+      2.21
+    ],
+    "bbox_volume": 0.36
+  },
+  "object_344": {
+    "id": 348,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.74,
+      0.62,
+      0.18
+    ],
+    "bbox_center": [
+      -0.08,
+      1.67,
+      2.13
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_345": {
+    "id": 349,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.39,
+      0.3
+    ],
+    "bbox_center": [
+      -1.61,
+      0.77,
+      2.01
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_346": {
+    "id": 350,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.45,
+      0.32
+    ],
+    "bbox_center": [
+      -2.17,
+      0.83,
+      1.49
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_347": {
+    "id": 351,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.32,
+      1.0,
+      0.53
+    ],
+    "bbox_center": [
+      -2.01,
+      -0.52,
+      2.16
+    ],
+    "bbox_volume": 0.7
+  },
+  "object_348": {
+    "id": 352,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.25,
+      0.93,
+      0.53
+    ],
+    "bbox_center": [
+      -1.51,
+      -1.37,
+      2.19
+    ],
+    "bbox_volume": 0.62
+  },
+  "object_349": {
+    "id": 354,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.4,
+      0.33,
+      0.11
+    ],
+    "bbox_center": [
+      0.14,
+      0.14,
+      2.27
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_350": {
+    "id": 355,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.49,
+      0.22
+    ],
+    "bbox_center": [
+      1.0,
+      -1.89,
+      1.26
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_351": {
+    "id": 356,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.72,
+      0.63,
+      0.19
+    ],
+    "bbox_center": [
+      -0.36,
+      0.95,
+      1.29
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_352": {
+    "id": 357,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.09,
+      0.86,
+      0.33
+    ],
+    "bbox_center": [
+      0.1,
+      -0.66,
+      1.42
+    ],
+    "bbox_volume": 0.31
+  },
+  "object_353": {
+    "id": 358,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.44,
+      0.18
+    ],
+    "bbox_center": [
+      0.76,
+      -2.15,
+      1.19
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_354": {
+    "id": 359,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.33,
+      0.19
+    ],
+    "bbox_center": [
+      -0.73,
+      -2.56,
+      1.33
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_355": {
+    "id": 360,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.21,
+      1.29,
+      0.48
+    ],
+    "bbox_center": [
+      -1.03,
+      0.32,
+      1.39
+    ],
+    "bbox_volume": 1.37
+  },
+  "object_356": {
+    "id": 361,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.62,
+      0.33
+    ],
+    "bbox_center": [
+      -1.43,
+      -0.12,
+      1.25
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_357": {
+    "id": 362,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.37,
+      0.19
+    ],
+    "bbox_center": [
+      -1.49,
+      -1.9,
+      1.32
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_358": {
+    "id": 363,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.58,
+      0.45,
+      0.24
+    ],
+    "bbox_center": [
+      -1.48,
+      -0.4,
+      1.2
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_359": {
+    "id": 364,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.87,
+      0.57
+    ],
+    "bbox_center": [
+      -1.4,
+      -1.8,
+      1.3
+    ],
+    "bbox_volume": 0.6
+  },
+  "object_360": {
+    "id": 365,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.85,
+      0.54,
+      0.19
+    ],
+    "bbox_center": [
+      0.62,
+      -1.87,
+      1.52
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_361": {
+    "id": 366,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.28,
+      0.99,
+      0.54
+    ],
+    "bbox_center": [
+      -0.64,
+      -2.41,
+      1.36
+    ],
+    "bbox_volume": 0.68
+  },
+  "object_362": {
+    "id": 367,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.45,
+      0.31
+    ],
+    "bbox_center": [
+      -2.02,
+      -0.58,
+      0.66
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_363": {
+    "id": 368,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.24,
+      0.08,
+      0.09
+    ],
+    "bbox_center": [
+      0.31,
+      -0.56,
+      1.44
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_364": {
+    "id": 369,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.7,
+      0.62,
+      0.1
+    ],
+    "bbox_center": [
+      -3.09,
+      -0.9,
+      1.05
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_365": {
+    "id": 370,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.36,
+      0.12
+    ],
+    "bbox_center": [
+      -1.79,
+      -0.82,
+      1.34
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_366": {
+    "id": 371,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.63,
+      0.35
+    ],
+    "bbox_center": [
+      -0.59,
+      1.08,
+      0.48
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_367": {
+    "id": 372,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.48,
+      0.22
+    ],
+    "bbox_center": [
+      1.24,
+      -1.3,
+      0.5
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_368": {
+    "id": 373,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.58,
+      0.91,
+      0.5
+    ],
+    "bbox_center": [
+      -0.21,
+      1.05,
+      0.76
+    ],
+    "bbox_volume": 0.72
+  },
+  "object_369": {
+    "id": 374,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.34,
+      0.18
+    ],
+    "bbox_center": [
+      -0.56,
+      -1.47,
+      0.56
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_370": {
+    "id": 375,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.37,
+      0.25,
+      0.17
+    ],
+    "bbox_center": [
+      -1.04,
+      -0.76,
+      0.58
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_371": {
+    "id": 376,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.36,
+      0.25
+    ],
+    "bbox_center": [
+      -1.23,
+      0.79,
+      -0.06
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_372": {
+    "id": 377,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.91,
+      0.66,
+      0.34
+    ],
+    "bbox_center": [
+      0.95,
+      -1.18,
+      0.77
+    ],
+    "bbox_volume": 0.2
+  },
+  "object_373": {
+    "id": 378,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.45,
+      0.14
+    ],
+    "bbox_center": [
+      0.96,
+      -1.47,
+      0.42
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_374": {
+    "id": 379,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.81,
+      0.58,
+      0.21
+    ],
+    "bbox_center": [
+      0.64,
+      -0.1,
+      0.62
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_375": {
+    "id": 380,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.95,
+      0.53
+    ],
+    "bbox_center": [
+      -0.46,
+      -1.35,
+      0.58
+    ],
+    "bbox_volume": 0.63
+  },
+  "object_376": {
+    "id": 381,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.28,
+      0.22
+    ],
+    "bbox_center": [
+      -0.68,
+      0.77,
+      0.47
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_377": {
+    "id": 382,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.28,
+      1.06,
+      0.54
+    ],
+    "bbox_center": [
+      -0.99,
+      -0.51,
+      0.56
+    ],
+    "bbox_volume": 0.73
+  },
+  "object_378": {
+    "id": 383,
+    "object_tag": "bottle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.08,
+      0.07,
+      0.04
+    ],
+    "bbox_center": [
+      1.04,
+      0.19,
+      0.62
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_379": {
+    "id": 384,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.31,
+      0.18,
+      0.03
+    ],
+    "bbox_center": [
+      -1.09,
+      0.45,
+      0.55
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_380": {
+    "id": 385,
+    "object_tag": "candle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.81,
+      0.2,
+      0.21
+    ],
+    "bbox_center": [
+      0.77,
+      0.23,
+      0.62
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_381": {
+    "id": 386,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.33,
+      0.22,
+      0.05
+    ],
+    "bbox_center": [
+      -1.09,
+      0.44,
+      0.56
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_382": {
+    "id": 387,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.48,
+      0.21
+    ],
+    "bbox_center": [
+      -0.31,
+      1.45,
+      0.49
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_383": {
+    "id": 388,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.51,
+      0.29
+    ],
+    "bbox_center": [
+      1.59,
+      -0.63,
+      0.89
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_384": {
+    "id": 389,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.32,
+      0.18
+    ],
+    "bbox_center": [
+      -0.16,
+      0.03,
+      0.93
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_385": {
+    "id": 390,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.46,
+      0.16
+    ],
+    "bbox_center": [
+      1.25,
+      -0.62,
+      0.79
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_386": {
+    "id": 391,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.31,
+      0.19
+    ],
+    "bbox_center": [
+      -0.33,
+      1.04,
+      0.94
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_387": {
+    "id": 392,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.79,
+      0.59,
+      0.26
+    ],
+    "bbox_center": [
+      1.45,
+      0.82,
+      0.99
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_388": {
+    "id": 393,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.67,
+      0.39,
+      0.39
+    ],
+    "bbox_center": [
+      0.67,
+      2.15,
+      0.76
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_389": {
+    "id": 394,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.82,
+      0.58,
+      0.24
+    ],
+    "bbox_center": [
+      1.33,
+      -0.33,
+      1.13
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_390": {
+    "id": 395,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.25,
+      0.2
+    ],
+    "bbox_center": [
+      0.85,
+      2.25,
+      0.84
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_391": {
+    "id": 396,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.91,
+      0.56
+    ],
+    "bbox_center": [
+      -0.14,
+      1.05,
+      0.92
+    ],
+    "bbox_volume": 0.63
+  },
+  "object_392": {
+    "id": 397,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.92,
+      0.54
+    ],
+    "bbox_center": [
+      -0.01,
+      0.1,
+      0.95
+    ],
+    "bbox_volume": 0.63
+  },
+  "object_393": {
+    "id": 398,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.84,
+      0.64,
+      0.29
+    ],
+    "bbox_center": [
+      0.93,
+      1.97,
+      1.22
+    ],
+    "bbox_volume": 0.16
+  },
+  "object_394": {
+    "id": 399,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.58,
+      0.44,
+      0.22
+    ],
+    "bbox_center": [
+      1.13,
+      -0.11,
+      1.88
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_395": {
+    "id": 400,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.26,
+      0.19
+    ],
+    "bbox_center": [
+      -0.12,
+      2.09,
+      1.97
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_396": {
+    "id": 401,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.3,
+      0.15
+    ],
+    "bbox_center": [
+      -0.26,
+      1.07,
+      1.95
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_397": {
+    "id": 402,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.03,
+      0.46,
+      0.22
+    ],
+    "bbox_center": [
+      1.03,
+      -0.42,
+      1.81
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_398": {
+    "id": 403,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.96,
+      0.55
+    ],
+    "bbox_center": [
+      0.07,
+      2.03,
+      1.96
+    ],
+    "bbox_volume": 0.67
+  },
+  "object_399": {
+    "id": 404,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.81,
+      0.53
+    ],
+    "bbox_center": [
+      -0.14,
+      1.06,
+      1.97
+    ],
+    "bbox_volume": 0.52
+  },
+  "object_400": {
+    "id": 405,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.17,
+      0.15,
+      0.01
+    ],
+    "bbox_center": [
+      -0.09,
+      3.91,
+      2.1
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_401": {
+    "id": 406,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.2,
+      0.02,
+      0.02
+    ],
+    "bbox_center": [
+      -0.7,
+      -0.46,
+      2.57
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_402": {
+    "id": 407,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.49,
+      0.2
+    ],
+    "bbox_center": [
+      1.15,
+      2.54,
+      2.13
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_403": {
+    "id": 408,
+    "object_tag": "tv",
+    "object_caption": "",
+    "bbox_extent": [
+      1.63,
+      0.94,
+      0.07
+    ],
+    "bbox_center": [
+      0.94,
+      -0.78,
+      1.18
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_404": {
+    "id": 409,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.41,
+      0.38,
+      0.07
+    ],
+    "bbox_center": [
+      0.73,
+      2.84,
+      1.97
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_405": {
+    "id": 410,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.36,
+      0.13
+    ],
+    "bbox_center": [
+      0.81,
+      0.02,
+      1.89
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_406": {
+    "id": 411,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.2,
+      0.04
+    ],
+    "bbox_center": [
+      0.68,
+      2.83,
+      1.97
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_407": {
+    "id": 412,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.47,
+      0.31
+    ],
+    "bbox_center": [
+      0.82,
+      -0.09,
+      1.86
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_408": {
+    "id": 413,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.88,
+      2.02,
+      0.18
+    ],
+    "bbox_center": [
+      -1.16,
+      1.53,
+      0.76
+    ],
+    "bbox_volume": 1.41
+  },
+  "object_409": {
+    "id": 414,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.15,
+      0.16,
+      0.03
+    ],
+    "bbox_center": [
+      0.03,
+      3.87,
+      2.11
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_410": {
+    "id": 415,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.32,
+      0.15,
+      0.1
+    ],
+    "bbox_center": [
+      -0.07,
+      3.93,
+      1.69
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_411": {
+    "id": 416,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.16,
+      0.14,
+      0.01
+    ],
+    "bbox_center": [
+      -0.23,
+      3.93,
+      2.1
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_412": {
+    "id": 417,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.81,
+      1.07,
+      0.33
+    ],
+    "bbox_center": [
+      0.73,
+      1.31,
+      2.2
+    ],
+    "bbox_volume": 0.64
+  },
+  "object_413": {
+    "id": 418,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.3,
+      0.21
+    ],
+    "bbox_center": [
+      1.53,
+      3.82,
+      2.27
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_414": {
+    "id": 419,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.54,
+      0.29
+    ],
+    "bbox_center": [
+      0.87,
+      1.34,
+      2.22
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_415": {
+    "id": 420,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.3,
+      0.19
+    ],
+    "bbox_center": [
+      0.72,
+      3.24,
+      2.24
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_416": {
+    "id": 421,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.5,
+      0.35
+    ],
+    "bbox_center": [
+      0.65,
+      1.67,
+      2.18
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_417": {
+    "id": 422,
+    "object_tag": "chair",
+    "object_caption": "",
+    "bbox_extent": [
+      1.25,
+      0.85,
+      0.53
+    ],
+    "bbox_center": [
+      0.83,
+      3.13,
+      2.26
+    ],
+    "bbox_volume": 0.56
+  },
+  "object_418": {
+    "id": 423,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.89,
+      0.54
+    ],
+    "bbox_center": [
+      1.65,
+      3.69,
+      2.24
+    ],
+    "bbox_volume": 0.6
+  },
+  "object_419": {
+    "id": 424,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.4,
+      0.22
+    ],
+    "bbox_center": [
+      0.83,
+      0.61,
+      1.83
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_420": {
+    "id": 425,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.68,
+      0.55,
+      0.26
+    ],
+    "bbox_center": [
+      -0.08,
+      1.62,
+      1.85
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_421": {
+    "id": 426,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.55,
+      0.26
+    ],
+    "bbox_center": [
+      0.59,
+      0.84,
+      1.88
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_422": {
+    "id": 427,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.18,
+      1.39,
+      0.43
+    ],
+    "bbox_center": [
+      0.16,
+      1.39,
+      1.99
+    ],
+    "bbox_volume": 1.3
+  },
+  "object_423": {
+    "id": 428,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.29,
+      0.21
+    ],
+    "bbox_center": [
+      0.41,
+      4.17,
+      1.93
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_424": {
+    "id": 429,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.3,
+      0.2
+    ],
+    "bbox_center": [
+      -0.37,
+      3.53,
+      1.92
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_425": {
+    "id": 430,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.5,
+      0.25
+    ],
+    "bbox_center": [
+      -0.27,
+      1.97,
+      1.81
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_426": {
+    "id": 431,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.08,
+      0.85,
+      0.13
+    ],
+    "bbox_center": [
+      1.19,
+      2.25,
+      2.05
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_427": {
+    "id": 432,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.26,
+      0.14
+    ],
+    "bbox_center": [
+      1.79,
+      3.8,
+      1.87
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_428": {
+    "id": 433,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      0.96,
+      0.55
+    ],
+    "bbox_center": [
+      0.54,
+      4.05,
+      1.94
+    ],
+    "bbox_volume": 0.67
+  },
+  "object_429": {
+    "id": 434,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.84,
+      0.51
+    ],
+    "bbox_center": [
+      -0.24,
+      3.44,
+      1.93
+    ],
+    "bbox_volume": 0.53
+  },
+  "object_430": {
+    "id": 435,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.23,
+      0.05
+    ],
+    "bbox_center": [
+      1.49,
+      4.2,
+      1.93
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_431": {
+    "id": 436,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.79,
+      0.67,
+      0.28
+    ],
+    "bbox_center": [
+      1.86,
+      3.53,
+      2.15
+    ],
+    "bbox_volume": 0.15
+  },
+  "object_432": {
+    "id": 437,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.95,
+      1.87,
+      0.12
+    ],
+    "bbox_center": [
+      -0.75,
+      4.47,
+      0.88
+    ],
+    "bbox_volume": 0.89
+  },
+  "object_433": {
+    "id": 438,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.19,
+      0.16,
+      0.15
+    ],
+    "bbox_center": [
+      1.55,
+      2.03,
+      1.86
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_434": {
+    "id": 439,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.72,
+      1.19,
+      0.45
+    ],
+    "bbox_center": [
+      -0.19,
+      1.34,
+      1.82
+    ],
+    "bbox_volume": 0.92
+  },
+  "object_435": {
+    "id": 440,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.55,
+      0.28
+    ],
+    "bbox_center": [
+      -0.36,
+      1.4,
+      1.68
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_436": {
+    "id": 441,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.56,
+      0.31
+    ],
+    "bbox_center": [
+      1.57,
+      3.75,
+      1.65
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_437": {
+    "id": 442,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.29,
+      0.21
+    ],
+    "bbox_center": [
+      -0.24,
+      3.97,
+      1.72
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_438": {
+    "id": 443,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.0,
+      0.94,
+      0.34
+    ],
+    "bbox_center": [
+      1.57,
+      3.72,
+      1.69
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_439": {
+    "id": 444,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.64,
+      0.31
+    ],
+    "bbox_center": [
+      -0.62,
+      1.67,
+      1.62
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_440": {
+    "id": 445,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.3,
+      0.16
+    ],
+    "bbox_center": [
+      -0.91,
+      3.21,
+      1.71
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_441": {
+    "id": 446,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.98,
+      0.79,
+      0.1
+    ],
+    "bbox_center": [
+      0.76,
+      2.24,
+      1.85
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_442": {
+    "id": 447,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.4,
+      0.32
+    ],
+    "bbox_center": [
+      1.26,
+      3.85,
+      1.59
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_443": {
+    "id": 448,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.86,
+      0.54
+    ],
+    "bbox_center": [
+      -0.77,
+      3.13,
+      1.71
+    ],
+    "bbox_volume": 0.56
+  },
+  "object_444": {
+    "id": 449,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.83,
+      0.54
+    ],
+    "bbox_center": [
+      -0.11,
+      3.86,
+      1.7
+    ],
+    "bbox_volume": 0.54
+  },
+  "object_445": {
+    "id": 450,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.32,
+      0.19,
+      0.04
+    ],
+    "bbox_center": [
+      0.98,
+      4.4,
+      1.64
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_446": {
+    "id": 451,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.48,
+      0.29
+    ],
+    "bbox_center": [
+      1.17,
+      4.38,
+      1.03
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_447": {
+    "id": 452,
+    "object_tag": "power outlet",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.15,
+      0.03
+    ],
+    "bbox_center": [
+      0.79,
+      5.49,
+      1.86
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_448": {
+    "id": 453,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.05,
+      0.01
+    ],
+    "bbox_center": [
+      0.72,
+      5.55,
+      1.65
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_449": {
+    "id": 454,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.22,
+      0.02
+    ],
+    "bbox_center": [
+      1.13,
+      4.48,
+      1.65
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_450": {
+    "id": 455,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.14,
+      0.05
+    ],
+    "bbox_center": [
+      0.81,
+      4.11,
+      1.72
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_451": {
+    "id": 456,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.33,
+      0.19,
+      0.09
+    ],
+    "bbox_center": [
+      0.27,
+      0.83,
+      1.76
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_452": {
+    "id": 457,
+    "object_tag": "bottle",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.23,
+      0.19
+    ],
+    "bbox_center": [
+      1.04,
+      2.03,
+      1.76
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_453": {
+    "id": 458,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.27,
+      0.16
+    ],
+    "bbox_center": [
+      1.07,
+      0.22,
+      1.69
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_454": {
+    "id": 459,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.31,
+      0.22
+    ],
+    "bbox_center": [
+      0.21,
+      2.52,
+      1.78
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_455": {
+    "id": 461,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.32,
+      0.26
+    ],
+    "bbox_center": [
+      1.94,
+      3.03,
+      1.63
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_456": {
+    "id": 462,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.48,
+      0.29
+    ],
+    "bbox_center": [
+      0.76,
+      0.26,
+      1.7
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_457": {
+    "id": 463,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.37,
+      0.2,
+      0.04
+    ],
+    "bbox_center": [
+      1.16,
+      3.39,
+      1.7
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_458": {
+    "id": 464,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.4,
+      0.12
+    ],
+    "bbox_center": [
+      1.86,
+      3.26,
+      1.56
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_459": {
+    "id": 465,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.67,
+      1.3,
+      0.44
+    ],
+    "bbox_center": [
+      0.68,
+      0.55,
+      2.02
+    ],
+    "bbox_volume": 0.38
+  },
+  "object_460": {
+    "id": 466,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.34,
+      0.2,
+      0.04
+    ],
+    "bbox_center": [
+      1.13,
+      3.1,
+      1.77
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_461": {
+    "id": 467,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.19,
+      0.8,
+      0.55
+    ],
+    "bbox_center": [
+      0.38,
+      2.47,
+      1.76
+    ],
+    "bbox_volume": 0.52
+  },
+  "object_462": {
+    "id": 468,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.28,
+      1.02,
+      0.54
+    ],
+    "bbox_center": [
+      0.05,
+      1.55,
+      1.79
+    ],
+    "bbox_volume": 0.71
+  },
+  "object_463": {
+    "id": 469,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.48,
+      0.32
+    ],
+    "bbox_center": [
+      1.33,
+      3.45,
+      1.1
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_464": {
+    "id": 470,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.34,
+      0.03
+    ],
+    "bbox_center": [
+      1.29,
+      3.47,
+      1.71
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_465": {
+    "id": 471,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.52,
+      0.41,
+      0.32
+    ],
+    "bbox_center": [
+      1.67,
+      3.0,
+      1.66
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_466": {
+    "id": 472,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.3,
+      0.03
+    ],
+    "bbox_center": [
+      0.56,
+      4.32,
+      1.83
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_467": {
+    "id": 473,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.36,
+      0.27,
+      0.16
+    ],
+    "bbox_center": [
+      0.71,
+      0.84,
+      2.01
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_468": {
+    "id": 474,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.29,
+      0.21
+    ],
+    "bbox_center": [
+      0.63,
+      3.31,
+      2.16
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_469": {
+    "id": 475,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.55,
+      0.34
+    ],
+    "bbox_center": [
+      0.45,
+      0.99,
+      2.08
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_470": {
+    "id": 476,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.31,
+      0.16
+    ],
+    "bbox_center": [
+      0.04,
+      2.5,
+      2.14
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_471": {
+    "id": 477,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.47,
+      0.21
+    ],
+    "bbox_center": [
+      0.53,
+      1.23,
+      2.23
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_472": {
+    "id": 478,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.47,
+      0.32
+    ],
+    "bbox_center": [
+      1.98,
+      3.88,
+      1.48
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_473": {
+    "id": 479,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.92,
+      0.55
+    ],
+    "bbox_center": [
+      0.79,
+      3.23,
+      2.15
+    ],
+    "bbox_volume": 0.63
+  },
+  "object_474": {
+    "id": 480,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.27,
+      0.88,
+      0.55
+    ],
+    "bbox_center": [
+      0.16,
+      2.45,
+      2.16
+    ],
+    "bbox_volume": 0.61
+  },
+  "object_475": {
+    "id": 481,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.32,
+      0.23,
+      0.1
+    ],
+    "bbox_center": [
+      1.79,
+      3.85,
+      2.1
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_476": {
+    "id": 482,
+    "object_tag": "ceiling",
+    "object_caption": "",
+    "bbox_extent": [
+      4.61,
+      1.59,
+      0.03
+    ],
+    "bbox_center": [
+      0.81,
+      2.74,
+      0.03
+    ],
+    "bbox_volume": 0.22
+  },
+  "object_477": {
+    "id": 483,
+    "object_tag": "basket",
+    "object_caption": "",
+    "bbox_extent": [
+      0.36,
+      0.23,
+      0.06
+    ],
+    "bbox_center": [
+      1.67,
+      3.63,
+      2.14
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_478": {
+    "id": 484,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.25,
+      0.22,
+      0.02
+    ],
+    "bbox_center": [
+      1.86,
+      3.98,
+      2.09
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_479": {
+    "id": 485,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.86,
+      2.03,
+      0.14
+    ],
+    "bbox_center": [
+      -0.55,
+      3.33,
+      0.97
+    ],
+    "bbox_volume": 1.1
+  },
+  "object_480": {
+    "id": 486,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.61,
+      0.32
+    ],
+    "bbox_center": [
+      2.07,
+      3.81,
+      2.17
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_481": {
+    "id": 487,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.03,
+      1.1,
+      0.47
+    ],
+    "bbox_center": [
+      0.02,
+      1.61,
+      2.34
+    ],
+    "bbox_volume": 1.05
+  },
+  "object_482": {
+    "id": 488,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.49,
+      0.21
+    ],
+    "bbox_center": [
+      0.35,
+      1.07,
+      2.22
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_483": {
+    "id": 489,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.57,
+      0.29
+    ],
+    "bbox_center": [
+      -0.26,
+      1.86,
+      2.2
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_484": {
+    "id": 490,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.55,
+      0.33
+    ],
+    "bbox_center": [
+      -0.49,
+      2.18,
+      2.16
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_485": {
+    "id": 491,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.28,
+      0.21
+    ],
+    "bbox_center": [
+      0.32,
+      4.35,
+      2.25
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_486": {
+    "id": 492,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.31,
+      0.17
+    ],
+    "bbox_center": [
+      -0.47,
+      3.73,
+      2.24
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_487": {
+    "id": 493,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.16,
+      1.04,
+      0.34
+    ],
+    "bbox_center": [
+      2.02,
+      3.78,
+      2.24
+    ],
+    "bbox_volume": 0.41
+  },
+  "object_488": {
+    "id": 494,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.89,
+      0.44
+    ],
+    "bbox_center": [
+      1.17,
+      2.37,
+      2.39
+    ],
+    "bbox_volume": 0.47
+  },
+  "object_489": {
+    "id": 495,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.36,
+      0.2,
+      0.11
+    ],
+    "bbox_center": [
+      1.61,
+      4.53,
+      2.2
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_490": {
+    "id": 496,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.85,
+      0.51
+    ],
+    "bbox_center": [
+      -0.35,
+      3.65,
+      2.24
+    ],
+    "bbox_volume": 0.54
+  },
+  "object_491": {
+    "id": 497,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.24,
+      0.88,
+      0.54
+    ],
+    "bbox_center": [
+      0.45,
+      4.23,
+      2.23
+    ],
+    "bbox_volume": 0.59
+  },
+  "object_492": {
+    "id": 498,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.48,
+      0.32
+    ],
+    "bbox_center": [
+      1.79,
+      4.52,
+      1.57
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_493": {
+    "id": 499,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.29,
+      0.02
+    ],
+    "bbox_center": [
+      1.76,
+      4.54,
+      2.18
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_494": {
+    "id": 500,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.4,
+      0.36
+    ],
+    "bbox_center": [
+      1.79,
+      3.97,
+      2.12
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_495": {
+    "id": 501,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.29,
+      0.25
+    ],
+    "bbox_center": [
+      1.34,
+      2.17,
+      2.33
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_496": {
+    "id": 502,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.15,
+      0.1,
+      0.02
+    ],
+    "bbox_center": [
+      0.58,
+      0.93,
+      2.28
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_497": {
+    "id": 503,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.57,
+      0.3
+    ],
+    "bbox_center": [
+      -0.97,
+      0.4,
+      2.04
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_498": {
+    "id": 504,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.37,
+      1.27,
+      0.51
+    ],
+    "bbox_center": [
+      -0.45,
+      0.35,
+      2.22
+    ],
+    "bbox_volume": 1.54
+  },
+  "object_499": {
+    "id": 505,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.54,
+      0.21
+    ],
+    "bbox_center": [
+      0.01,
+      0.12,
+      2.04
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_500": {
+    "id": 506,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.58,
+      0.6,
+      0.19
+    ],
+    "bbox_center": [
+      1.15,
+      2.76,
+      2.02
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_501": {
+    "id": 507,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.25,
+      1.35,
+      0.41
+    ],
+    "bbox_center": [
+      0.39,
+      3.13,
+      2.13
+    ],
+    "bbox_volume": 1.25
+  },
+  "object_502": {
+    "id": 508,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.28,
+      0.19
+    ],
+    "bbox_center": [
+      -1.96,
+      2.75,
+      2.08
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_503": {
+    "id": 509,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.29,
+      0.17
+    ],
+    "bbox_center": [
+      -2.24,
+      1.78,
+      2.07
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_504": {
+    "id": 510,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.51,
+      0.31
+    ],
+    "bbox_center": [
+      -1.34,
+      0.53,
+      1.98
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_505": {
+    "id": 511,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.57,
+      0.67,
+      0.31
+    ],
+    "bbox_center": [
+      -0.27,
+      3.35,
+      1.99
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_506": {
+    "id": 512,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.41,
+      0.83,
+      0.59
+    ],
+    "bbox_center": [
+      -0.03,
+      1.64,
+      2.22
+    ],
+    "bbox_volume": 0.69
+  },
+  "object_507": {
+    "id": 513,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.48,
+      0.31
+    ],
+    "bbox_center": [
+      -0.87,
+      3.74,
+      1.4
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_508": {
+    "id": 514,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.28,
+      0.09
+    ],
+    "bbox_center": [
+      0.36,
+      0.15,
+      2.08
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_509": {
+    "id": 515,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.26,
+      0.88,
+      0.52
+    ],
+    "bbox_center": [
+      -2.1,
+      1.78,
+      2.08
+    ],
+    "bbox_volume": 0.58
+  },
+  "object_510": {
+    "id": 516,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.22,
+      0.89,
+      0.53
+    ],
+    "bbox_center": [
+      -1.8,
+      2.72,
+      2.07
+    ],
+    "bbox_volume": 0.58
+  },
+  "object_511": {
+    "id": 517,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.39,
+      0.05
+    ],
+    "bbox_center": [
+      0.14,
+      1.59,
+      2.2
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_512": {
+    "id": 518,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.63,
+      0.4,
+      0.34
+    ],
+    "bbox_center": [
+      -0.58,
+      3.31,
+      1.94
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_513": {
+    "id": 519,
+    "object_tag": "blackboard",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.91,
+      0.07
+    ],
+    "bbox_center": [
+      -1.2,
+      -0.22,
+      1.44
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_514": {
+    "id": 520,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      2.39,
+      1.03,
+      0.05
+    ],
+    "bbox_center": [
+      -0.58,
+      4.36,
+      1.38
+    ],
+    "bbox_volume": 0.12
+  },
+  "object_515": {
+    "id": 521,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.4,
+      0.89,
+      0.62
+    ],
+    "bbox_center": [
+      -1.07,
+      1.76,
+      2.07
+    ],
+    "bbox_volume": 0.77
+  },
+  "object_516": {
+    "id": 522,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.27,
+      1.05,
+      0.66
+    ],
+    "bbox_center": [
+      -0.59,
+      3.17,
+      1.94
+    ],
+    "bbox_volume": 1.57
+  },
+  "object_517": {
+    "id": 523,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.37,
+      1.33,
+      0.68
+    ],
+    "bbox_center": [
+      -1.47,
+      0.33,
+      2.0
+    ],
+    "bbox_volume": 2.14
+  },
+  "object_518": {
+    "id": 524,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.81,
+      0.63,
+      0.21
+    ],
+    "bbox_center": [
+      0.1,
+      2.96,
+      1.79
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_519": {
+    "id": 525,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.28,
+      0.2
+    ],
+    "bbox_center": [
+      -3.01,
+      2.82,
+      1.82
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_520": {
+    "id": 526,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.55,
+      0.55,
+      0.31
+    ],
+    "bbox_center": [
+      -1.96,
+      0.49,
+      1.79
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_521": {
+    "id": 527,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.64,
+      0.31
+    ],
+    "bbox_center": [
+      -1.32,
+      3.45,
+      1.74
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_522": {
+    "id": 528,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.57,
+      0.61,
+      0.33
+    ],
+    "bbox_center": [
+      -0.66,
+      0.16,
+      1.79
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_523": {
+    "id": 529,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.99,
+      0.47,
+      0.23
+    ],
+    "bbox_center": [
+      -0.92,
+      0.21,
+      1.75
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_524": {
+    "id": 530,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.51,
+      0.29
+    ],
+    "bbox_center": [
+      -2.33,
+      0.62,
+      1.7
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_525": {
+    "id": 531,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.31,
+      0.18
+    ],
+    "bbox_center": [
+      -3.27,
+      1.85,
+      1.81
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_526": {
+    "id": 532,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.48,
+      0.46,
+      0.32
+    ],
+    "bbox_center": [
+      -1.96,
+      3.83,
+      1.15
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_527": {
+    "id": 533,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.39,
+      0.34
+    ],
+    "bbox_center": [
+      -1.65,
+      3.41,
+      1.69
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_528": {
+    "id": 534,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.35,
+      0.99,
+      0.52
+    ],
+    "bbox_center": [
+      -3.14,
+      1.81,
+      1.83
+    ],
+    "bbox_volume": 0.69
+  },
+  "object_529": {
+    "id": 535,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      0.95,
+      0.6,
+      0.51
+    ],
+    "bbox_center": [
+      0.18,
+      2.79,
+      2.09
+    ],
+    "bbox_volume": 0.29
+  },
+  "object_530": {
+    "id": 536,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.8,
+      0.57
+    ],
+    "bbox_center": [
+      -2.85,
+      2.78,
+      1.81
+    ],
+    "bbox_volume": 0.55
+  },
+  "object_531": {
+    "id": 537,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.37,
+      0.42,
+      0.15
+    ],
+    "bbox_center": [
+      -0.92,
+      1.71,
+      1.89
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_532": {
+    "id": 538,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.22,
+      0.53,
+      0.4
+    ],
+    "bbox_center": [
+      -1.08,
+      3.63,
+      1.68
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_533": {
+    "id": 539,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.41,
+      0.29,
+      0.06
+    ],
+    "bbox_center": [
+      -0.1,
+      0.06,
+      1.84
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_534": {
+    "id": 540,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.46,
+      0.33,
+      0.17
+    ],
+    "bbox_center": [
+      -1.59,
+      4.78,
+      1.62
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_535": {
+    "id": 541,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.57,
+      0.56,
+      0.29
+    ],
+    "bbox_center": [
+      -1.87,
+      2.25,
+      1.61
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_536": {
+    "id": 542,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.33,
+      0.21
+    ],
+    "bbox_center": [
+      -2.32,
+      4.1,
+      1.64
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_537": {
+    "id": 543,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.47,
+      0.34
+    ],
+    "bbox_center": [
+      -0.8,
+      0.61,
+      1.0
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_538": {
+    "id": 544,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.58,
+      0.48,
+      0.29
+    ],
+    "bbox_center": [
+      -0.87,
+      1.24,
+      1.59
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_539": {
+    "id": 545,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.44,
+      0.22
+    ],
+    "bbox_center": [
+      -2.08,
+      2.56,
+      1.51
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_540": {
+    "id": 546,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.57,
+      1.17,
+      0.57
+    ],
+    "bbox_center": [
+      -1.41,
+      1.79,
+      1.8
+    ],
+    "bbox_volume": 1.71
+  },
+  "object_541": {
+    "id": 547,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.4,
+      0.83,
+      0.69
+    ],
+    "bbox_center": [
+      -0.46,
+      2.88,
+      1.83
+    ],
+    "bbox_volume": 0.8
+  },
+  "object_542": {
+    "id": 548,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.93,
+      0.48,
+      0.19
+    ],
+    "bbox_center": [
+      -1.3,
+      1.59,
+      1.63
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_543": {
+    "id": 549,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.34,
+      0.12
+    ],
+    "bbox_center": [
+      -0.17,
+      4.52,
+      1.57
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_544": {
+    "id": 550,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.28,
+      0.92,
+      0.51
+    ],
+    "bbox_center": [
+      -2.18,
+      4.01,
+      1.66
+    ],
+    "bbox_volume": 0.6
+  },
+  "object_545": {
+    "id": 551,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.8,
+      0.56
+    ],
+    "bbox_center": [
+      -1.47,
+      4.68,
+      1.63
+    ],
+    "bbox_volume": 0.54
+  },
+  "object_546": {
+    "id": 553,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.01,
+      0.0
+    ],
+    "bbox_center": [
+      0.4,
+      3.74,
+      2.25
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_547": {
+    "id": 554,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.39,
+      0.25,
+      0.08
+    ],
+    "bbox_center": [
+      -0.5,
+      4.91,
+      1.65
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_548": {
+    "id": 555,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.2,
+      0.07
+    ],
+    "bbox_center": [
+      0.37,
+      1.27,
+      1.84
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_549": {
+    "id": 556,
+    "object_tag": "potted plant",
+    "object_caption": "",
+    "bbox_extent": [
+      0.41,
+      0.21,
+      0.21
+    ],
+    "bbox_center": [
+      -0.75,
+      0.6,
+      1.57
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_550": {
+    "id": 557,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.5,
+      0.08
+    ],
+    "bbox_center": [
+      0.75,
+      3.14,
+      2.08
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_551": {
+    "id": 558,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.67,
+      0.61,
+      0.27
+    ],
+    "bbox_center": [
+      0.2,
+      3.91,
+      1.91
+    ],
+    "bbox_volume": 0.28
+  },
+  "object_552": {
+    "id": 559,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.42,
+      0.28,
+      0.16
+    ],
+    "bbox_center": [
+      -0.35,
+      2.68,
+      1.71
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_553": {
+    "id": 560,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.8,
+      0.63,
+      0.02
+    ],
+    "bbox_center": [
+      -0.72,
+      0.81,
+      2.26
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_554": {
+    "id": 561,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.41,
+      0.9,
+      0.58
+    ],
+    "bbox_center": [
+      -0.96,
+      -0.86,
+      1.76
+    ],
+    "bbox_volume": 0.74
+  },
+  "object_555": {
+    "id": 562,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.56,
+      0.6,
+      0.28
+    ],
+    "bbox_center": [
+      -0.31,
+      -2.24,
+      1.44
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_556": {
+    "id": 563,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.7,
+      0.58,
+      0.21
+    ],
+    "bbox_center": [
+      -1.43,
+      0.76,
+      1.43
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_557": {
+    "id": 564,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.51,
+      0.15
+    ],
+    "bbox_center": [
+      0.66,
+      0.2,
+      1.7
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_558": {
+    "id": 565,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.45,
+      1.44,
+      0.45
+    ],
+    "bbox_center": [
+      0.05,
+      -1.85,
+      1.58
+    ],
+    "bbox_volume": 1.59
+  },
+  "object_559": {
+    "id": 566,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.38,
+      0.21
+    ],
+    "bbox_center": [
+      0.5,
+      -1.39,
+      1.38
+    ],
+    "bbox_volume": 0.04
+  },
+  "object_560": {
+    "id": 567,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.52,
+      0.29
+    ],
+    "bbox_center": [
+      0.68,
+      -1.22,
+      1.41
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_561": {
+    "id": 568,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.48,
+      1.12,
+      0.7
+    ],
+    "bbox_center": [
+      -1.98,
+      0.24,
+      1.67
+    ],
+    "bbox_volume": 1.94
+  },
+  "object_562": {
+    "id": 569,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.67,
+      0.46
+    ],
+    "bbox_center": [
+      0.08,
+      0.81,
+      1.81
+    ],
+    "bbox_volume": 0.2
+  },
+  "object_563": {
+    "id": 570,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.62,
+      0.43,
+      0.19
+    ],
+    "bbox_center": [
+      -0.6,
+      -2.48,
+      1.33
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_564": {
+    "id": 571,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.45,
+      0.31,
+      0.15
+    ],
+    "bbox_center": [
+      -2.46,
+      -0.25,
+      1.48
+    ],
+    "bbox_volume": 0.02
+  },
+  "object_565": {
+    "id": 572,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.13,
+      0.12
+    ],
+    "bbox_center": [
+      -2.06,
+      -2.68,
+      1.53
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_566": {
+    "id": 573,
+    "object_tag": "purse",
+    "object_caption": "",
+    "bbox_extent": [
+      0.9,
+      0.49,
+      0.42
+    ],
+    "bbox_center": [
+      -1.36,
+      1.4,
+      1.99
+    ],
+    "bbox_volume": 0.19
+  },
+  "object_567": {
+    "id": 574,
+    "object_tag": "desk",
+    "object_caption": "",
+    "bbox_extent": [
+      0.53,
+      0.21,
+      0.12
+    ],
+    "bbox_center": [
+      1.16,
+      -1.03,
+      1.49
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_568": {
+    "id": 575,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      1.0,
+      0.66,
+      0.56
+    ],
+    "bbox_center": [
+      -1.27,
+      0.68,
+      1.66
+    ],
+    "bbox_volume": 0.37
+  },
+  "object_569": {
+    "id": 576,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.43,
+      0.29
+    ],
+    "bbox_center": [
+      -2.44,
+      -2.04,
+      1.67
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_570": {
+    "id": 577,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.28,
+      0.08,
+      0.08
+    ],
+    "bbox_center": [
+      -0.9,
+      -0.86,
+      1.58
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_571": {
+    "id": 578,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.31,
+      0.08
+    ],
+    "bbox_center": [
+      -0.79,
+      -0.74,
+      1.58
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_572": {
+    "id": 579,
+    "object_tag": "bowl",
+    "object_caption": "",
+    "bbox_extent": [
+      0.16,
+      0.08,
+      0.04
+    ],
+    "bbox_center": [
+      1.26,
+      -0.94,
+      1.4
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_573": {
+    "id": 580,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      0.81,
+      0.72,
+      0.33
+    ],
+    "bbox_center": [
+      -1.92,
+      -2.53,
+      1.63
+    ],
+    "bbox_volume": 0.19
+  },
+  "object_574": {
+    "id": 581,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.39,
+      0.08
+    ],
+    "bbox_center": [
+      1.08,
+      -0.8,
+      1.5
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_575": {
+    "id": 582,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      2.39,
+      1.16,
+      0.64
+    ],
+    "bbox_center": [
+      2.06,
+      -3.3,
+      1.46
+    ],
+    "bbox_volume": 1.77
+  },
+  "object_576": {
+    "id": 583,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.64,
+      0.53
+    ],
+    "bbox_center": [
+      0.96,
+      -1.47,
+      1.61
+    ],
+    "bbox_volume": 0.22
+  },
+  "object_577": {
+    "id": 584,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.75,
+      0.61,
+      0.2
+    ],
+    "bbox_center": [
+      1.39,
+      -2.89,
+      1.21
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_578": {
+    "id": 585,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.54,
+      0.64,
+      0.31
+    ],
+    "bbox_center": [
+      2.66,
+      -3.75,
+      1.16
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_579": {
+    "id": 586,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.59,
+      0.48,
+      0.28
+    ],
+    "bbox_center": [
+      2.92,
+      -3.77,
+      1.12
+    ],
+    "bbox_volume": 0.08
+  },
+  "object_580": {
+    "id": 587,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      1.02,
+      0.6,
+      0.42
+    ],
+    "bbox_center": [
+      1.47,
+      -2.67,
+      1.43
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_581": {
+    "id": 588,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.47,
+      0.46,
+      0.32
+    ],
+    "bbox_center": [
+      3.19,
+      -4.25,
+      0.58
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_582": {
+    "id": 589,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.38,
+      0.8,
+      0.5
+    ],
+    "bbox_center": [
+      2.81,
+      -2.03,
+      1.59
+    ],
+    "bbox_volume": 0.55
+  },
+  "object_583": {
+    "id": 590,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.31,
+      0.11,
+      0.03
+    ],
+    "bbox_center": [
+      1.31,
+      -0.95,
+      1.44
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_584": {
+    "id": 591,
+    "object_tag": "purse",
+    "object_caption": "",
+    "bbox_extent": [
+      0.86,
+      0.46,
+      0.41
+    ],
+    "bbox_center": [
+      0.72,
+      -2.96,
+      1.76
+    ],
+    "bbox_volume": 0.16
+  },
+  "object_585": {
+    "id": 592,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.32,
+      0.2,
+      0.14
+    ],
+    "bbox_center": [
+      3.04,
+      -2.16,
+      1.37
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_586": {
+    "id": 593,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.32,
+      0.06
+    ],
+    "bbox_center": [
+      2.69,
+      -1.91,
+      1.38
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_587": {
+    "id": 594,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.37,
+      0.24,
+      0.05
+    ],
+    "bbox_center": [
+      3.45,
+      -3.99,
+      1.26
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_588": {
+    "id": 595,
+    "object_tag": "plate",
+    "object_caption": "",
+    "bbox_extent": [
+      0.31,
+      0.12,
+      0.07
+    ],
+    "bbox_center": [
+      3.37,
+      -4.13,
+      1.18
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_589": {
+    "id": 596,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.2,
+      0.51,
+      0.27
+    ],
+    "bbox_center": [
+      2.4,
+      -3.82,
+      1.1
+    ],
+    "bbox_volume": 0.17
+  },
+  "object_590": {
+    "id": 597,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.63,
+      0.35
+    ],
+    "bbox_center": [
+      1.26,
+      -1.45,
+      1.3
+    ],
+    "bbox_volume": 0.14
+  },
+  "object_591": {
+    "id": 598,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.85,
+      0.63,
+      0.76
+    ],
+    "bbox_center": [
+      2.92,
+      -3.07,
+      1.28
+    ],
+    "bbox_volume": 0.89
+  },
+  "object_592": {
+    "id": 599,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.65,
+      0.71,
+      0.23
+    ],
+    "bbox_center": [
+      1.88,
+      -2.78,
+      0.98
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_593": {
+    "id": 600,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.52,
+      0.55,
+      0.34
+    ],
+    "bbox_center": [
+      3.27,
+      -3.44,
+      0.95
+    ],
+    "bbox_volume": 0.1
+  },
+  "object_594": {
+    "id": 601,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.32,
+      0.2
+    ],
+    "bbox_center": [
+      3.55,
+      -3.36,
+      0.93
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_595": {
+    "id": 602,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      1.4,
+      0.82,
+      0.38
+    ],
+    "bbox_center": [
+      3.16,
+      -1.73,
+      1.26
+    ],
+    "bbox_volume": 0.44
+  },
+  "object_596": {
+    "id": 603,
+    "object_tag": "lamp",
+    "object_caption": "",
+    "bbox_extent": [
+      0.44,
+      0.38,
+      0.38
+    ],
+    "bbox_center": [
+      3.9,
+      -3.85,
+      0.39
+    ],
+    "bbox_volume": 0.06
+  },
+  "object_597": {
+    "id": 604,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.73,
+      0.57,
+      0.22
+    ],
+    "bbox_center": [
+      2.82,
+      -3.46,
+      0.92
+    ],
+    "bbox_volume": 0.09
+  },
+  "object_598": {
+    "id": 605,
+    "object_tag": "purse",
+    "object_caption": "",
+    "bbox_extent": [
+      0.86,
+      0.48,
+      0.44
+    ],
+    "bbox_center": [
+      1.19,
+      -2.94,
+      1.54
+    ],
+    "bbox_volume": 0.18
+  },
+  "object_599": {
+    "id": 606,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.22,
+      0.49,
+      0.3
+    ],
+    "bbox_center": [
+      2.05,
+      -3.1,
+      0.87
+    ],
+    "bbox_volume": 0.18
+  },
+  "object_600": {
+    "id": 607,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      1.01,
+      0.59,
+      0.44
+    ],
+    "bbox_center": [
+      1.92,
+      -2.57,
+      1.2
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_601": {
+    "id": 608,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.34,
+      0.18,
+      0.06
+    ],
+    "bbox_center": [
+      4.01,
+      -3.71,
+      0.95
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_602": {
+    "id": 609,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.27,
+      0.09,
+      0.08
+    ],
+    "bbox_center": [
+      3.13,
+      -1.67,
+      1.14
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_603": {
+    "id": 610,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.43,
+      0.3,
+      0.06
+    ],
+    "bbox_center": [
+      2.99,
+      -1.61,
+      1.14
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_604": {
+    "id": 611,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.69,
+      0.68,
+      0.55
+    ],
+    "bbox_center": [
+      2.62,
+      -1.82,
+      1.21
+    ],
+    "bbox_volume": 0.26
+  },
+  "object_605": {
+    "id": 612,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.69,
+      0.67,
+      0.24
+    ],
+    "bbox_center": [
+      4.01,
+      -2.23,
+      0.8
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_606": {
+    "id": 613,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.57,
+      0.53,
+      0.37
+    ],
+    "bbox_center": [
+      5.44,
+      -1.64,
+      0.8
+    ],
+    "bbox_volume": 0.11
+  },
+  "object_607": {
+    "id": 614,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.48,
+      0.72,
+      0.52
+    ],
+    "bbox_center": [
+      4.75,
+      -1.7,
+      1.06
+    ],
+    "bbox_volume": 0.55
+  },
+  "object_608": {
+    "id": 615,
+    "object_tag": "coffee table",
+    "object_caption": "",
+    "bbox_extent": [
+      0.66,
+      0.28,
+      0.05
+    ],
+    "bbox_center": [
+      3.8,
+      -0.93,
+      0.97
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_609": {
+    "id": 616,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      0.96,
+      0.6,
+      0.44
+    ],
+    "bbox_center": [
+      3.92,
+      -2.04,
+      1.04
+    ],
+    "bbox_volume": 0.25
+  },
+  "object_610": {
+    "id": 617,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.6,
+      0.46,
+      0.19
+    ],
+    "bbox_center": [
+      5.14,
+      -1.96,
+      0.74
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_611": {
+    "id": 618,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.5,
+      0.21,
+      0.08
+    ],
+    "bbox_center": [
+      2.24,
+      -1.27,
+      1.03
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_612": {
+    "id": 619,
+    "object_tag": "purse",
+    "object_caption": "",
+    "bbox_extent": [
+      0.93,
+      0.4,
+      0.42
+    ],
+    "bbox_center": [
+      3.67,
+      -2.89,
+      1.34
+    ],
+    "bbox_volume": 0.16
+  },
+  "object_613": {
+    "id": 620,
+    "object_tag": "dresser",
+    "object_caption": "",
+    "bbox_extent": [
+      0.61,
+      0.3,
+      0.29
+    ],
+    "bbox_center": [
+      0.8,
+      -3.29,
+      1.09
+    ],
+    "bbox_volume": 0.05
+  },
+  "object_614": {
+    "id": 621,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      4.94,
+      1.49,
+      0.19
+    ],
+    "bbox_center": [
+      4.18,
+      -3.19,
+      -0.15
+    ],
+    "bbox_volume": 1.4
+  },
+  "object_615": {
+    "id": 622,
+    "object_tag": "cup",
+    "object_caption": "",
+    "bbox_extent": [
+      0.38,
+      0.25,
+      0.33
+    ],
+    "bbox_center": [
+      3.97,
+      -0.76,
+      0.86
+    ],
+    "bbox_volume": 0.03
+  },
+  "object_616": {
+    "id": 623,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      1.21,
+      0.51,
+      0.3
+    ],
+    "bbox_center": [
+      4.39,
+      -2.3,
+      0.7
+    ],
+    "bbox_volume": 0.19
+  },
+  "object_617": {
+    "id": 624,
+    "object_tag": "pillow",
+    "object_caption": "",
+    "bbox_extent": [
+      0.74,
+      0.65,
+      0.29
+    ],
+    "bbox_center": [
+      5.68,
+      -0.98,
+      0.73
+    ],
+    "bbox_volume": 0.14
+  },
+  "object_618": {
+    "id": 625,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.73,
+      0.68,
+      0.6
+    ],
+    "bbox_center": [
+      4.49,
+      -1.76,
+      1.16
+    ],
+    "bbox_volume": 0.3
+  },
+  "object_619": {
+    "id": 626,
+    "object_tag": "couch",
+    "object_caption": "",
+    "bbox_extent": [
+      1.53,
+      1.21,
+      0.46
+    ],
+    "bbox_center": [
+      5.91,
+      -0.55,
+      0.8
+    ],
+    "bbox_volume": 0.85
+  },
+  "object_620": {
+    "id": 627,
+    "object_tag": "stool",
+    "object_caption": "",
+    "bbox_extent": [
+      0.64,
+      0.51,
+      0.22
+    ],
+    "bbox_center": [
+      3.67,
+      -1.65,
+      1.01
+    ],
+    "bbox_volume": 0.07
+  },
+  "object_621": {
+    "id": 628,
+    "object_tag": "blanket",
+    "object_caption": "",
+    "bbox_extent": [
+      0.91,
+      0.6,
+      0.41
+    ],
+    "bbox_center": [
+      5.44,
+      -0.84,
+      0.97
+    ],
+    "bbox_volume": 0.22
+  },
+  "object_622": {
+    "id": 629,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.49,
+      0.37,
+      0.03
+    ],
+    "bbox_center": [
+      3.95,
+      -4.19,
+      0.72
+    ],
+    "bbox_volume": 0.01
+  },
+  "object_623": {
+    "id": 630,
+    "object_tag": "shelf",
+    "object_caption": "",
+    "bbox_extent": [
+      0.8,
+      0.73,
+      0.55
+    ],
+    "bbox_center": [
+      4.28,
+      -4.16,
+      1.03
+    ],
+    "bbox_volume": 0.32
+  },
+  "object_624": {
+    "id": 631,
+    "object_tag": "blinds",
+    "object_caption": "",
+    "bbox_extent": [
+      3.82,
+      1.92,
+      0.04
+    ],
+    "bbox_center": [
+      6.47,
+      -1.89,
+      -0.36
+    ],
+    "bbox_volume": 0.29
+  },
+  "object_625": {
+    "id": 632,
+    "object_tag": "book",
+    "object_caption": "",
+    "bbox_extent": [
+      0.25,
+      0.16,
+      0.08
+    ],
+    "bbox_center": [
+      3.24,
+      -3.97,
+      0.65
+    ],
+    "bbox_volume": 0.0
+  },
+  "object_626": {
+    "id": 633,
+    "object_tag": "window",
+    "object_caption": "",
+    "bbox_extent": [
+      1.12,
+      1.18,
+      0.03
+    ],
+    "bbox_center": [
+      3.57,
+      -4.31,
+      -0.11
+    ],
+    "bbox_volume": 0.04
+  }
+}

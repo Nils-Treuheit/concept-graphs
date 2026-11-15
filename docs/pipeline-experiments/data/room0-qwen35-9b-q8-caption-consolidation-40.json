@@ -1,0 +1,878 @@
+{
+  "created_utc": "2026-10-30T16:23:23.462795+00:00",
+  "map_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/room0/exps/r_modernized_yoloe26l_stride50/pcd_r_modernized_yoloe26l_stride50.pkl.gz",
+  "map_sha256": "0b0c6f03db84270f21866e03ae84a394fe9f13d81d203ff3499bbd783a7fa502",
+  "baseline": {
+    "model": "qwen3.8:27b-mtp4-ud_q4_K_XL-128k",
+    "source": "/mnt/HDD1/Project_Code/concept-graphs/.agentic_workflow/workspace/caption-consolidation-benchmark/room0-qwen3.8-baseline-40.json",
+    "provenance": "Cached consolidated captions from the original 40-frame Qwen3.8 run, with the four previously blank groups replaced by the accepted real-GPU rerun using reasoning_effort=none."
+  },
+  "candidate": {
+    "id": "qwen35-9b-q8",
+    "name": "Qwen3.5 9B UD-Q8_K_XL",
+    "model_alias": "edge-compatible-qwen35-9b-q8",
+    "base_url": "http://127.0.0.1:20263",
+    "max_tokens": 256,
+    "reasoning_effort": null,
+    "server_reasoning_mode": "off"
+  },
+  "metric_note": "Paired 40-group scene pilot. Word F1 and exact match measure agreement with Qwen, not ground-truth accuracy. Single-caption groups measure output behavior but do not exercise multi-caption merging.",
+  "sample_summary": {
+    "case_count": 40,
+    "multi_caption_groups": 5,
+    "single_caption_groups": 35
+  },
+  "groups": [
+    {
+      "object_index": 7,
+      "object_id": 7,
+      "class_name": "coffee kettle",
+      "source_captions": [
+        "A white electric kettle sitting on top of the wooden sideboard."
+      ],
+      "baseline_caption": "A white electric kettle sitting on top of the wooden sideboard.",
+      "status": "complete",
+      "candidate_caption": "A white electric kettle sitting on top of the wooden sideboard.",
+      "response_seconds": 0.329,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 23,
+      "object_id": 23,
+      "class_name": "book",
+      "source_captions": [
+        "A book or flat object resting on top of the wooden cabinet."
+      ],
+      "baseline_caption": "A book or flat object resting on top of the wooden cabinet.",
+      "status": "complete",
+      "candidate_caption": "A book or flat object resting on top of the wooden cabinet.",
+      "response_seconds": 0.266,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 42,
+      "object_id": 42,
+      "class_name": "book",
+      "source_captions": [
+        "A closed book or flat item lying on the top surface of the cabinet near the right side."
+      ],
+      "baseline_caption": "A closed book or flat item lying on the top surface of the cabinet near the right side.",
+      "status": "complete",
+      "candidate_caption": "A closed book or flat item lying on the top surface of the cabinet near the right side.",
+      "response_seconds": 0.32,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 57,
+      "object_id": 57,
+      "class_name": "tissue box",
+      "source_captions": [
+        "A small tissue box sitting on top of the left section of the cabinet."
+      ],
+      "baseline_caption": "A small tissue box sitting on top of the left section of the cabinet.",
+      "status": "complete",
+      "candidate_caption": "A small tissue box sitting on top of the left section of the cabinet.",
+      "response_seconds": 0.286,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 74,
+      "object_id": 74,
+      "class_name": "shelf",
+      "source_captions": [
+        "The left section of a low wooden storage cabinet with a single door and curved paneling."
+      ],
+      "baseline_caption": "The left section of a low wooden storage cabinet with a single door and curved paneling.",
+      "status": "complete",
+      "candidate_caption": "A low wooden storage cabinet featuring a single door and curved paneling.",
+      "response_seconds": 0.275,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.7857142857142857,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 90,
+      "object_id": 91,
+      "class_name": "window",
+      "source_captions": [
+        "Small square window with a grid of panes set high in the center of the back wall."
+      ],
+      "baseline_caption": "A small square window with a grid of panes set high in the center of the back wall.",
+      "status": "complete",
+      "candidate_caption": "A small square window with a grid of panes set high in the center of the back wall.",
+      "response_seconds": 0.335,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 100,
+      "object_id": 101,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square throw pillow with a white background and green leaf pattern resting on the couch.",
+        "A seating couch with white pillows visible at the bottom-left of the room."
+      ],
+      "baseline_caption": "A white square throw pillow with a green leaf pattern resting on the couch.",
+      "status": "complete",
+      "candidate_caption": "A square white throw pillow with a green leaf pattern resting on the couch.",
+      "response_seconds": 0.289,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 106,
+      "object_id": 107,
+      "class_name": "desk",
+      "source_captions": [
+        "A small round wooden side table holding a tissue box, located next to the couch."
+      ],
+      "baseline_caption": "A small round wooden side table holding a tissue box, located next to the couch.",
+      "status": "complete",
+      "candidate_caption": "A small round wooden side table holding a tissue box, located next to the couch.",
+      "response_seconds": 0.3,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 122,
+      "object_id": 123,
+      "class_name": "stool",
+      "source_captions": [
+        "A round wooden stool with a smooth oval seat in the bottom-center foreground."
+      ],
+      "baseline_caption": "A round wooden stool with a smooth oval seat in the bottom-center foreground.",
+      "status": "complete",
+      "candidate_caption": "A round wooden stool with a smooth oval seat located in the bottom-center foreground.",
+      "response_seconds": 0.295,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9655172413793104,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 141,
+      "object_id": 143,
+      "class_name": "container",
+      "source_captions": [
+        "A white cylindrical pot or container holding a plant, placed on the coffee table."
+      ],
+      "baseline_caption": "A white cylindrical pot holding a plant, placed on the coffee table.",
+      "status": "complete",
+      "candidate_caption": "A white cylindrical pot or container holding a plant placed on the coffee table.",
+      "response_seconds": 0.249,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.923076923076923,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 156,
+      "object_id": 158,
+      "class_name": "stool",
+      "source_captions": [
+        "A round upholstered stool with a pinkish-magenta seat located at the bottom center of the view."
+      ],
+      "baseline_caption": "A round upholstered stool with a pinkish-magenta seat at the bottom center of the view.",
+      "status": "complete",
+      "candidate_caption": "A round upholstered stool with a pinkish-magenta seat located at the bottom center of the view.",
+      "response_seconds": 0.237,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9696969696969697,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 174,
+      "object_id": 176,
+      "class_name": "picture",
+      "source_captions": [
+        "A large framed black-and-white photograph depicting a small boat resting on a grassy shoreline by water."
+      ],
+      "baseline_caption": "A large framed black-and-white photograph depicting a small boat resting on a grassy shoreline by water.",
+      "status": "complete",
+      "candidate_caption": "A large framed black-and-white photograph depicting a small boat resting on a grassy shoreline by the water.",
+      "response_seconds": 0.332,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.972972972972973,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 190,
+      "object_id": 192,
+      "class_name": "couch",
+      "source_captions": [
+        "A white three-seat sofa with several throw pillows positioned against the center wall."
+      ],
+      "baseline_caption": "A white three-seat sofa with several throw pillows positioned against the center wall.",
+      "status": "complete",
+      "candidate_caption": "A white three-seat sofa with several throw pillows positioned against the center wall.",
+      "response_seconds": 0.286,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 207,
+      "object_id": 209,
+      "class_name": "pillow",
+      "source_captions": [
+        "Plain white cushion resting toward the back of the sofa, behind the patterned pillows."
+      ],
+      "baseline_caption": "A plain white cushion resting toward the back of the sofa, behind the patterned pillows.",
+      "status": "complete",
+      "candidate_caption": "A plain white cushion resting toward the back of the sofa, behind patterned pillows.",
+      "response_seconds": 0.304,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9655172413793104,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 223,
+      "object_id": 225,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square decorative pillow with a beige and green floral pattern resting on the right end of the white couch."
+      ],
+      "baseline_caption": "A square decorative pillow with a beige and green floral pattern on the right end of the white couch.",
+      "status": "complete",
+      "candidate_caption": "A square decorative pillow with a beige and green floral pattern resting on the right end of the white couch.",
+      "response_seconds": 0.333,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9743589743589743,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 241,
+      "object_id": 243,
+      "class_name": "blinds",
+      "source_captions": [
+        "Horizontal window blinds covering the tall narrow window on the far left wall."
+      ],
+      "baseline_caption": "Horizontal window blinds covering the tall narrow window on the far left wall.",
+      "status": "complete",
+      "candidate_caption": "Horizontal window blinds covering the tall narrow window on the far left wall.",
+      "response_seconds": 0.284,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 258,
+      "object_id": 260,
+      "class_name": "desk",
+      "source_captions": [
+        "A small desk or side table situated behind the left couch near the window."
+      ],
+      "baseline_caption": "A small desk or side table situated behind the left couch near the window.",
+      "status": "complete",
+      "candidate_caption": "A small desk or side table situated behind the left couch near the window.",
+      "response_seconds": 0.289,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 274,
+      "object_id": 279,
+      "class_name": "pillow",
+      "source_captions": [
+        "A white throw pillow at the far end of the sofa, close to the lamp.",
+        "A white throw pillow placed on the middle section of the sofa."
+      ],
+      "baseline_caption": "A white throw pillow on the sofa.",
+      "status": "complete",
+      "candidate_caption": "A white throw pillow placed on the middle section of the sofa, near the lamp.",
+      "response_seconds": 0.309,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.6363636363636364,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 275,
+      "object_id": 280,
+      "class_name": "pillow",
+      "source_captions": [
+        "A white throw pillow on the left end of the sofa."
+      ],
+      "baseline_caption": "A white throw pillow on the left end of the sofa.",
+      "status": "complete",
+      "candidate_caption": "A white throw pillow on the left end of the sofa.",
+      "response_seconds": 0.258,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 278,
+      "object_id": 283,
+      "class_name": "desk",
+      "source_captions": [
+        "A desk set against the wall near the window, partially behind the sofa.",
+        "A white throw pillow on the sofa near the center."
+      ],
+      "baseline_caption": "A white throw pillow on the sofa near the center.",
+      "status": "complete",
+      "candidate_caption": "A desk set against the wall near the window, partially behind a sofa with a white throw pillow near its center.",
+      "response_seconds": 0.354,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.5806451612903225,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 296,
+      "object_id": 301,
+      "class_name": "pillow",
+      "source_captions": [
+        "A white cushion lying on the seat of the couch."
+      ],
+      "baseline_caption": "A white cushion lying on the seat of the couch.",
+      "status": "complete",
+      "candidate_caption": "A white cushion lying on the seat of the couch.",
+      "response_seconds": 0.253,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 313,
+      "object_id": 318,
+      "class_name": "blanket",
+      "source_captions": [
+        "A plush gray fur blanket draped over the arm and seat of the white sofa."
+      ],
+      "baseline_caption": "A plush gray fur blanket draped over the arm and seat of the white sofa.",
+      "status": "complete",
+      "candidate_caption": "A plush gray fur blanket draped over the arm and seat of a white sofa.",
+      "response_seconds": 0.293,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9333333333333333,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 329,
+      "object_id": 334,
+      "class_name": "ottoman",
+      "source_captions": [
+        "A brown textured pouf-style ottoman sitting on the floor at the front of the sofa."
+      ],
+      "baseline_caption": "A brown textured pouf-style ottoman on the floor in front of the sofa.",
+      "status": "complete",
+      "candidate_caption": "A brown textured pouf-style ottoman sitting on the floor at the front of the sofa.",
+      "response_seconds": 0.219,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.8666666666666666,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 348,
+      "object_id": 354,
+      "class_name": "cup",
+      "source_captions": [
+        "A small white ceramic vessel/cup with a dark interior, placed on the coffee table.",
+        "A flat magazine or book lying on a small tray on the coffee table."
+      ],
+      "baseline_caption": "A small white ceramic vessel with a dark interior on the coffee table, next to a flat magazine on a small tray.",
+      "status": "complete",
+      "candidate_caption": "A small white ceramic vessel with a dark interior and a flat magazine or book on a small tray, both placed on the coffee table.",
+      "response_seconds": 0.389,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.8510638297872342,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 349,
+      "object_id": 355,
+      "class_name": "pillow",
+      "source_captions": [
+        "A beige throw pillow with a faint tree or palm-print pattern, resting on the right end of the white sofa in the bottom-right corner."
+      ],
+      "baseline_caption": "A beige throw pillow with a faint tree or palm-print pattern resting on the right end of the white sofa in the bottom-right corner.",
+      "status": "complete",
+      "candidate_caption": "A beige throw pillow with a faint tree or palm-print pattern rests on the right end of the white sofa in the bottom-right corner.",
+      "response_seconds": 0.386,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9615384615384616,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 364,
+      "object_id": 370,
+      "class_name": "desk",
+      "source_captions": [
+        "A small round side table or desk in the corner of the room, holding a plate and other small items."
+      ],
+      "baseline_caption": "A small round side table in the corner of the room, holding a plate and other small items.",
+      "status": "complete",
+      "candidate_caption": "A small round side table or desk in the corner of the room holding a plate and other small items.",
+      "response_seconds": 0.335,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9473684210526316,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 382,
+      "object_id": 388,
+      "class_name": "pillow",
+      "source_captions": [
+        "A light-colored decorative pillow resting on the left white couch."
+      ],
+      "baseline_caption": "A light-colored decorative pillow on the left white couch.",
+      "status": "complete",
+      "candidate_caption": "A light-colored decorative pillow resting on the left white couch.",
+      "response_seconds": 0.262,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9523809523809523,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 419,
+      "object_id": 425,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square decorative pillow with a landscape and tree print resting on the white sofa.",
+        "A pale blue square accent pillow placed on the seat of the right white wingback chair."
+      ],
+      "baseline_caption": "A square decorative pillow with a landscape and tree print on a pale blue base, placed on a white sofa.",
+      "status": "complete",
+      "candidate_caption": "A square decorative accent pillow with a landscape and tree print resting on a white wingback chair.",
+      "response_seconds": 0.32,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.7027027027027027,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 422,
+      "object_id": 428,
+      "class_name": "pillow",
+      "source_captions": [
+        "A light blue square pillow placed on the seat of the left wingback armchair."
+      ],
+      "baseline_caption": "A light blue square pillow on the seat of the left wingback armchair.",
+      "status": "complete",
+      "candidate_caption": "A light blue square pillow placed on the seat of the left wingback armchair.",
+      "response_seconds": 0.312,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.962962962962963,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 439,
+      "object_id": 445,
+      "class_name": "pillow",
+      "source_captions": [
+        "A dark gray striped throw pillow on the left end of the white sofa."
+      ],
+      "baseline_caption": "A dark gray striped throw pillow on the left end of the white sofa.",
+      "status": "complete",
+      "candidate_caption": "A dark gray striped throw pillow on the left end of the white sofa.",
+      "response_seconds": 0.296,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 456,
+      "object_id": 463,
+      "class_name": "book",
+      "source_captions": [
+        "A small stack of books lying on the round coffee table."
+      ],
+      "baseline_caption": "A small stack of books lying on the round coffee table.",
+      "status": "complete",
+      "candidate_caption": "A small stack of books lying on the round coffee table.",
+      "response_seconds": 0.237,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 473,
+      "object_id": 480,
+      "class_name": "couch",
+      "source_captions": [
+        "A cream-colored wingback armchair on the right, positioned next to the matching chair and holding a blue cushion."
+      ],
+      "baseline_caption": "A cream-colored wingback armchair positioned on the right, next to a matching chair, holding a blue cushion.",
+      "status": "complete",
+      "candidate_caption": "A cream-colored wingback armchair with a blue cushion, positioned on the right next to a matching chair.",
+      "response_seconds": 0.359,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9444444444444444,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 492,
+      "object_id": 499,
+      "class_name": "coffee table",
+      "source_captions": [
+        "A small side table on the left holding a yellow book and other small items."
+      ],
+      "baseline_caption": "A small side table on the left holding a yellow book and other small items.",
+      "status": "complete",
+      "candidate_caption": "A small side table on the left holding a yellow book and other small items.",
+      "response_seconds": 0.306,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 507,
+      "object_id": 514,
+      "class_name": "pillow",
+      "source_captions": [
+        "A patterned pillow with green and cream tones at the far right end of the right couch."
+      ],
+      "baseline_caption": "A patterned pillow with green and cream tones at the far right end of the right couch.",
+      "status": "complete",
+      "candidate_caption": "A patterned pillow with green and cream tones at the far right end of the right couch.",
+      "response_seconds": 0.328,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 523,
+      "object_id": 530,
+      "class_name": "pillow",
+      "source_captions": [
+        "Dark striped cylindrical pillow at the far end of the right white couch."
+      ],
+      "baseline_caption": "A dark striped cylindrical pillow at the far end of the right white couch.",
+      "status": "complete",
+      "candidate_caption": "A dark striped cylindrical pillow at the far end of the right white couch.",
+      "response_seconds": 0.291,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 559,
+      "object_id": 567,
+      "class_name": "pillow",
+      "source_captions": [
+        "A cream throw pillow with a green leaf pattern lying on the seat of the right sofa."
+      ],
+      "baseline_caption": "A cream throw pillow with a green leaf pattern lying on the seat of the right sofa.",
+      "status": "complete",
+      "candidate_caption": "A cream throw pillow with a green leaf pattern lies on the seat of the right sofa.",
+      "response_seconds": 0.313,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9411764705882353,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 573,
+      "object_id": 581,
+      "class_name": "stool",
+      "source_captions": [
+        "A small low stool or ottoman at the bottom right, outlined in pink."
+      ],
+      "baseline_caption": "A small low stool or ottoman at the bottom right.",
+      "status": "complete",
+      "candidate_caption": "A small, low stool or ottoman outlined in pink, positioned at the bottom right.",
+      "response_seconds": 0.317,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.8333333333333333,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 589,
+      "object_id": 597,
+      "class_name": "stool",
+      "source_captions": [
+        "A round, beige upholstered ottoman-style stool with visible stitching, sitting on the floor in the foreground."
+      ],
+      "baseline_caption": "A round, beige upholstered ottoman-style stool with visible stitching on the floor in the foreground.",
+      "status": "complete",
+      "candidate_caption": "A round, beige upholstered ottoman-style stool with visible stitching sits on the floor in the foreground.",
+      "response_seconds": 0.339,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9696969696969697,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 604,
+      "object_id": 612,
+      "class_name": "pillow",
+      "source_captions": [
+        "A metallic, patterned throw pillow resting at an angle on the left arm of the white couch."
+      ],
+      "baseline_caption": "A metallic, patterned throw pillow resting at an angle on the left arm of a white couch.",
+      "status": "complete",
+      "candidate_caption": "A metallic, patterned throw pillow resting at an angle on the left arm of the white couch.",
+      "response_seconds": 0.231,
+      "valid_output": true,
+      "word_f1_to_qwen": 0.9411764705882353,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 618,
+      "object_id": 626,
+      "class_name": "couch",
+      "source_captions": [
+        "A white sofa with multiple cushions located along the right wall beneath the window."
+      ],
+      "baseline_caption": "A white sofa with multiple cushions located along the right wall beneath the window.",
+      "status": "complete",
+      "candidate_caption": "A white sofa with multiple cushions located along the right wall beneath the window.",
+      "response_seconds": 0.29,
+      "valid_output": true,
+      "word_f1_to_qwen": 1.0,
+      "exact_agreement_to_qwen": true,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    }
+  ],
+  "summary": {
+    "selected_groups": 40,
+    "valid_outputs": 40,
+    "mean_response_seconds": 0.30015000000000003,
+    "mean_word_f1_to_qwen": 0.9395427106327217
+  }
+}
