@@ -37,7 +37,7 @@ def sha256(path: Path) -> str:
 def git_revision(path: Path) -> str | None:
     try:
         return subprocess.run(
-            ["git", "-C", str(path), "rev-parse", "HEAD"],
+            ["git", "-c", f"safe.directory={str(path)}", "-C", str(path), "rev-parse", "HEAD"],
             check=True,
             capture_output=True,
             text=True,
