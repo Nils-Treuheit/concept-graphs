@@ -1,20 +1,9 @@
-# T-REN region-token embedding feasibility report
+# T-REN region-token embedding status
 
-**Status date:** 2026-11-15
-**Benchmark:** Not run. No GPU/model job was started.
+**Status:** repository and T-REN checkpoint are installed. No inference or accuracy benchmark can run because T-REN also requires two official DINOv3 assets that currently return HTTP 403.
 
-## Finding
+T-REN source commit `0817b0d015a4462756248825eee0c3da5aada37a` is under `models/experiments/t_ren/repo`. The `savyak2/T-REN` checkpoint revision `cfc2ea88a4f8e7679df43a8ecbb4a99701329cd8` is in HF_HOME. Its size is 1,455,981,684 bytes and SHA-256 is `7f85132237001d52176226b3fd6ebde8ecfc08569ae196d56deeb5b052bf9b1f`.
 
-The project plan describes T-REN as a point-prompted region-token method whose feature alignment and stable map-level use require a separate integration experiment. No T-REN integration, dependency, or checkpoint was found in this checkout or the inspected local model cache. Pooling standard image or crop embeddings would not evaluate T-REN. This is an unavailable-method result, not a negative accuracy result.
+Required DINOv3 files, as named by upstream T-REN, are the ViT-L/16 backbone and its text-aligned vision/text head. Direct HEAD requests to both exact official download URLs returned HTTP 403 on 2026-11-15. No unofficial weights or standard-crop substitutes were used. Thus no retrieval, identity, runtime, throughput, or GPU-memory metric is reported.
 
-## Evaluation protocol
-
-Use deterministic points sampled from held-out object masks and the official region-token extraction/text-alignment path. Compare against the same fixed encoder and query control split. Measure single-view object retrieval first; evaluate cross-view map association only after a stable object-feature path is established.
-
-- **Dataset/split:** same held-out labeled object/query set as template retrieval. Record point sampling and mask-to-prompt mapping. No split was executed.
-- **Metrics:** per-category macro AP, Recall@K, object attribution, valid cross-view identity association, latency, throughput, and peak GPU memory.
-- **Runtime/resources:** **Not measured.**
-- **Failures/blocker:** no method-specific code, dependency, or weights located. Point-prompted region-token extraction and map integration are absent.
-- **Artifacts:** no prompts, embeddings, or benchmark outputs generated. Intended report path: `scripts/pipeline_model_reports/t_ren.md`.
-
-Protocol source: `MODERNIZED_PIPELINE_IMPLEMENTATION_PLAN.md`, “Further embedding research” and “Evaluation plan.”
+The intended method is point-prompted region-token extraction followed by text alignment. It cannot be evaluated by pooling generic image or crop embeddings. See the [full status and exact URLs](../../../../scripts/pipeline_model_reports/t_ren.md).
