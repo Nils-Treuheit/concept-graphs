@@ -195,8 +195,14 @@ def extract_prediction(outputs, height: int, width: int, prompt_box_xywh):
         raise ValueError(f"SAM output boxes must be Nx4 normalized XYWH, got {boxes.shape}")
     if masks.ndim != 3 or masks.shape[-2:] != (height, width):
         raise ValueError(f"SAM output mask dimensions unexpected: {masks.shape}, expected Nx{height}x{width}")
-    if len(masks) != len(scores) or len(masks) != len(obj_ids) or len(masks) != len(boxes) or len(masks) == 0:
-        raise ValueError("SAM masks, scores, object IDs and boxes must be non-empty and aligned")
+    mask_count, score_count, object_id_count, box_count = len(masks), len(scores), len(obj_ids), len(boxes)
+    if not (mask_count == score_count == object_id_count == box_count):
+        raise ValueError(
+            "SAM output arrays are misaligned: "
+            f"masks={mask_count}, scores={score_count}, object_ids={object_id_count}, boxes={box_count}"
+        )
+    if mask_count == 0:
+        return np.zeros((height, width), dtype=bool), None, None, 0.0, 0
     if not np.isfinite(scores).all():
         raise ValueError("SAM output scores contain non-finite values")
     overlaps = np.asarray([box_iou_xywh(box, prompt_box_xywh) for box in boxes], dtype=float)
@@ -565,6 +571,7 @@ def main() -> int:
                 "sam_output_object_id": output_object_id,
                 "sam_score": score,
                 "candidate_count": candidate_count,
+                "prediction_status": "no_candidate" if candidate_count == 0 else "mask_selected",
                 "selected_box_iou": selected_box_iou,
                 "box_selection_rule": "max IoU to requested normalized prompt box; zero-overlap outputs fail",
                 "base_iou": base_iou,
@@ -630,6 +637,7 @@ def main() -> int:
         "torch_cuda_version": torch.version.cuda,
         "model_load_seconds": model_load_seconds,
         "processed_count": len(rows),
+        "no_prediction_count": sum(1 for row in rows if row["prediction_status"] == "no_candidate"),
         "failed_count": len(failures),
         "failures": failures,
         "metrics": means,
