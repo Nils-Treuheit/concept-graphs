@@ -20,7 +20,7 @@ Keep SigLIP2 as the map-association feature for the measured subset and FG-CLIP2
 
 ## Query-time VQA readiness
 
-No ConceptGraphs template-matching VQA benchmark was run. The five held-out scenes have no generated ConceptGraphs maps, frozen question manifest, or evidence packets. The existing generic direct-image VQA panel and 40-frame per-frame annotation comparison test different roles. Query-time accuracy, attribution, relation direction, evidence support, abstention, schema validity, latency, and GPU use are not measured for Qwen3.8, Qwen3-VL 8B Instruct, Qwen3-VL 30B Thinking, or Qwen3-VL 8B Thinking. Retain Qwen3.8 as a query baseline candidate only; do not name a query-time winner.
+No ConceptGraphs template-matching VQA benchmark was run. The five held-out scenes have no generated ConceptGraphs maps, frozen question manifest, or evidence packets. The local ReplicaSSG test annotations contain 91 scene-scoped directed relation rows but no aligned natural-language questions, answers, or object captions; templating questions from those tuples would measure a synthetic graph-query task instead. The existing generic direct-image VQA panel and 40-frame per-frame annotation comparison test different roles. Query-time accuracy, attribution, relation direction, evidence support, abstention, schema validity, latency, and GPU use are not measured for Qwen3.8, Qwen3-VL 8B Instruct, Qwen3-VL 30B Thinking, or Qwen3-VL 8B Thinking. Retain Qwen3.8 as a query baseline candidate only; do not name a query-time winner.
 
 ## Optional object and mask methods
 
