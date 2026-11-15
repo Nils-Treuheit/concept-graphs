@@ -252,7 +252,10 @@ def checkpoint_key_gate(composite: list[dict[str, Any]], allowed_rope_keys: list
     return problems
 
 
-def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, output_dir: Path):
+def build_predictor_with_checkpoint_audit(
+    builder, torch, checkpoint: Path, output_dir: Path,
+    use_fa3: bool, attention_backend: str, attention_implementation: str,
+):
     """Call the real official builder while preserving exact loader diagnostics."""
     stdout_buffer = io.StringIO()
     stderr_buffer = io.StringIO()
@@ -282,6 +285,7 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
                 compile=False,
                 warm_up=False,
                 async_loading_frames=False,
+                use_fa3=use_fa3,
             )
     except Exception as exc:
         build_error = f"{type(exc).__name__}: {exc}"
@@ -303,6 +307,9 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
         "checkpoint_target_path": str(checkpoint.resolve()),
         "checkpoint_sha256": sha256(checkpoint),
         "builder": "sam3.model_builder.build_sam3_multiplex_video_predictor",
+        "attention_backend": attention_backend,
+        "attention_implementation": attention_implementation,
+        "builder_use_fa3": use_fa3,
         "load_state_dict_calls": diagnostics,
         "composite_model_load_count": len(composite),
         "composite_model_missing_keys": [key for entry in composite for key in entry["missing_keys"]],
@@ -427,6 +434,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1] / "repo")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--attention-backend",
+        choices=("fa3", "sdpa"),
+        default="fa3",
+        help="SAM 3.1 attention backend: fa3=FlashAttention-3 (upstream builder default), sdpa=PyTorch scaled_dot_product_attention",
+    )
     parser.add_argument("--max-items", type=int, default=0, help="0 processes every manifest item")
     return parser.parse_args()
 
@@ -458,6 +471,11 @@ def main() -> int:
     manifest_sha = sha256(manifest_path)
     checkpoint_sha = sha256(checkpoint)
     checkpoint_target = checkpoint.resolve()
+    attention_backend = args.attention_backend
+    use_fa3 = attention_backend == "fa3"
+    attention_implementation = (
+        "flash_attn_interface" if use_fa3 else "torch.nn.functional.scaled_dot_product_attention"
+    )
     # No Torch/SAM import occurs until all manifest, image, mask, repo, and
     # checkpoint paths have passed validation above.
     sys.path.insert(0, str(repo))
@@ -483,7 +501,10 @@ def main() -> int:
     load_start = time.perf_counter()
     try:
         predictor, checkpoint_diagnostics = build_predictor_with_checkpoint_audit(
-            build_sam3_multiplex_video_predictor, torch, checkpoint, output_dir
+            build_sam3_multiplex_video_predictor, torch, checkpoint, output_dir,
+            use_fa3=use_fa3,
+            attention_backend=attention_backend,
+            attention_implementation=attention_implementation,
         )
         torch.cuda.synchronize(device_index)
     except Exception:
@@ -599,6 +620,8 @@ def main() -> int:
         "checkpoint_sha256": checkpoint_sha,
         "repo_path": str(repo),
         "repo_commit": sam_repo_commit,
+        "attention_backend": attention_backend,
+        "attention_implementation": attention_implementation,
         "device": args.device,
         "device_name": device_name,
         "device_index": device_index,
