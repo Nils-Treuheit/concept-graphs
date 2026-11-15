@@ -196,11 +196,31 @@
         <tbody>
           <tr><td><b>Qwen3.8</b><br><span class="note">provisional default</span></td><td>339 saved relations</td><td>763/763 caption IDs</td><td>Relation F1 0.498<br>Caption word F1 0.646</td><td>13.3 s/frame requests<br>532 s summed requests</td></tr>
           <tr><td><code>LiquidAI/LFM3-VL-2B-GGUF:NVFP4</code></td><td>36/40 relation lists valid<br>183/186 tuples; both IDs resolve</td><td>28/40 caption lists valid<br>526/763 caption IDs; no extras or duplicates</td><td>Relation F1 0.398<br>Caption word F1 0.509</td><td>14.3 s/frame requests<br>571 s summed requests</td></tr>
-          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code></td><td>0/40 relation parses valid</td><td>0/40 caption parses valid<br>0/763 IDs</td><td>Not meaningful: structured outputs failed</td><td>8.4 s/frame requests<br>435.5 s wall; 85.9 s load</td></tr>
+          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code><br><span class="note">legacy prompts</span></td><td>0/40 relation parses valid</td><td>0/40 caption parses valid<br>0/763 IDs</td><td>Not meaningful: structured outputs failed</td><td>8.4 s/frame requests<br>435.5 s wall; 85.9 s load</td></tr>
           <tr><td><code>Qwen/Qwen2.5-VL-7B-Instruct</code></td><td>149 relations<br>38/40 relation parses valid<br>149/149 valid tuples</td><td>762/763 caption IDs<br>40/40 after fence-aware reparse</td><td>Relation F1 0.331<br>Caption word F1 0.338</td><td>8.9 s/frame requests<br>537.6 s wall; 177.5 s load</td></tr>
         </tbody>
       </table>
       <p class="note" style="margin-top:12px">External VLM leaderboard scores motivated the shortlist only. Qwen3.8 remains provisional, not a production winner. The raw Qwen2.5 summary reports 0/40 strict caption parses; the 40/40 above comes from post-hoc fence-aware re-parsing of retained responses. Raw runs: <a href="data/vlm-qwen38-baseline-40.json">Qwen3.8</a>, <a href="data/vlm-lfm3-vl-2b-nvfp4-40.json">LFM3-VL</a>, <a href="data/vlm-llava-onevision-qwen2-7b-40.json">LLaVA OneVision</a>, <a href="data/vlm-qwen2.5-vl-7b-40.json">Qwen2.5-VL</a>.</p>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="llava-prompt-title">
+      <span class="status measured">Additional LLaVA prompt comparison · 40 frames</span>
+      <h2 id="llava-prompt-title" style="margin-top:12px">Structured batch captions and targeted object captions</h2>
+      <p>Using the <a href="https://huggingface.co/llava-hf/llava-onevision-qwen2-7b-ov-hf#using-pure-transformers">official LLaVA-OneVision Transformers message format</a>, structured JSON fixed caption formatting: 40/40 valid arrays and 714/763 usable descriptions. One prompt per detection yielded 718/763 descriptions and 45 explicit <code>NOT_VISIBLE</code> responses. Both used the same model, frames, detections, IDs and relation prompt; the targeted harness attaches cached IDs deterministically.</p>
+      <table>
+        <thead><tr><th>Caption strategy</th><th>Usable descriptions</th><th>Lexical agreement to cache</th><th>Caption calls</th><th>Wall time</th></tr></thead>
+        <tbody>
+          <tr><td>Structured batch JSON</td><td>714/763 (93.58%)</td><td>Word F1 0.4088, 668 IDs</td><td>40</td><td>1,583.10 s</td></tr>
+          <tr><td>Targeted object prompts</td><td>718/763 (94.10%)<br>45 not visible</td><td>Word F1 0.2518, 666 IDs</td><td>763</td><td>2,178.98 s</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">Targeted prompting adds four usable descriptions but takes 595.88 seconds longer and has lower lexical agreement to cached Qwen3.8 text. These are not semantic accuracy scores; the cache does not establish whether the Qwen3.8 captions are raw or consolidated. Relation JSON passed 14/40 frames; endpoint and predicate checks passed 10/40. The raw relation responses were identical in both arms. The small coverage gain does not warrant replacing the provisional caption path.</p>
+      <div class="links">
+        <a href="../../scripts/pipeline_model_reports/vlm_llava_onevision_qwen2_7b_structured.md">Structured prompt report<small>Model-card format, JSON validity, configuration, runtime, memory, and failed first attempt</small></a>
+        <a href="../../scripts/pipeline_model_reports/vlm_llava_onevision_qwen2_7b_targeted.md">Targeted caption report<small>Per-object prompts, cache-ID stitching, 763-call stream, and arm comparison</small></a>
+        <a href="../../scripts/pipeline_model_reports/data/vlm-llava-onevision-qwen2-7b-structured-40-retry1.json">Structured raw data<small>40 paired frames and raw model responses</small></a>
+        <a href="../../scripts/pipeline_model_reports/data/vlm-llava-onevision-qwen2-7b-targeted-40.json">Targeted raw data<small>Frame summaries and target totals</small></a>
+      </div>
     </section>
 
     <section class="panel span-12" aria-labelledby="foundation-vlm-title">

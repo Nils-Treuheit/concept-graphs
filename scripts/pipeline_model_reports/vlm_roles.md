@@ -1,6 +1,6 @@
 # VLM role benchmark status
 
-**Evidence checked:** 2026-11-14. The four per-frame candidates now have a matched 40-frame Replica `room0` comparison. Individual run evidence and limitations are in the linked reports below.
+**Evidence checked:** 2026-11-15. The four per-frame candidates have a matched 40-frame Replica `room0` comparison. LLaVA has an additional prompt-format and targeted-caption comparison. Individual run evidence and limitations are in the linked reports below.
 
 ## Per-frame annotation shortlist
 
@@ -33,6 +33,14 @@ All four runs used the same 40 annotated source frames from Replica `room0`, str
 These are agreement and format results, not ground-truth accuracy. Qwen3.8 remains the **provisional default**. Its agreement results are against its own cached outputs and are self-favoring; they do not independently establish higher annotation quality or an overall production winner. LLaVA's 0/40 strict-format result is an output-format failure for this harness even though all requests completed. One initial LLaVA launch failed during import before CUDA/model execution; the runner import was corrected, and that launch is not counted as a model failure.
 
 The prompt and image inputs were matched. Generation settings were not proven equivalent: Transformers used greedy decoding, while the managed Qwen3.8 and LFM3 services used their own uncaptured sampling defaults. Timing scopes also differ: Transformers latency covers model generation after preprocessing, while endpoint latency includes HTTP/server work. Memory scopes differ between model-control samples and Transformers allocator/system peaks. See each report for source and missing fields. Word-F1 measures lexical overlap, not semantic caption quality.
+
+## LLaVA prompt and caption strategy
+
+The official Hugging Face model-card conversation format was evaluated on the same checkpoint and frozen 40-frame cache. A one-user-turn JSON contract yielded valid caption JSON on 40/40 frames and 714 usable descriptions from 763 detections, compared with the previous legacy prompt’s 0/40 strict caption parses. Relation JSON remained weak at 14/40 valid responses and 10/40 endpoint/predicate-valid frames.
+
+The per-object prompt arm returned 718 nonempty descriptions from 763 detections, a gain of four over batch JSON, with 45 explicit `NOT_VISIBLE` responses. It used 763 caption calls instead of 40 and took 595.88 seconds longer. Lexical agreement to the cached Qwen3.8 text was 0.2518 versus 0.4088 for batch mode. These metrics are not semantic accuracy. The current evidence favors batch JSON when efficiency and lexical compatibility matter; targeted prompts may be useful when explicit per-object abstention is valued. The small coverage gain does not justify changing the provisional production caption path.
+
+The targeted harness attaches cached IDs and names deterministically. It does not use a second LLM and does not treat IDs as model output. The relation responses were identical across both runs on all 40 frames. See the separate [structured-prompt report](vlm_llava_onevision_qwen2_7b_structured.md) and [targeted-caption report](vlm_llava_onevision_qwen2_7b_targeted.md). The earlier 0.400 relation F1 is an empty-output artifact and should not be compared with the corrected JSON parser results.
 
 ## Query-time question answering
 
