@@ -1,0 +1,116 @@
+{
+  "created_utc": "2026-10-30T15:16:08.538572+00:00",
+  "map_path": "/mnt/HDD1/Project_Data/public_datasets/Replica/room0/exps/r_modernized_yoloe26l_stride50/pcd_r_modernized_yoloe26l_stride50.pkl.gz",
+  "map_sha256": "0b0c6f03db84270f21866e03ae84a394fe9f13d81d203ff3499bbd783a7fa502",
+  "baseline": {
+    "model": "qwen3.8:27b-mtp4-ud_q4_K_XL-128k",
+    "source": "/mnt/HDD1/Project_Data/public_datasets/Replica/room0/exps/r_modernized_yoloe26l_stride50/qwen_caption_baseline_failed_groups.json"
+  },
+  "candidate": {
+    "id": "qwen35-9b-q4",
+    "name": "Qwen3.5 9B UD-Q4_K_XL",
+    "model_alias": "edge-compatible-qwen35-9b-q4",
+    "base_url": "http://127.0.0.1:20263",
+    "max_tokens": 256,
+    "reasoning_effort": null,
+    "server_reasoning_mode": "auto",
+    "status_note": "Initial attempt with llama.cpp default reasoning mode; all four outputs were empty because the 256-token cap was exhausted by hidden reasoning."
+  },
+  "metric_note": "Four-group failure-focused pilot. Word F1 and exact match measure agreement with Qwen, not ground-truth accuracy.",
+  "groups": [
+    {
+      "object_index": 100,
+      "object_id": 101,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square throw pillow with a white background and green leaf pattern resting on the couch.",
+        "A seating couch with white pillows visible at the bottom-left of the room."
+      ],
+      "baseline_caption": "A white square throw pillow with a green leaf pattern resting on the couch.",
+      "status": "complete",
+      "candidate_caption": "",
+      "response_seconds": 2.888,
+      "valid_output": false,
+      "word_f1_to_qwen": 0.0,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 278,
+      "object_id": 283,
+      "class_name": "desk",
+      "source_captions": [
+        "A desk set against the wall near the window, partially behind the sofa.",
+        "A white throw pillow on the sofa near the center."
+      ],
+      "baseline_caption": "A white throw pillow on the sofa near the center.",
+      "status": "complete",
+      "candidate_caption": "",
+      "response_seconds": 2.756,
+      "valid_output": false,
+      "word_f1_to_qwen": 0.0,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 348,
+      "object_id": 354,
+      "class_name": "cup",
+      "source_captions": [
+        "A small white ceramic vessel/cup with a dark interior, placed on the coffee table.",
+        "A flat magazine or book lying on a small tray on the coffee table."
+      ],
+      "baseline_caption": "A small white ceramic vessel with a dark interior on the coffee table, next to a flat magazine on a small tray.",
+      "status": "complete",
+      "candidate_caption": "",
+      "response_seconds": 2.766,
+      "valid_output": false,
+      "word_f1_to_qwen": 0.0,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    },
+    {
+      "object_index": 419,
+      "object_id": 425,
+      "class_name": "pillow",
+      "source_captions": [
+        "A square decorative pillow with a landscape and tree print resting on the white sofa.",
+        "A pale blue square accent pillow placed on the seat of the right white wingback chair."
+      ],
+      "baseline_caption": "A square decorative pillow with a landscape and tree print on a pale blue base, placed on a white sofa.",
+      "status": "complete",
+      "candidate_caption": "",
+      "response_seconds": 2.752,
+      "valid_output": false,
+      "word_f1_to_qwen": 0.0,
+      "exact_agreement_to_qwen": false,
+      "quality_review": {
+        "faithful_to_source_captions": null,
+        "unsupported_claims": null,
+        "concise": null,
+        "notes": ""
+      }
+    }
+  ],
+  "summary": {
+    "selected_groups": 4,
+    "valid_outputs": 0,
+    "mean_response_seconds": 2.7904999999999998,
+    "mean_word_f1_to_qwen": 0.0
+  }
+}
