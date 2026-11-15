@@ -21,6 +21,7 @@ import threading
 import tempfile
 import time
 import traceback
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -323,6 +324,46 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
     return predictor, diagnostic_report
 
 
+def start_multiplex_session(predictor, resource_path: str) -> dict[str, Any]:
+    """Benchmark-local session bootstrap for the pinned SAM 3.1 multiplex model.
+
+    The pinned ``Sam3BasePredictor.start_session()`` always forwards
+    ``offload_state_to_cpu`` to ``model.init_state()``, but the pinned
+    ``Sam3MultiplexTrackingWithInteractivity.init_state()`` does not accept
+    that argument, so every per-item session failed before prompt inference.
+    This adapter calls the model's actual ``init_state()`` with only the
+    settings it supports (the frozen one-frame resource directory,
+    ``offload_video_to_cpu=False`` and the predictor's configured
+    ``async_loading_frames`` value) and registers the returned state in the
+    predictor's existing session table using the same fields as
+    ``Sam3BasePredictor.start_session()``. Box prompts and session close
+    still use the predictor's existing ``handle_request`` path.
+    """
+    model = getattr(predictor, "model", None)
+    if model is None or not hasattr(model, "init_state"):
+        raise RuntimeError("predictor model does not expose init_state(); cannot bootstrap a session")
+    session_table = getattr(predictor, "_all_inference_states", None)
+    if not isinstance(session_table, dict):
+        raise RuntimeError("predictor has no _all_inference_states session table; cannot bootstrap a session")
+    init_kwargs = dict(
+        resource_path=resource_path,
+        offload_video_to_cpu=False,
+    )
+    if hasattr(predictor, "async_loading_frames"):
+        init_kwargs["async_loading_frames"] = predictor.async_loading_frames
+    inference_state = model.init_state(**init_kwargs)
+    if not isinstance(inference_state, dict):
+        raise TypeError(f"init_state() returned {type(inference_state).__name__}, expected the inference state dict")
+    session_id = str(uuid.uuid4())
+    session_table[session_id] = {
+        "state": inference_state,
+        "session_id": session_id,
+        "start_time": time.time(),
+        "last_use_time": time.time(),
+    }
+    return {"session_id": session_id}
+
+
 def nvidia_smi_memory_mib(device_index: int) -> int:
     result = subprocess.run(
         ["nvidia-smi", f"--id={device_index}", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
@@ -471,7 +512,7 @@ def main() -> int:
             if x1 > width or y1 > height:
                 raise ValueError(f"bbox exceeds source dimensions {(width, height)}")
             box_xywh = [[x0 / width, y0 / height, (x1 - x0) / width, (y1 - y0) / height]]
-            start = predictor.handle_request({"type": "start_session", "resource_path": temp.name})
+            start = start_multiplex_session(predictor, temp.name)
             session_id = start.get("session_id")
             if not session_id:
                 raise RuntimeError(f"SAM start_session returned no session_id: {start}")
