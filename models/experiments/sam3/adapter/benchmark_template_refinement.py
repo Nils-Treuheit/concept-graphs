@@ -207,6 +207,50 @@ def extract_prediction(outputs, height: int, width: int, prompt_box_xywh):
     return masks[best].astype(bool), float(scores[best]), int(obj_ids[best]), float(overlaps[best]), len(masks)
 
 
+def derived_rope_allowed_keys() -> list[str]:
+    """Exact derived-RoPE buffer keys the official SAM source reconstructs at init.
+
+    These are rotary-frequency buffers built deterministically from freqs_cis
+    during module initialization, not learned checkpoint weights.
+    Blocks 0..31 x {freqs_cis_real, freqs_cis_imag} = 64 unique keys.
+    """
+    keys = [
+        f"detector.backbone.vision_backbone.trunk.blocks.{block}.attn.freqs_cis_{suffix}"
+        for block in range(32)
+        for suffix in ("real", "imag")
+    ]
+    if len(keys) != 64 or len(set(keys)) != 64:
+        raise RuntimeError("derived-RoPE allowlist must be exactly 64 unique keys")
+    return keys
+
+
+def checkpoint_key_gate(composite: list[dict[str, Any]], allowed_rope_keys: list[str]) -> list[str]:
+    """Fail unless the single composite load misses exactly the 64 derived-RoPE keys."""
+    problems: list[str] = []
+    missing: list[str] = []
+    unexpected: list[str] = []
+    if len(composite) != 1:
+        problems.append(
+            "expected exactly one complete Sam3MultiplexTrackingWithInteractivity checkpoint load, "
+            f"observed {len(composite)}"
+        )
+    for entry in composite:
+        missing.extend(entry["missing_keys"])
+        unexpected.extend(entry["unexpected_keys"])
+    allowed = set(allowed_rope_keys)
+    if len(missing) != len(allowed):
+        problems.append(f"missing-key count is {len(missing)}, expected exactly {len(allowed)}")
+    duplicates = sorted({key for key in missing if missing.count(key) > 1})
+    if duplicates:
+        problems.append(f"duplicate missing keys: {duplicates}")
+    off_pattern = sorted({key for key in missing if key not in allowed})
+    if off_pattern:
+        problems.append(f"missing keys outside the derived-RoPE allowlist: {off_pattern}")
+    if unexpected:
+        problems.append(f"unexpected keys: {sorted(set(unexpected))}")
+    return problems
+
+
 def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, output_dir: Path):
     """Call the real official builder while preserving exact loader diagnostics."""
     stdout_buffer = io.StringIO()
@@ -251,6 +295,8 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
         entry for entry in diagnostics
         if entry["module_class"] == "Sam3MultiplexTrackingWithInteractivity"
     ]
+    allowed_rope_keys = derived_rope_allowed_keys()
+    key_gate_problems = checkpoint_key_gate(composite, allowed_rope_keys)
     diagnostic_report = {
         "checkpoint_path": str(checkpoint),
         "checkpoint_target_path": str(checkpoint.resolve()),
@@ -260,6 +306,9 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
         "composite_model_load_count": len(composite),
         "composite_model_missing_keys": [key for entry in composite for key in entry["missing_keys"]],
         "composite_model_unexpected_keys": [key for entry in composite for key in entry["unexpected_keys"]],
+        "derived_rope_allowed_key_count": len(allowed_rope_keys),
+        "derived_rope_allowed_keys": allowed_rope_keys,
+        "key_gate_disposition": "passed" if not key_gate_problems else "failed: " + "; ".join(key_gate_problems),
         "builder_error": build_error,
     }
     (output_dir / "checkpoint_load_diagnostics.json").write_text(
@@ -267,13 +316,10 @@ def build_predictor_with_checkpoint_audit(builder, torch, checkpoint: Path, outp
     )
     if build_error:
         raise RuntimeError(f"SAM predictor builder failed; see predictor_builder.log: {build_error}")
-    if len(composite) != 1:
+    if key_gate_problems:
         raise RuntimeError(
-            "expected exactly one complete Sam3MultiplexTrackingWithInteractivity checkpoint load; "
-            f"observed {len(composite)}; see checkpoint_load_diagnostics.json"
+            "checkpoint key gate failed; see checkpoint_load_diagnostics.json: " + "; ".join(key_gate_problems)
         )
-    if diagnostic_report["composite_model_missing_keys"] or diagnostic_report["composite_model_unexpected_keys"]:
-        raise RuntimeError("checkpoint has missing/unexpected composite-model keys; see checkpoint_load_diagnostics.json")
     return predictor, diagnostic_report
 
 
