@@ -201,6 +201,26 @@
       <p class="note" style="margin-top:12px">External VLM leaderboard scores motivated the shortlist only. Qwen3.8 remains provisional, not a production winner. The raw Qwen2.5 summary reports 0/40 strict caption parses; the 40/40 above comes from post-hoc fence-aware re-parsing of retained responses. Raw runs: <a href="data/vlm-qwen38-baseline-40.json">Qwen3.8</a>, <a href="data/vlm-lfm3-vl-2b-nvfp4-40.json">LFM3-VL</a>, <a href="data/vlm-llava-onevision-qwen2-7b-40.json">LLaVA OneVision</a>, <a href="data/vlm-qwen2.5-vl-7b-40.json">Qwen2.5-VL</a>.</p>
     </section>
 
+    <section class="panel span-12" aria-labelledby="foundation-vlm-title">
+      <span class="status measured">825-example shared benchmark</span>
+      <h2 id="foundation-vlm-title" style="margin-top:12px">Local foundation VLM model substitutions</h2>
+      <p>These scores use the fixed 825-example local suite: AI2D, TextVQA/OCR, five VQA skill categories, and GRAB-Lite. This evaluates general multimodal reasoning and graph questions; it is separate from the 40-frame ConceptGraphs annotation comparison above.</p>
+      <table>
+        <thead><tr><th>Candidate</th><th>Route</th><th>Completed</th><th>Full-suite macro</th><th>VQA panel macro</th><th>Peak whole-device VRAM</th></tr></thead>
+        <tbody>
+          <tr><td><b>Qwen3.8 27B</b></td><td>Ollama, MTP4 UD Q4_K_XL</td><td>825/825</td><td><b>63.5375%</b></td><td>65.75%</td><td>25.43 GiB*</td></tr>
+          <tr><td>LiquidAI LFM3-VL-2B BF16</td><td>Transformers 5.22.1</td><td>825/825</td><td>63.325%</td><td>63.367%</td><td>14.638 GiB‡</td></tr>
+          <tr><td>LiquidAI LFM3-VL-2B NVFP4</td><td>llama.cpp b12097</td><td>825/825</td><td>58.5375%</td><td>57.083%</td><td>4.90–5.981 GiB†</td></tr>
+          <tr><td>LiquidAI LFM3-VL-2B Q4_K_M</td><td>llama.cpp b12097</td><td>825/825</td><td>55.725%</td><td>55.367%</td><td>5.43 GiB</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:12px">The official BF16 LFM3 checkpoint leads both tested GGUF LFM3 variants, but trails the Qwen3.8 route by 0.2125 percentage points on the full-suite macro. LFM3 recorded 69 GRAB-Lite outputs at the 4,096-token limit. This does not settle production quality; none of these general-suite scores measures map-level annotation accuracy. *The Qwen3.8 result is from the same aggregate source report. †The source report and aggregate JSON disagree on NVFP4 peak VRAM; both values are retained here. ‡The aggregate report describes 0.5-second whole-device sampling, but the raw BF16 record stores only the peak and sample count; the sampling method is absent from `data.json`.</p>
+      <div class="links">
+        <a href="reports/vlm_lfm3_vl_2b_transformers_bf16.md">LFM3-VL-2B official BF16 report<small>Full configuration, eight task scores, resource provenance, and attempt history</small></a>
+        <a href="reports/vlm_lfm3_vl_2b_nvfp4.md">LFM3-VL-2B NVFP4 report<small>Per-frame ConceptGraphs annotation comparison</small></a>
+      </div>
+    </section>
+
     <section class="panel span-12" aria-labelledby="optional-title">
       <span class="status measured">Optional experiments reviewed</span>
       <h2 id="optional-title" style="margin-top:12px">Template retrieval, query VQA, and optional components</h2>
