@@ -143,8 +143,8 @@
         </tbody>
       </table>
       <p class="note" style="margin-top:12px">*Custom polygon metric, not standard COCO mask AP. Native-mask re-evaluation remains optional validation.</p>
-      <p class="note">The requested detect-only YOLOE-26-L/M checkpoints are not listed among official released assets or present under this project's <code>weights/</code> or <code>models/</code> directories. Official L/M segmentation checkpoint files are available in the local <code>models/</code> folder. A boxes-only run using them would measure proposal outputs from segmentation weights, not detect-only checkpoints.</p>
-      <div class="links"><a href="reports/yoloe26_detection_only_checkpoint_status.md">Checkpoint availability and box-only scope<small>Exact asset names, local file hashes, and evaluation limitation</small></a></div>
+      <p class="note">Official unsuffixed detection-only YOLOE-26-L/M checkpoints are not released. Ultralytics documents building detection-only heads from the matching YAML and transferring same-size segmentation weights. The four-arm standard COCO AP comparison is currently blocked: the first L-seg pass completed 500 CUDA images but failed writing JSON because the device UUID is not JSON serializable. No standard COCO AP scores are available yet.</p>
+      <div class="links"><a href="reports/yoloe26_detection_only_checkpoint_status.md">Checkpoint and detection-only initialization method<small>Official asset names, local weights, and derived-head provenance</small></a><a href="reports/yoloe26_standard_coco_benchmark_status.md">Standard COCO AP benchmark status<small>Run 1 failure, preserved artifacts, and remaining arms</small></a></div>
     </section>
 
     <section class="panel span-6" aria-labelledby="caption-title">
@@ -273,6 +273,8 @@
         <a href="reports/vlm_qwen2_5_vl_7b.md">Qwen2.5-VL 7B report<small>Fence-aware strict output counts</small></a>
         <a href="reports/feature_encoders.md">Feature encoder benchmark<small>Masked and padded proposal retrieval</small></a>
         <a href="reports/detector.md">Detector benchmark<small>YOLOE-26-L-seg and YOLOE-26-M-seg</small></a>
+        <a href="reports/yoloe26_l_seg_run1_failure.md">YOLOE-26-L COCO run 1<small>All images inferred; provenance serialization failed before scoring</small></a>
+        <a href="reports/yoloe26_standard_coco_benchmark_status.md">YOLOE-26 standard COCO AP status<small>Four-arm comparison blocked; no standard AP score claimed</small></a>
         <a href="reports/caption_consolidation.md">Caption consolidation benchmark<small>Four-case reliability pilot and 40-case comparison</small></a>
         <a href="reports/vlm_roles.md">VLM roles and open comparisons<small>Annotation and query-time evaluations</small></a>
         <a href="reports/map_level_validation.md">Map-level validation<small>40-frame propagation and 200-frame CUDA association audit</small></a>
