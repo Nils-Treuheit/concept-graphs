@@ -1,0 +1,20 @@
+{
+  "accepted_background_gpu_processes": [],
+  "active_jobs": [],
+  "controller_session_count": 0,
+  "idle": true,
+  "loaded_models": [],
+  "managed_loaded_models": [],
+  "model_catalog_keys": [
+    "djev",
+    "llama_cpp",
+    "ninfer",
+    "ninfer_profiles",
+    "ollama_models",
+    "unsloth",
+    "vllm_profiles"
+  ],
+  "nvidia_compute_apps": "",
+  "opencode_active_session_count": 0,
+  "unmatched_gpu_processes": []
+}

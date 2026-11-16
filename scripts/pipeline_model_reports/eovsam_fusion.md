@@ -1,6 +1,8 @@
-# EOVSAM fusion experiment
+# EOVSAM setup and failure history
 
-**Outcome:** EOVSAM source and weights are installed, Detectron2 built successfully, and the frozen COCO500 asset/evaluator preflights passed. The bounded inference attempt stopped during upstream imports because `decord` is absent. The checkpoint was not loaded; no score is available. This is a setup blocker, not a negative model result.
+**History scope:** this report preserves setup and pre-run5 failures. The final COCO500 score is in [the run5 report](eovsam_coco500_run5.md).
+
+**Outcome at the earlier run2 attempt:** EOVSAM source and weights are installed, Detectron2 built successfully, and the frozen COCO500 preflights passed. The bounded CUDA attempt loaded the checkpoint and initialized a 500-image loader, then failed on its first batch with `KeyError: 'lvis_v1_val'`. No prediction or COCO score was produced. This is an adapter/runtime failure, not a negative model result.
 
 ## Installed implementation and weights
 
@@ -16,22 +18,24 @@ The frozen input is 500 COCO val2017 panoptic samples, selected by seed 42 from 
 
 The adapter now gates on its own authentic val inputs and does not require or create COCO train files. A first preflight found a manifest-variable shadowing bug in the local registration adapter; the variable was renamed and subsequent assets/evaluator preflights passed.
 
+After installing `decord==0.6.0` and `psutil==7.2.2` in the isolated Python 3.10.12 environment, the SAM3 dataset import preflight passed. A 2026-11-16 real CUDA run loaded the EOVSAM checkpoint and began inference on 500 batches. The first input's COCO path did not match EOVSAM's filename heuristics; `get_dataname()` fell back to `lvis_v1_val`, while the registered evaluator metadata is `eovsam_coco_val2017_500_seed42`. The model then raised `KeyError: 'lvis_v1_val'` before producing a prediction. Process exit code was 1. The visible Detectron2 log spans 03:00:44 to 03:04:00 local time through the first-batch failure; no dedicated end-to-end timer was recorded. Peak GPU memory was not sampled. After cleanup the controller listed no loaded model or session and `nvidia-smi` showed no compute process.
+
 ## Attempt history and failure
 
 Earlier attempts with Torch 2.5.1+cu124 could not build Detectron2 against the host CUDA compiler or SM 12.0. The newly accepted bounded attempt installed the PyTorch cu128 stack and built the official Detectron2 source successfully.
 
-The first evaluation launch used the project root as CWD and failed because upstream code opens `./maft/data/datasets/coco_panoptic_with_prompt_eng.txt`. That file exists in the EOVSAM repository, so the retry ran from that repo directory. The retry then failed while importing `sam3.train.data.sam3_image_dataset` with `ModuleNotFoundError: No module named 'decord'`. The authorized fresh attempt is exhausted at this import failure. No model weights loaded; there are no EOVSAM predictions, AP metrics, latency, or inference-memory measurements.
+The first evaluation launch used the project root as CWD and failed because upstream code opens `./maft/data/datasets/coco_panoptic_with_prompt_eng.txt`. Running from the EOVSAM repository fixed that working-directory issue. A later import failed on missing `decord`; the bounded dependency diagnosis installed `decord==0.6.0` and `psutil==7.2.2`, after which the prescribed SAM3 import preflight passed. The single authorized CUDA attempt then reached checkpoint loading and failed on the dataset-name fallback described above. It processed 0/500 images to completion. No predictions, AP metrics, or peak-memory measurement exist.
 
-## Intended fusion protocol and disposition
+## Earlier fusion protocol plan and disposition
 
 Fusion was to remain disabled by default and use the shared 500-image COCO val split. Predictions would be matched one-to-one by category and mask overlap. The initial condition would discard unmatched EOVSAM masks, then compare the better individual mask against union masks while tracking instance separation. Planned measures include box/mask AP, IoU, boundary quality, precision/recall, runtime, memory, and error counts.
 
-Because inference did not start, no fusion conclusion or production recommendation is supported. Keep EOVSAM disabled. The next attempt requires a separately reviewed diagnosis; this run will not continue installing dependencies beyond the bounded attempt.
+The earlier run2 inference did not complete an image, so it yielded no fusion result. Run5 later scored the panoptic model on the fixed 500-image subset, but did not test EOVSAM mask fusion or ConceptGraphs mapping. Do not treat that score as a production replacement decision; core map-level acceptance remains separate.
 
 ## Artifacts
 
 - Environment: `models/experiments/envs/eovsam-cu128-attempt1/`.
 - Adapter and frozen data: `models/experiments/eovsam/adapter/`.
 - Official EOVSAM and Detectron2 source: `models/experiments/eovsam/repo/` and `models/experiments/eovsam/detectron2-repo/`.
-- EOVSAM checkpoint is cached at the HF_HOME snapshot recorded above. The failed launch stopped before loading it; no copy was made into the repository.
+- EOVSAM checkpoint is cached at the HF_HOME snapshot recorded above and was loaded during run2; no copy was made into the repository.
 - Run status and prior attempt details: [`eovsam_run_status_20261115.md`](eovsam_run_status_20261115.md).

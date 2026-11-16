@@ -1,0 +1,2 @@
+path=/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/output/coco500-panoptic-run5/run-manifest.json
+sha256=d167df5eb52a2f9de7ca19ea3a57c938e56745f58d821c361e92744b3aff7c95

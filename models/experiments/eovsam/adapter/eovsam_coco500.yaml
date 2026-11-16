@@ -1,0 +1,8 @@
+_BASE_: "../repo/configs/eval_panoptic.yaml"
+
+DATASETS:
+  TEST: ("eovsam_coco_val2017_500_seed42",)
+
+TEST:
+  SEMANTIC_ON: False
+  PANOPTIC_ON: True
