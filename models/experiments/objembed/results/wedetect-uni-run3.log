@@ -1,0 +1,19 @@
+/mnt/HDD1/Project_Code/concept-graphs/models/experiments/envs/objembed/lib/python3.10/site-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+[wedetect-uni] 25/250 frames
+[wedetect-uni] 50/250 frames
+[wedetect-uni] 75/250 frames
+[wedetect-uni] 100/250 frames
+[wedetect-uni] 125/250 frames
+[wedetect-uni] 150/250 frames
+[wedetect-uni] 175/250 frames
+[wedetect-uni] 200/250 frames
+[wedetect-uni] 225/250 frames
+[wedetect-uni] 250/250 frames
+{
+  "status": "complete",
+  "output_dir": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3",
+  "average_proposal_count": 300.0,
+  "proposal_recall_iou_0.5_k300": 0.465064,
+  "proposal_recall_iou_0.75_k300": 0.158802
+}

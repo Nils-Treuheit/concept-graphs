@@ -1,0 +1,298 @@
+{
+  "schema": "wedetect-uni-replicassg-proposal-run/v1",
+  "status": "complete",
+  "created_utc": "2026-11-16T10:12:13.232267+00:00",
+  "started_utc": "2026-11-16T10:11:40.808651+00:00",
+  "configuration": {
+    "manifest": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/data/replicassg-five-scene-v1.json",
+    "manifest_sha256": "b04b2e90e15a96d5a1e04154c7fbe1935135336b1aee5e8903c1e5aab77ab277",
+    "expected_counts": {
+      "scene_count": 5,
+      "frame_view_count": 250,
+      "visible_object_view_count": 2204,
+      "category_count": 49
+    },
+    "counts": {
+      "scene_count": 5,
+      "frames_per_scene": {
+        "office_1": 50,
+        "office_3": 50,
+        "office_4": 50,
+        "room_1": 50,
+        "room_2": 50
+      },
+      "frame_view_count": 250,
+      "visible_object_view_count": 2204,
+      "category_count": 49
+    },
+    "split": {
+      "name": "ReplicaSSG test_scans.txt, local-complete five-scene subset",
+      "path": "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/ReplicaSSG/files/test_scans.txt",
+      "sha256": "b7f8e16ad992562c76192dbfc96566dc1fdc4ab129a14bc1585e87badeb0dd33",
+      "requested_test_scenes": [
+        "apartment_1",
+        "apartment_2",
+        "office_1",
+        "office_3",
+        "office_4",
+        "room_1",
+        "room_2",
+        "hotel_0",
+        "frl_apartment_3",
+        "frl_apartment_4",
+        "frl_apartment_5"
+      ],
+      "evaluated_scenes": [
+        "office_1",
+        "office_3",
+        "office_4",
+        "room_1",
+        "room_2"
+      ],
+      "excluded_test_scenes": [
+        "apartment_1",
+        "apartment_2",
+        "hotel_0",
+        "frl_apartment_3",
+        "frl_apartment_4",
+        "frl_apartment_5"
+      ]
+    },
+    "categories": [
+      "anonymize_picture",
+      "anonymize_text",
+      "basket",
+      "bed",
+      "bench",
+      "bin",
+      "blanket",
+      "blinds",
+      "book",
+      "bottle",
+      "bowl",
+      "box",
+      "cabinet",
+      "camera",
+      "ceiling",
+      "chair",
+      "clock",
+      "cloth",
+      "comforter",
+      "desk",
+      "desk-organizer",
+      "door",
+      "floor",
+      "indoor-plant",
+      "lamp",
+      "monitor",
+      "nightstand",
+      "non-plane",
+      "other-leaf",
+      "panel",
+      "picture",
+      "pillar",
+      "pillow",
+      "pipe",
+      "plate",
+      "rug",
+      "sculpture",
+      "shelf",
+      "switch",
+      "table",
+      "tablet",
+      "tissue-paper",
+      "tv-screen",
+      "tv-stand",
+      "vase",
+      "vent",
+      "wall",
+      "wall-plug",
+      "window"
+    ],
+    "num_proposals": 300,
+    "proposal_ks": [
+      100,
+      300
+    ],
+    "iou_thresholds": [
+      0.5,
+      0.75
+    ],
+    "dtype": "float32",
+    "device": "cuda:0",
+    "preprocessing": "official generate_proposal.py letterbox (640x640, RGB/255) and head_predict NMS (score threshold 0.0, topk 30000, batched NMS IoU 0.7, top 300)",
+    "gt_box_source": "manifest source-frame region_box_xyxy on the full RGB frame"
+  },
+  "provenance": {
+    "model_repo_id": "fushh7/WeDetect",
+    "model_revision": "3b9d0670cbf300d0b48f900ae87a6c4785d88939",
+    "snapshot_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/a6",
+    "checkpoint": "wedetect_base_uni.pth",
+    "checkpoint_bytes": 433889662,
+    "checkpoint_sha256": "e595578aeeb5f2a36cca383c23279cf7ea72e0bfb7c546dc39420359bf2d2c82",
+    "wedetect_repo_path": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/wedetect-repo",
+    "wedetect_repo_commit": "42c34c6742a22f26280bb0e59f95a701baee1a32",
+    "hf_home": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface",
+    "torch_version": "2.7.1+cu128",
+    "torchvision_version": "0.22.1+cu128",
+    "cuda_version": "12.8"
+  },
+  "state_dict": {
+    "remap_source": "official generate_proposal.py backbone/bbox_head key remap, reproduced verbatim",
+    "strict": false,
+    "missing_keys": [],
+    "missing_key_count": 0,
+    "unexpected_keys": [
+      "backbone.norm.weight",
+      "backbone.norm.bias",
+      "backbone.head.weight",
+      "backbone.head.bias"
+    ],
+    "unexpected_key_count": 4
+  },
+  "device": {
+    "name": "NVIDIA GeForce RTX 5090",
+    "uuid": "28955b6a-4aa1-6882-0ab6-a9f7428119ba",
+    "total_memory_gib": 31.35009765625,
+    "major": 12,
+    "minor": 0
+  },
+  "counts": {
+    "source_frame_count": 250,
+    "object_view_count": 2204,
+    "category_count": 49,
+    "scene_count": 5,
+    "total_proposal_count": 75000,
+    "average_proposal_count": 300.0,
+    "proposal_embedding_dimension": 768
+  },
+  "latency": {
+    "per_frame_inference_seconds": {
+      "mean": 0.0728656,
+      "median": 0.0590796,
+      "p95": 0.0653542,
+      "min": 0.0553691,
+      "max": 3.29594,
+      "std": 0.204275
+    },
+    "frame_count": 250
+  },
+  "metrics": {
+    "overall": {
+      "object_view_count": 2204,
+      "frame_count": 250,
+      "average_proposal_count": 300.0,
+      "proposal_recall_iou_0.5_k100": 0.373412,
+      "proposal_recall_iou_0.75_k100": 0.114791,
+      "proposal_recall_iou_0.5_k300": 0.465064,
+      "proposal_recall_iou_0.75_k300": 0.158802,
+      "mean_best_iou_k100": 0.410205,
+      "mean_best_iou_k300": 0.46579,
+      "total_proposal_count": 75000,
+      "proposal_count": {
+        "mean": 300.0,
+        "median": 300.0,
+        "p95": 300.0,
+        "min": 300.0,
+        "max": 300.0,
+        "std": 0.0
+      }
+    },
+    "per_scene": {
+      "office_1": {
+        "object_view_count": 338,
+        "frame_count": 50,
+        "average_proposal_count": 300.0,
+        "proposal_recall_iou_0.5_k100": 0.488166,
+        "proposal_recall_iou_0.75_k100": 0.168639,
+        "proposal_recall_iou_0.5_k300": 0.568047,
+        "proposal_recall_iou_0.75_k300": 0.218935,
+        "mean_best_iou_k100": 0.474458,
+        "mean_best_iou_k300": 0.529127
+      },
+      "office_3": {
+        "object_view_count": 553,
+        "frame_count": 50,
+        "average_proposal_count": 300.0,
+        "proposal_recall_iou_0.5_k100": 0.273056,
+        "proposal_recall_iou_0.75_k100": 0.0632911,
+        "proposal_recall_iou_0.5_k300": 0.329114,
+        "proposal_recall_iou_0.75_k300": 0.0904159,
+        "mean_best_iou_k100": 0.330027,
+        "mean_best_iou_k300": 0.372021
+      },
+      "office_4": {
+        "object_view_count": 402,
+        "frame_count": 50,
+        "average_proposal_count": 300.0,
+        "proposal_recall_iou_0.5_k100": 0.390547,
+        "proposal_recall_iou_0.75_k100": 0.136816,
+        "proposal_recall_iou_0.5_k300": 0.497512,
+        "proposal_recall_iou_0.75_k300": 0.189055,
+        "mean_best_iou_k100": 0.443204,
+        "mean_best_iou_k300": 0.50169
+      },
+      "room_1": {
+        "object_view_count": 505,
+        "frame_count": 50,
+        "average_proposal_count": 300.0,
+        "proposal_recall_iou_0.5_k100": 0.368317,
+        "proposal_recall_iou_0.75_k100": 0.10495,
+        "proposal_recall_iou_0.5_k300": 0.481188,
+        "proposal_recall_iou_0.75_k300": 0.158416,
+        "mean_best_iou_k100": 0.411342,
+        "mean_best_iou_k300": 0.477894
+      },
+      "room_2": {
+        "object_view_count": 406,
+        "frame_count": 50,
+        "average_proposal_count": 300.0,
+        "proposal_recall_iou_0.5_k100": 0.403941,
+        "proposal_recall_iou_0.75_k100": 0.130542,
+        "proposal_recall_iou_0.5_k300": 0.512315,
+        "proposal_recall_iou_0.75_k300": 0.172414,
+        "mean_best_iou_k100": 0.431833,
+        "mean_best_iou_k300": 0.490181
+      }
+    }
+  },
+  "proposal_conditioned_feature_diagnostic": {
+    "label": "GT-matched proposal embedding diagnostic: every GT object view is assigned the embedding of its highest-IoU WeDetect-Uni proposal among the frame's score-ranked 300, even when IoU is below 0.5. Association and scene-graph metrics reuse the fixed ReplicaSSG predicates via _association_and_graph_metrics. This is not autonomous map association and not predicate prediction.",
+    "assignment_rule": "argmax bbox IoU over the score-ranked proposals; ties go to the higher-scored proposal",
+    "coverage_iou_0.5": 0.465064,
+    "association_and_graph_metrics": {
+      "cross_view_instance_retrieval_top1": 0.18148318747121142,
+      "cross_view_instance_retrieval_mrr": 0.3212011284026884,
+      "cross_view_instance_retrieval_recall_at_1": 0.18148318747121142,
+      "cross_view_instance_retrieval_recall_at_5": 0.46107784431137727,
+      "cross_view_instance_retrieval_recall_at_10": 0.6282818977429756,
+      "scene_graph_node_identity_accuracy": 0.18148318747121142,
+      "scene_graph_oracle_predicate_triplet_recall": 0.02040816326530612,
+      "scene_graph_node_observations_scored": 2171,
+      "scene_graph_edge_observations_scored": 49,
+      "scene_graph_metric_scope": "ReplicaSSG predicate labels are held fixed; this measures how object identity errors from visual matching propagate to graph nodes and relation triplets. It does not evaluate predicate generation."
+    }
+  },
+  "timing_seconds": {
+    "model_load": 1.01237,
+    "inference_loop": 19.7457,
+    "total_wall": 32.4239
+  },
+  "resources": {
+    "model_resident_allocated_gib": 0.402452,
+    "load_peak_allocated_gib": 0.402452,
+    "load_peak_reserved_gib": 0.410156,
+    "inference_peak_allocated_gib": 0.602313,
+    "inference_peak_reserved_gib": 0.740234,
+    "peak_allocated_gib": 0.602313,
+    "peak_reserved_gib": 0.740234
+  },
+  "failures": [],
+  "output_files": {
+    "results": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3/results.json",
+    "per_object_csv": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3/per_object.csv",
+    "per_frame_proposals": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3/per_frame_proposals.json",
+    "assigned_embeddings": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3/assigned_proposal_embeddings.npy",
+    "run_input": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261116-wedetect-uni-run3/run-input.json"
+  }
+}

@@ -15,7 +15,7 @@ The earlier SigLIP2/FG-CLIP2 reference uses mask-isolated or padded crops, while
 
 ## WeDetect proposal path
 
-The WeDetect repository and local HF checkpoint are installed. Run 2 completed proposal inference on all 250 frames and 2,204 object views, but final aggregation failed because the isolated Python environment could not import `conceptgraph`. No aggregate metrics were produced; the partial IoU rows are not accepted as scores. Run 1 failed before inference with the threshold-key `KeyError`. See the [separate WeDetect run 2 report](wedetect_uni_run2_failure.md). This proposal path remains distinct from the oracle-box ObjEmbed measurements above. Do not read the ObjEmbed scores as WeDetect results.
+The WeDetect repository and local HF checkpoint are installed. Run 2 completed proposal inference on all 250 frames and 2,204 object views, but final aggregation failed because the isolated Python environment could not import `conceptgraph`. No aggregate metrics were produced; the partial IoU rows are not accepted as scores. Run 1 failed before inference with the threshold-key `KeyError`. Run 3 set the repository root in `PYTHONPATH` and completed successfully. The first accepted WeDetect-Uni proposal recall and GT-matched diagnostic are now available. See the [run3 report](wedetect_uni_run3.md) and the [separate WeDetect run 2 failure report](wedetect_uni_run2_failure.md). This proposal path remains distinct from the oracle-box ObjEmbed measurements above. Do not read the ObjEmbed scores as WeDetect results.
 
 ## Protocol and artifacts
 
