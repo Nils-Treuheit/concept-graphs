@@ -143,7 +143,7 @@
           <tr>
             <td>DINOv3 + dino.txt global encoder</td>
             <td>Macro mAP: <b>0.0261293</b><br>Top-1 macro 0.0139328 · Top-5 micro 0.1588022<br><span class="status measured">2,204 held-out views scored</span></td>
-            <td>GT-mask-isolated crop category retrieval on the frozen five-scene held-out split (2,204 views, 49 categories). Cross-view identity and graph diagnostics remain pending; Stage 2 pipeline-slot acceptance is pending. <a href="reports/optional/dinotxt_global_retrieval_test5.md">Detailed result</a></td>
+            <td>GT-mask-isolated crop category retrieval on the frozen five-scene held-out split (2,204 views, 49 categories). Stage 1 cross-view identity and graph diagnostics are now measured and reported; Stage 2 pipeline-slot acceptance is pending. <a href="reports/optional/dinotxt_global_retrieval_test5.md">Global retrieval result</a> · <a href="../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md">Identity and graph diagnostics</a></td>
           </tr>
           <tr>
             <td>DINOde text retrieval</td>
@@ -308,8 +308,9 @@
       <div class="links">
         <a href="reports/optional/template_retrieval_test5.md">Matched retrieval comparison<small>SigLIP2, FG-CLIP2, and visual-only DINOv3</small></a>
         <a href="reports/optional/dinov3_visual_association_test5.md">DINOv3 association report<small>Corrected FP32 result and invalid attempt audit</small></a>
-        <a href="reports/optional/dinotxt_global_retrieval_test5.md">DINOtxt global crop retrieval<small>GT-mask-isolated crop measured; identity/graph diagnostics pending</small></a>
-        <a href="reports/optional/dinotxt_clip_substitution.md">DINOtxt substitution plan<small>Asset gate passed; cross-view identity and pipeline-slot acceptance pending</small></a>
+        <a href="reports/optional/dinotxt_global_retrieval_test5.md">DINOtxt global crop retrieval<small>GT-mask-isolated crop measured; Stage 1 identity and graph diagnostics now reported</small></a>
+        <a href="../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md">DINOtxt identity and graph diagnostics<small>Graph-node identity 0.1953; 0/49 oracle predicate triplet recall</small></a>
+        <a href="reports/optional/dinotxt_clip_substitution.md">DINOtxt substitution plan<small>Asset gate passed; pipeline-slot acceptance pending</small></a>
         <a href="../../scripts/pipeline_model_reports/dinode_template_retrieval_status.md">DINOde retrieval status<small>Weights installed, local run authorized; implementation and benchmark pending</small></a>
         <a href="reports/optional/template_vqa_query_vlm_status.md">Template-matching VQA readiness<small>Qwen3.8 and Qwen3-VL answerers; no held-out VQA score yet</small></a>
         <a href="reports/optional/query_qwen38.md">Qwen3.8 query answerer<small>Provisional baseline; target role not measured</small></a>

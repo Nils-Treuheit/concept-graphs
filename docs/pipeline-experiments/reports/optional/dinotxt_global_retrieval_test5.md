@@ -1,6 +1,6 @@
 # DINOv3 + dino.txt ViT-L/16 global shared-space crop category retrieval — measured result
 
-**Status:** measured and reviewed (GT-mask-isolated crop category retrieval). Broader Stage 1 (cross-view identity / graph diagnostics) and Stage 2 (optional pipeline-slot acceptance) remain explicitly pending.
+**Status:** measured and reviewed (GT-mask-isolated crop category retrieval). Stage 1 cross-view identity and graph diagnostics are now measured and reported; see the [dedicated graph report](../../../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md) for details. Stage 2 (optional pipeline-slot acceptance) remains explicitly pending.
 
 **Runner:** `scripts/pipeline_model_reports/benchmarks/dinotxt_replica_test5.py`  
 **Result:** `models/experiments/t_ren/data/dinotxt_test5/dinotxt_test5_global_retrieval_20261116T161741Z_2382729.json`  

@@ -227,6 +227,33 @@ def compute_relation_tuples(
     }
 
 
+def parse_relation_tuples(
+    relationships: Dict, test_scenes: set,
+) -> List[Tuple[int, str, int]]:
+    """Parse frozen relation tuples into (subject_id, predicate_name, object_id).
+
+    Indices match ``_association_and_graph_metrics``: tuple[0] subject,
+    tuple[1] relation ID, tuple[2] object, tuple[3] predicate name.
+
+    Returns integer endpoint IDs (matching ``int(t[0])`` and ``int(t[2])``)
+    and the predicate name as a string.  Deduplicates each scene's edges
+    using a set, as the reference comparator does.
+    """
+    edge_set: set = set()
+    for scan in relationships.get("scans", []):
+        scene = scan.get("scan")
+        if scene not in test_scenes:
+            continue
+        for t in scan.get("relationships", []):
+            if len(t) < 4:
+                raise ValueError(f"Malformed relation tuple (len={len(t)}): {t}")
+            sid = int(t[0])
+            oid = int(t[2])
+            pname = str(t[3])
+            edge_set.add((sid, pname, oid))
+    return sorted(edge_set)
+
+
 # ---------------------------------------------------------------------------
 # Validation
 # ---------------------------------------------------------------------------
@@ -847,6 +874,11 @@ def main() -> None:
     candidate_count_dist: Dict[str, int] = defaultdict(int)
     node_view_support: Dict[str, Dict[str, int]] = defaultdict(dict)
 
+    # Predicted-node-by-query map: every resolved query with >= 2 candidates
+    # stores the actual top-scoring node ID; queries with < 2 candidates
+    # store None.  Keeps primary eligibility and misses unchanged.
+    predicted_node_by_query: Dict[str, int | None] = {}
+
     for sk in sorted(resolved.keys()):
         info = resolved[sk]
         scene = info["scene"]
@@ -868,6 +900,9 @@ def main() -> None:
                 sk, info["embedding"], scene, obj_id_int, query_prototypes
             )
             candidate_count_dist[len(scores)] += 1
+
+            # Store the actual top-scoring predicted node ID as integer.
+            predicted_node_by_query[sk] = scores[0][0] if scores else None
 
             # Find rank of correct node.
             correct_rank = None
@@ -894,6 +929,7 @@ def main() -> None:
                 "excluded_reason": None,
                 "num_candidates": len(scores),
                 "per_query_cand_count": per_query_cand_count,
+                "predicted_node_id": predicted_node_by_query[sk],
                 "top5": [{"object_id": cid, "score": round(cos, 6)}
                          for cid, cos in scores[:5]],
                 "top10": [{"object_id": cid, "score": round(cos, 6)}
@@ -909,6 +945,16 @@ def main() -> None:
                 reason = "insufficient_candidates"
             else:
                 reason = "other"
+
+            # For queries with >= 2 candidates, record top-scoring predicted
+            # node even when the true node lacks alternate-frame support.
+            if per_query_cand_count >= 2:
+                scores = rank_candidates(
+                    sk, info["embedding"], scene, obj_id_int, query_prototypes
+                )
+                predicted_node_by_query[sk] = scores[0][0] if scores else None
+            else:
+                predicted_node_by_query[sk] = None
 
             # Coverage-adjusted: miss sentinel rank 0 so the metric
             # aggregation contributes zero to top-1, MRR, and every
@@ -926,6 +972,7 @@ def main() -> None:
                 "excluded_reason": reason,
                 "num_candidates": per_query_cand_count,
                 "per_query_cand_count": per_query_cand_count,
+                "predicted_node_id": predicted_node_by_query[sk],
                 "top5": [],
                 "top10": [],
             })
@@ -935,6 +982,175 @@ def main() -> None:
 
     rank_time = time.time() - start_rank
     total_queries = len(per_query_ranks)
+
+    # Validate predicted_node_by_query keys equal all resolved queries.
+    if set(predicted_node_by_query.keys()) != set(resolved):
+        raise RuntimeError(
+            f"predicted_node_by_query keys mismatch: "
+            f"expected all {len(resolved)} resolved queries, "
+            f"got {len(predicted_node_by_query)}"
+        )
+
+    # Validate predicted-node availability iff query has >= 2 candidates.
+    for _sk, _pred in predicted_node_by_query.items():
+        has_2plus = len(query_prototypes.get(_sk, {})) >= 2
+        has_pred = _pred is not None
+        if has_2plus and not has_pred:
+            raise RuntimeError(
+                f"Query {_sk} has >= 2 candidates but predicted node is None"
+            )
+        if not has_2plus and has_pred:
+            raise RuntimeError(
+                f"Query {_sk} has < 2 candidates but predicted node is not None"
+            )
+
+    # Compute graph-node identity from eligible per-query ranks (observations
+    # equal eligible_query_count, correct equals rank-1 count), then oracle
+    # predicate triplet recall from the predicted_node_by_query map.
+    print("\nComputing graph metrics ...")
+
+    # Graph-node identity: derived from eligible_scores_list.
+    graph_node_identity: Dict[str, Any] = {
+        "observations": eligible_query_count,
+        "correct": sum(1 for _, _, r in eligible_scores_list if r == 1),
+    }
+    gn_total = eligible_query_count
+    graph_node_identity["accuracy"] = (
+        round(graph_node_identity["correct"] / gn_total, 10)
+        if gn_total
+        else 0.0
+    )
+
+    # Fail closed if the graph-node denominator mismatches the primary.
+    if graph_node_identity["observations"] != eligible_query_count:
+        raise RuntimeError(
+            f"Graph-node identity observations "
+            f"({graph_node_identity['observations']}) != "
+            f"eligible_query_count ({eligible_query_count})"
+        )
+
+    # Derive overall and per-scene graph-node observations/correct/accuracy
+    # directly from eligible_scores_list (one observation per eligible query).
+    # Keep edge counts out of graph-node identity metrics.
+    per_scene_graph_node: Dict[str, Dict] = {}
+    graph_triplet_recall: Dict[str, Any] = {
+        "observations": 0, "correct": 0, "recall": 0.0
+    }
+    per_scene_triplet: Dict[str, Dict] = {}
+    total_graph_node_obs = 0
+    total_graph_node_correct = 0
+
+    for scene in sorted(VALID_SCENES):
+        # --- graph-node: count eligible queries and rank-1 hits per scene ---
+        scene_eligible = [
+            r for (s, _, r) in eligible_scores_list if s == scene
+        ]
+        gn_obs = len(scene_eligible)
+        gn_correct = sum(1 for r in scene_eligible if r == 1)
+        per_scene_graph_node[scene] = {
+            "observations": gn_obs,
+            "correct": gn_correct,
+            "accuracy": round(gn_correct / gn_obs, 10) if gn_obs else 0.0,
+        }
+        total_graph_node_obs += gn_obs
+        total_graph_node_correct += gn_correct
+
+        # --- triplet recall: build per-frame pred map with int object IDs ---
+        scene_frames = frame_map.get(scene, {})
+        scene_edges = list(
+            set(e for e in parse_relation_tuples(relationships, {scene}))
+        )
+        if not scene_edges:
+            continue
+
+        frame_pred_map: Dict[str, Dict[int, str | None]] = {}
+        for frame_str, sk_list in scene_frames.items():
+            if not sk_list:
+                continue
+            # Compare the full candidate-ID set and count across all queries.
+            first_cand_ids = set(query_prototypes.get(sk_list[0], {}).keys())
+            for fr_sk in sk_list:
+                fr_cand_ids = set(query_prototypes.get(fr_sk, {}).keys())
+                if fr_cand_ids != first_cand_ids:
+                    raise RuntimeError(
+                        f"Inconsistent candidate set in frame "
+                        f"{scene}/{frame_str}: {fr_sk} has candidates "
+                        f"{fr_cand_ids} but expected {first_cand_ids}"
+                    )
+            # Skip edge scoring for frames whose shared set has fewer than 2
+            # candidates — but only *after* the full equality check above.
+            if len(first_cand_ids) < 2:
+                continue
+            pred_map: Dict[int, str | None] = {}
+            for sk in sk_list:
+                obj_info = resolved.get(sk, {})
+                if not obj_info:
+                    continue
+                oid = obj_info["object_id_int"]
+                # Mirror the comparator's ``if oid in prototypes`` gate: only
+                # include endpoints whose ground-truth node ID is in the frame's
+                # shared leave-one-frame-out candidate set.  Unsupported
+                # endpoints are excluded from edge observations.
+                if oid not in first_cand_ids:
+                    continue
+                pred_map[oid] = predicted_node_by_query.get(sk)
+            frame_pred_map[frame_str] = pred_map
+
+        obs = 0
+        correct_triplet = 0
+        for frame_str, pred_map in frame_pred_map.items():
+            # Build a visibility map: only endpoints that are both
+            # (a) supported in the frame's candidate set and
+            # (b) have a non-null prediction.  Store predicted IDs as
+            # integers; parsed endpoints are ints too.
+            visible: Dict[int, int] = {
+                oid: int(pid) for oid, pid in pred_map.items() if pid is not None
+            }
+            for subj_int, pname, obj_int in scene_edges:
+                if subj_int not in visible or obj_int not in visible:
+                    continue
+                obs += 1
+                # Both predicted integer IDs must equal the GT endpoint IDs.
+                # Predicate is oracle/fixed.
+                if visible[subj_int] == subj_int and visible[obj_int] == obj_int:
+                    correct_triplet += 1
+
+        per_scene_triplet[scene] = {
+            "observations": obs,
+            "correct": correct_triplet,
+            "recall": round(correct_triplet / obs, 10) if obs else 0.0,
+        }
+        graph_triplet_recall["observations"] += obs
+        graph_triplet_recall["correct"] += correct_triplet
+
+    # Fail-closed: per-scene sums must equal primary eligible counts.
+    if total_graph_node_obs != eligible_query_count:
+        raise RuntimeError(
+            f"Per-scene graph-node observations "
+            f"({total_graph_node_obs}) != eligible_query_count "
+            f"({eligible_query_count})"
+        )
+    if total_graph_node_correct != graph_node_identity["correct"]:
+        raise RuntimeError(
+            f"Per-scene graph-node correct "
+            f"({total_graph_node_correct}) != eligible rank-1 count "
+            f"({graph_node_identity['correct']})"
+        )
+
+    # Finalise overall graph-node accuracy from eligible-rank counts.
+    graph_node_identity["observations"] = total_graph_node_obs
+    graph_node_identity["correct"] = total_graph_node_correct
+    graph_node_identity["accuracy"] = (
+        round(total_graph_node_correct / total_graph_node_obs, 10)
+        if total_graph_node_obs else 0.0
+    )
+
+    tr_total = graph_triplet_recall["observations"]
+    graph_triplet_recall["recall"] = (
+        round(graph_triplet_recall["correct"] / tr_total, 10)
+        if tr_total
+        else 0.0
+    )
 
     # 10. Compute metrics.
     print("\nComputing metrics ...")
@@ -1030,11 +1246,14 @@ def main() -> None:
             "total_tuples": rel_counts["total_tuples"],
             "per_scene": rel_counts["per_scene"],
             "unique_relation_names": rel_counts["unique_relation_names"],
-            "note": "Exact frozen-scene relation tuple count from relationships.json. Visual relation-triplet recall is unmeasured: cached inputs contain only individual crop embeddings, no relation-pair features or relation-text score matrix.",
+            "note": "Exact frozen-scene relation tuple count from relationships.json. Visual relation-triplet recall (inferred from pairwise features) remains unmeasured; oracle predicate triplet recall is measured below using predicted node assignments.",
         },
         "analysis_status": {
             "identity_retrieval": "completed",
-            "relation_triplet_recall": "unmeasured",
+            "oracle_predicate_triplet_recall": "completed",
+            "graph_node_identity": "completed",
+            "graph_triplet_recall": "completed",
+            "visual_relation_inference": "unmeasured",
         },
         "runtime": {
             "wall_seconds": round(elapsed, 3),
@@ -1082,6 +1301,21 @@ def main() -> None:
             "overall": coverage_metrics["overall"],
             "per_scene": coverage_metrics["per_scene"],
         },
+        "graph_node_identity_metrics": {
+            "description": "Graph-node identity accuracy: fraction of eligible object observations (once per eligible query) where the highest-scoring leave-one-frame-out candidate matches the true node ID. Predicates are oracle (from relationships.json).",
+            "observations": graph_node_identity["observations"],
+            "correct": graph_node_identity["correct"],
+            "accuracy": graph_node_identity["accuracy"],
+            "per_scene": per_scene_graph_node,
+        },
+        "graph_triplet_recall_metrics": {
+            "description": "Oracle predicate triplet recall: fraction of observable frozen edges where both predicted endpoints are supported in the frame's shared leave-one-frame-out candidate set, have a non-null prediction, and match their ground-truth node IDs. Predicates remain oracle/fixed; predicate generation is not evaluated.",
+            "observations": graph_triplet_recall["observations"],
+            "correct": graph_triplet_recall["correct"],
+            "recall": graph_triplet_recall["recall"],
+            "per_scene": per_scene_triplet,
+            "note": "Predicate generation is not evaluated. Predicates are taken directly from relationships.json.",
+        },
         "internal_consistency": ic_checks,
         "per_query_ranks": per_query_ranks,
         "environment": {
@@ -1093,7 +1327,7 @@ def main() -> None:
         "limitations": [
             "Cached-feature CPU analysis only. No model load, GPU operation, or new input generation.",
             "Leave-one-frame-out retrieval of graph-node identity - not map association or pipeline-slot acceptance.",
-            "Relation-triplet recall is unmeasured from these cached embeddings.",
+            "Oracle predicate triplet recall uses frozen relationships.json predicates; visual relation inference is not evaluated.",
         ],
         "failures": [],
         "warnings": [],
