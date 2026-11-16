@@ -39,7 +39,7 @@ Five frozen held-out scenes, 50 frames each: 2,204 labeled object views, 49 cate
 | room_1 | 505 |
 | room_2 | 406 |
 
-Inputs: `dinov3-test5-crops-fp32` crop cache, ReplicaSSG `objects.json`, baseline manifest `/tmp/t_ren_test5_crop_manifest_20261116.json`, controls `scripts/pipeline_model_reports/data/replica-test-retrieval-controls.json`. All mask/crop entries matched the baseline entrywise before and after inference (no data drift).
+Inputs: `dinov3-test5-crops-fp32` crop cache, ReplicaSSG `objects.json`, baseline manifest `/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/data/dinotxt_test5/t_ren_test5_crop_manifest_20261116.json`, controls `scripts/pipeline_model_reports/data/replica-test-retrieval-controls.json`. All mask/crop entries matched the baseline entrywise before and after inference (no data drift).
 
 ## Metrics
 
@@ -96,7 +96,7 @@ Weights and source repositories stay out of Git.
 ## Warnings and failed attempts
 
 - sklearn is absent in the runner venv; an import-spec-valid fail-loud PCA stub covered T-REN's unused visualization import. The region-text path never instantiated PCA.
-- Five preserved pre-success attempts under `/tmp`:
+- Five preserved pre-success attempts in Git-ignored project data:
   - `132224Z_1933153`: false dependency preflight from missing `importlib.util`.
   - `132547Z_1942180`: flattened mask distance index bug.
   - `134106Z_1981097`: stub `sklearn.__spec__ is None`.
@@ -123,6 +123,6 @@ These are descriptive context only: no paired deltas, no significance claims. Th
 
 ## Artifacts and reproducibility
 
-- Full score matrix: schema `t-ren-replica-test5-region-retrieval` v1, 2,204 rows by 49 classes. Retained outside Git at `/tmp/t_ren_test5_region_retrieval_20261116T142603Z_2097135.json`, status `completed`, created `2026-11-16T14:26:03.578593+00:00`, on-disk SHA-256 `5550c9f00a7770e7708eb1286099fbbaffe9e03b3ef941ae9ff238096ee0d126`.
+- Full score matrix: schema `t-ren-replica-test5-region-retrieval` v1, 2,204 rows by 49 classes. Retained in Git-ignored project data at `/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/data/dinotxt_test5/t_ren_region_retrieval_test5_20261116/t_ren_test5_region_retrieval_20261116T142603Z_2097135.json`, status `completed`, created `2026-11-16T14:26:03.578593+00:00`, on-disk SHA-256 `5550c9f00a7770e7708eb1286099fbbaffe9e03b3ef941ae9ff238096ee0d126`.
 - The `88882675f1d4ad787c67ad2e794313b97d2306c149a23568f59f48c325619463` value recorded inside the JSON is an internal output field, not the on-disk SHA-256 of the file.
 - The reviewed runner is copied byte-for-byte to `scripts/pipeline_model_reports/benchmarks/t_ren_replica_test5.py` (SHA-256 `fb07caa7d529d4a71a201ef20d5ce155f8c93e795c4dfdc6404251a774e15d05`) for reproducibility.

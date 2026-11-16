@@ -28,14 +28,17 @@ Constraints honored:
   (positional arguments or unknown keywords). Every other
   ``torch.hub.load`` call passes through with its original arguments.
   The checkouts themselves stay byte-identical and unmodified.
-- ``TORCH_HOME`` points at a unique run-owned temporary directory under
-  /tmp, created only after the argument and output safety checks pass and
-  before the first torch import, and removed when the run exits. torch
-  stages even file:// weights under ``<TORCH_HOME>/hub/checkpoints``, so
-  the large weight cache copies never touch the user cache.
-- The default evidence output is a unique /tmp path
-  (``/tmp/t_ren_test5_region_retrieval_<UTC stamp>_<pid>.json``); the
-  resolved path is checked against every run input and the ConceptGraphs
+- ``TORCH_HOME`` points at a unique run-owned temporary directory created
+  inside the validated output parent (``output_path.parent``) after the
+  argument and output safety checks pass and before the first torch
+  import, and removed when the run exits. torch stages even file://
+  weights under ``<TORCH_HOME>/hub/checkpoints``, so the large weight
+  cache copies stay on the project HDD and never touch the user cache.
+- The default evidence output is a unique UTC-stamped/PID JSON under the
+  Git-ignored project data directory
+  (``<result_dir>/t_ren_test5_region_retrieval_test5_<UTC stamp>_<pid>.json``);
+  the resolved path is checked to be within the resolved result directory
+  and the resolved result directory is verified inside the ConceptGraphs
   worktree root before any model work, and a rejected or unresolved
   target is never written to for success or failure evidence. An existing
   file is never overwritten unless ``--overwrite`` is given, and the
@@ -70,7 +73,8 @@ Constraints honored:
   counts or the 4,408 direct crop files. A content-sensitive manifest
   (sorted relative paths + byte sizes + SHA-256) over every crop-cache
   file is computed before inference, compared entry-wise against
-  /tmp/t_ren_test5_crop_manifest_20261116.json when present (baseline
+  models/experiments/t_ren/data/dinotxt_test5/t_ren_test5_crop_manifest_20261116.json
+  when present (baseline
   entries are strictly validated; a malformed or duplicate-path baseline
   can never yield a match), and the same routine is recomputed after
   inference to detect any file change.
@@ -89,8 +93,9 @@ os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["TORCH_HUB_OFFLINE"] = "1"
 os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
 # TORCH_HOME is deliberately NOT set at import time. main() creates a
-# unique run-owned temporary directory and points TORCH_HOME at it only
-# after the argument and output safety checks pass and before the first
+# unique run-owned temporary directory on the project HDD (inside the
+# validated output parent) and points TORCH_HOME at it only after the
+# argument and output safety checks pass and before the first
 # torch import; the directory is cleaned in main's finally block. An
 # early --help or preflight failure therefore never triggers deletion.
 
@@ -113,7 +118,9 @@ from urllib.parse import urlsplit
 DEFAULT_CROP_CACHE = (
     "/mnt/HDD1/Project_Data/public_datasets/Replica_benchmark/results/dinov3-test5-crops-fp32"
 )
-DEFAULT_ASSETS_DIR = "/tmp/t_ren_dinov3_assets_20261116"
+DEFAULT_ASSETS_DIR = (
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/weights/dinov3"
+)
 DEFAULT_T_REN_REPO = (
     "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/repo"
 )
@@ -127,7 +134,10 @@ CONTROL_JSON = (
     "/mnt/HDD1/Project_Code/concept-graphs/scripts/pipeline_model_reports/data/"
     "replica-test-retrieval-controls.json"
 )
-BASELINE_MANIFEST = "/tmp/t_ren_test5_crop_manifest_20261116.json"
+BASELINE_MANIFEST = (
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/"
+    "data/dinotxt_test5/t_ren_test5_crop_manifest_20261116.json"
+)
 DINOTXT_ENTRY = "dinov3_vitl16_dinotxt_tet1280d20h24l"
 # Torch Hub routing options accepted by torch.hub.load() itself (and by
 # the hubconf entry resolution) but unknown to the official DINOv3
@@ -137,20 +147,29 @@ DINOTXT_ENTRY = "dinov3_vitl16_dinotxt_tet1280d20h24l"
 HUB_ROUTING_OPTIONS = frozenset((
     "source", "force_reload", "trust_repo", "verbose", "skip_validation",
 ))
-# ConceptGraphs Git worktree root. The evidence output must never land
-# inside the repository: benchmark results and scratch stay outside Git,
-# so explicit --output paths inside this worktree are rejected.
+# Default evidence output directory under the Git-ignored T-REN experiment
+# data folder. Benchmark results and scratch stay outside Git. The resolved
+# evidence output must be inside this resolved directory, and this
+# resolved directory must be inside the resolved ConceptGraphs worktree
+# root (do not accept arbitrary ignored directories).
 CONCEPT_GRAPHS_ROOT = "/mnt/HDD1/Project_Code/concept-graphs"
+RESULT_DIR = (
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/t_ren/"
+    "data/dinotxt_test5/t_ren_region_retrieval_test5_20261116"
+)
 
 
 def _default_output_path() -> str:
-    """Unique default evidence output under /tmp (never inside the repo).
+    """Unique default evidence output under the ignored project data directory.
 
     Computed once at ``parse_args`` time from the current UTC stamp and PID
     so concurrent runs can never target the same evidence file.
     """
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return f"/tmp/t_ren_test5_region_retrieval_{stamp}_{os.getpid()}.json"
+    return (
+        f"{RESULT_DIR}/t_ren_test5_region_retrieval_test5_{stamp}_"
+        f"{os.getpid()}.json"
+    )
 
 
 TEXT_PROMPT_TEMPLATE = "a photo of a {category}"
@@ -226,22 +245,23 @@ PRIOR_ASSET_BYTES = {
 
 
 def validate_output_path(output_path: Path,
+                         result_dir: Path,
                          protected: list[tuple[str, Path]],
                          allow_overwrite: bool) -> Path:
     """Resolve the evidence output path and reject unsafe or colliding paths.
 
-    ``protected`` is a list of ``(label, path)`` pairs covering every run
-    input: the crop cache, the assets directory and the four asset files
-    (symlinks, so resolved at their targets), objects.json, the control
-    JSON, the baseline manifest, the T-REN/DINOv3 checkouts and the
-    ConceptGraphs worktree root (the output must never land inside the
-    Git repository; benchmark results and scratch stay outside Git). The
-    output path is resolved with symlinks followed and rejected if it
-    equals any resolved protected path or lies inside a protected
-    directory, so symlinked inputs are protected at their targets too. A
-    resolved existing file or directory is rejected unless
-    ``allow_overwrite`` is set (the default is to never overwrite), and
-    an existing non-directory parent is rejected. Returns the resolved
+    First verifies that ``result_dir`` resolves inside the resolved
+    ConceptGraphs worktree root, and that the output path resolves inside
+    the resolved result directory. Then checks ``protected``: a list of
+    ``(label, path)`` pairs covering every run input (the crop cache, the
+    assets directory and the four asset files (symlinks resolved at their
+    targets), objects.json, the control JSON, the baseline manifest, and
+    the T-REN/DINOv3 checkouts). The output path is resolved with symlinks
+    followed and rejected if it equals any resolved protected path or lies
+    inside a protected directory, so symlinked inputs are protected at
+    their targets too. A resolved existing file or directory is rejected
+    unless ``allow_overwrite`` is set (the default is to never overwrite),
+    and an existing non-directory parent is rejected. Returns the resolved
     output path on success.
     """
     try:
@@ -249,6 +269,27 @@ def validate_output_path(output_path: Path,
     except OSError as exc:
         raise OutputPathError(
             f"Cannot resolve output path {output_path}: {exc}") from exc
+
+    # Containment checks: result_dir must be inside the ConceptGraphs
+    # worktree root; the output must be inside result_dir.
+    try:
+        result_dir_resolved = result_dir.resolve()
+    except OSError as exc:
+        raise OutputPathError(
+            f"Cannot resolve result directory {result_dir}: {exc}") from exc
+    try:
+        cg_root_resolved = Path(CONCEPT_GRAPHS_ROOT).resolve()
+    except OSError as exc:
+        raise OutputPathError(
+            f"Cannot resolve ConceptGraphs root {CONCEPT_GRAPHS_ROOT}: {exc}") from exc
+    if not result_dir_resolved.is_relative_to(cg_root_resolved):
+        raise OutputPathError(
+            f"Result directory {result_dir} resolves to {result_dir_resolved}, "
+            f"which is not inside the ConceptGraphs root ({cg_root_resolved})")
+    if not resolved.is_relative_to(result_dir_resolved):
+        raise OutputPathError(
+            f"Output path {output_path} resolves to {resolved}, which is not "
+            f"inside the result directory ({result_dir_resolved})")
 
     for label, base in protected:
         try:
@@ -291,8 +332,9 @@ def parse_args() -> argparse.Namespace:
                         help="Directory holding the four local asset files.")
     parser.add_argument("--output", type=str, default=_default_output_path(),
                         help="Evidence JSON output path (default: unique "
-                             "/tmp path per run). Existing files are "
-                             "refused unless --overwrite is given.")
+                             "path under the result directory per run). "
+                             "Existing files are refused unless --overwrite "
+                             "is given.")
     parser.add_argument("--overwrite", action="store_true",
                         help="Allow overwriting an existing evidence output "
                              "file (default: reject).")
@@ -2119,8 +2161,9 @@ def main() -> int:
     # Failure-evidence bookkeeping: the phase reached, the output path
     # (set only once resolved and validated; failure evidence is written
     # only to a validated path) and the manifests/hashes established so
-    # far. The run-owned TORCH_HOME temporary directory is created after
-    # the argument and output safety checks and cleaned in the finally.
+    # far. The run-owned TORCH_HOME temporary directory is created on the
+    # project HDD (inside the validated output parent) after the
+    # argument and output safety checks and cleaned in the finally.
     phase = "startup"
     established: dict[str, Any] = {}
     output_path: Path | None = None
@@ -2159,8 +2202,10 @@ def main() -> int:
                 f"Missing T-REN config: {t_ren_repo / 'configs' / 'train_dinov3_vitl16.yaml'}")
 
         # Output path safety: resolve the requested path (symlinks
-        # followed) and reject any collision with a run input, the
-        # ConceptGraphs worktree or an existing file without --overwrite.
+        # followed) and reject if the result directory does not resolve
+        # inside the ConceptGraphs worktree root, if the output does not
+        # resolve inside the result directory, or if it collides with a
+        # run input or an existing file without --overwrite.
         # Must pass before any model work; on success ``output_path``
         # holds the resolved path used for the evidence and (on failure)
         # the failure evidence. If validation rejects the path,
@@ -2177,10 +2222,10 @@ def main() -> int:
             ("baseline manifest", baseline_manifest_path),
             ("T-REN checkout", t_ren_repo),
             ("DINOv3 checkout", dinov3_repo),
-            ("ConceptGraphs worktree", Path(CONCEPT_GRAPHS_ROOT)),
         ]
         output_path = validate_output_path(
-            requested_output_path, protected_inputs, args.overwrite)
+            requested_output_path, Path(RESULT_DIR),
+            protected_inputs, args.overwrite)
 
         # Hard dependency gate: a missing importable module (e.g. kornia,
         # required by T-REN model.py) fails here with a clear message
@@ -2265,10 +2310,13 @@ def main() -> int:
         # all argument and output safety checks — and removed in the
         # finally below. torch.hub.load_state_dict_from_url stages even
         # file:// weights under <TORCH_HOME>/hub/checkpoints, so the
-        # multi-GB weight cache copies stay inside this run-owned
-        # directory and out of the user cache.
+        # multi-GB weight cache copies stay on the project HDD.
+        # Create the temp directory inside the already validated output
+        # parent so the path is guaranteed to exist.
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         torch_home_dir = tempfile.TemporaryDirectory(
-            prefix=f"t_ren_test5_torch_home_{os.getpid()}_", dir="/tmp")
+            prefix=f"t_ren_test5_torch_home_{os.getpid()}_",
+            dir=str(output_path.parent))
         os.environ["TORCH_HOME"] = torch_home_dir.name
 
         import torch
@@ -2408,15 +2456,16 @@ def main() -> int:
                     "path": str(torch_home_dir.name),
                     "ownership": (
                         "run-owned temporary directory (tempfile."
-                        "TemporaryDirectory), created after the argument "
-                        "and output safety checks and before the first "
+                        "TemporaryDirectory), created on the project HDD "
+                        "inside the validated output parent after the "
+                        "argument and output safety checks and before the "
                         "torch import; removed in main's finally block"),
                     "purpose": (
                         "TORCH_HOME for torch weight cache copies: "
                         "torch.hub.load_state_dict_from_url stages even "
                         "file:// weights under <TORCH_HOME>/hub/"
-                        "checkpoints, so the multi-GB copies stay out of "
-                        "the user cache"),
+                        "checkpoints, so the multi-GB copies stay on the "
+                        "project HDD and never under /tmp"),
                     "present_at_evidence_write": torch_home_present,
                     "bytes_at_evidence_write": torch_home_bytes,
                 },
