@@ -24,6 +24,23 @@ Run3 completed successfully with no failures. Root artifact checks confirmed 250
 
 ## Proposal recall
 
+### Independent recomputation
+
+Root recomputed proposal/GT box IoU on CPU from the frozen run3 manifest and saved raw per-frame proposals. For each manifest `object_views` row, the GT rectangle was `box_crop.region_box_xyxy`; its frame's proposals were processed in stored rank order using `bbox_xyxy`. The implementation's continuous-coordinate XYXY area/intersection formula was reproduced independently. Proposal coordinates are serialized at six decimals; no view's best IoU was within 0.0000664 of the 0.50 threshold or 0.0000806 of the 0.75 threshold, so serialization rounding cannot change these hit classifications.
+
+Exact aggregate hit counts and per-scene hit rates match at displayed precision:
+
+| Scope | Views | .50/K100 | .75/K100 | .50/K300 | .75/K300 |
+|---|---:|---:|---:|---:|---:|
+| Overall | 2,204 | 823/2204 | 253/2204 | 1025/2204 | 350/2204 |
+| office_1 | 338 | 165/338 | 57/338 | 192/338 | 74/338 |
+| office_3 | 553 | 151/553 | 35/553 | 182/553 | 50/553 |
+| office_4 | 402 | 157/402 | 55/402 | 200/402 | 76/402 |
+| room_1 | 505 | 186/505 | 53/505 | 243/505 | 80/505 |
+| room_2 | 406 | 164/406 | 53/406 | 208/406 | 70/406 |
+
+All 2,204 stored per-object hit flags match with zero mismatches. This validates saved proposal-recall calculations, not model inference.
+
 ### Aggregate
 
 | Metric | Result |
