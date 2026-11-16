@@ -1,0 +1,18 @@
+/mnt/HDD1/Project_Code/concept-graphs/models/experiments/envs/objembed/lib/python3.10/site-packages/torch/functional.py:554: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /pytorch/aten/src/ATen/native/TensorShape.cpp:4314.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+[wedetect-uni] 25/250 frames
+[wedetect-uni] 50/250 frames
+[wedetect-uni] 75/250 frames
+[wedetect-uni] 100/250 frames
+[wedetect-uni] 125/250 frames
+[wedetect-uni] 150/250 frames
+[wedetect-uni] 175/250 frames
+[wedetect-uni] 200/250 frames
+[wedetect-uni] 225/250 frames
+[wedetect-uni] 250/250 frames
+Traceback (most recent call last):
+  File "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/adapter/benchmark_wedetect_uni_proposals.py", line 590, in <module>
+    raise SystemExit(main())
+  File "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/adapter/benchmark_wedetect_uni_proposals.py", line 456, in main
+    association = __import__("conceptgraph.scripts.replica_clip_benchmark",
+ModuleNotFoundError: No module named 'conceptgraph'

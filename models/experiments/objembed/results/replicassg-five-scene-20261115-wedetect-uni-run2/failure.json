@@ -1,0 +1,13 @@
+{
+  "status": "failed",
+  "failed_utc": "2026-11-16T06:06:18.794757+00:00",
+  "exception_type": "ModuleNotFoundError",
+  "error": "No module named 'conceptgraph'",
+  "completed_frames": 250,
+  "completed_object_views": 2204,
+  "partial_artifacts": [
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261115-wedetect-uni-run2/per_frame_proposals.json",
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261115-wedetect-uni-run2/per_object.csv",
+    "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/results/replicassg-five-scene-20261115-wedetect-uni-run2/assigned_proposal_embeddings.npy"
+  ]
+}

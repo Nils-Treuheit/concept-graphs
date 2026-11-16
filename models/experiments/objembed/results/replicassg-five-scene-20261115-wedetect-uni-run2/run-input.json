@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-11-16T06:05:58.164312+00:00",
+  "manifest": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/data/replicassg-five-scene-v1.json",
+  "manifest_sha256": "b04b2e90e15a96d5a1e04154c7fbe1935135336b1aee5e8903c1e5aab77ab277",
+  "expected_counts": {
+    "scene_count": 5,
+    "frame_view_count": 250,
+    "visible_object_view_count": 2204,
+    "category_count": 49
+  },
+  "model_repo_id": "fushh7/WeDetect",
+  "model_revision": "3b9d0670cbf300d0b48f900ae87a6c4785d88939",
+  "checkpoint": "wedetect_base_uni.pth",
+  "checkpoint_sha256": "e595578aeeb5f2a36cca383c23279cf7ea72e0bfb7c546dc39420359bf2d2c82",
+  "checkpoint_bytes": 433889662,
+  "wedetect_repo_path": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/objembed/wedetect-repo",
+  "wedetect_repo_commit": "42c34c6742a22f26280bb0e59f95a701baee1a32",
+  "num_proposals": 300,
+  "proposal_ks": [
+    100,
+    300
+  ],
+  "iou_thresholds": [
+    0.5,
+    0.75
+  ],
+  "dtype": "float32",
+  "device": "cuda:0"
+}
