@@ -15,6 +15,6 @@ Before a valid query-time run, generate held-out ConceptGraphs maps and freeze a
 | [Qwen3.8 27B](query_qwen38.md) | Configured local UD-Q4_K_XL MTP4 baseline. Existing 40-frame result is per-frame annotation only. | Not measured |
 | [Qwen3-VL 8B Instruct Q8](query_qwen3vl_8b_instruct.md) | Local GGUF and projector cached; historical generic panel run succeeded. | Not measured |
 | [Qwen3-VL 30B Thinking Q4](query_qwen3vl_30b_thinking.md) | Local GGUF and projector cached; intended complex/affordance role. Serving and context fit unverified. | Not measured |
-| [Qwen3-VL 8B Thinking Q8](query_qwen3vl_8b_thinking.md) | Historical generic panel result; model files absent in the current cache search. | Not measured |
+| [Qwen3-VL 8B Thinking Q8](query_qwen3vl_8b_thinking.md) | Exact GGUF and projector are installed at the pinned HF revision; query evidence remains unprepared. | Not measured |
 
 For every answerer, answer correctness, object attribution, relation direction, evidence support, abstention, schema validity, target latency, and peak GPU use are not measured. Generic panel scores belong only to `.agentic_workflow/workspace/vlm-selection/evidence/qwen-vqa-results.json` and must not be labeled ConceptGraphs query-time results. Full held-out protocol, prerequisites, metrics, and provenance are in this index's per-answerer reports and `scripts/pipeline_model_reports/feature_encoders.md` for existing retriever evidence.

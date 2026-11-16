@@ -5,8 +5,8 @@ merges the captions of every object into a single one with the **local text
 model** (Qwen3.8 served by Ollama) and stores the result in the map of the
 mapping stage.
 
-This script sends serial requests to the local text model after mapping. Model
-residency remains managed by the configured local inference service.
+This script sends serial requests to the configured local text model after
+mapping. The text server can be managed by model-control or by the launcher.
 """
 
 from __future__ import annotations
@@ -20,16 +20,23 @@ import pickle
 from pathlib import Path
 import tempfile
 
-from conceptgraph.utils.llm_client import REASONING_EFFORTS, get_llm_client
+from conceptgraph.utils.llm_client import get_llm_client
+from conceptgraph.utils.model_control import load_ollama_gpu_model, unload_all_models
 from conceptgraph.utils.vlm import consolidate_captions
 
 
-def _unload_llm_at_stage_exit(client) -> None:
-    """Best-effort cleanup if consolidation exits before its explicit unload."""
+def _unload_llm_at_stage_exit() -> None:
+    """Best-effort cleanup through managed model control."""
     try:
-        client.unload()
+        unload_all_models()
     except Exception as exc:  # keep checkpointed results usable if cleanup fails
         print(f"Warning: could not unload the text model after consolidation: {exc}")
+
+
+def _uses_external_server() -> bool:
+    return os.getenv("LLM_EXTERNAL_SERVER", "0").strip().lower() in {
+        "1", "true", "yes", "on"
+    }
 
 
 def load_map(exp_out_path: Path, exp_suffix: str) -> dict:
@@ -121,14 +128,8 @@ def main() -> None:
     parser.add_argument(
         "--checkpoint-every",
         type=int,
-        default=5,
+        default=50,
         help="Save the map and object JSON after this many visited objects",
-    )
-    parser.add_argument(
-        "--reasoning-effort",
-        choices=REASONING_EFFORTS,
-        default="low",
-        help="Reasoning effort for local text-model requests",
     )
     parser.add_argument(
         "--max-tokens",
@@ -147,8 +148,35 @@ def main() -> None:
     objects = results["objects"]
     print(f"Loaded {len(objects)} objects from the map.")
 
-    client = get_llm_client(reasoning_effort=args.reasoning_effort, max_tokens=args.max_tokens)
-    atexit.register(_unload_llm_at_stage_exit, client)
+    # Caption consolidation is the final GPU model stage. The standard Ollama
+    # route is managed here; llama.cpp is started and stopped by the modernized
+    # launcher around this stage.
+    external_server = _uses_external_server()
+    if not external_server:
+        unload_all_models()
+    client = get_llm_client(
+        reasoning_effort=None if external_server else "none",
+        max_tokens=args.max_tokens,
+    )
+    if external_server:
+        available_models = client.list_models()
+        expected_model = client.model.casefold()
+        if expected_model not in {name.casefold() for name in available_models}:
+            raise RuntimeError(
+                f"Configured consolidation model '{client.model}' is not available "
+                f"from {client.base_url}; server models: {available_models}"
+            )
+        print(f"Using externally managed model server at {client.base_url}")
+    else:
+        # Register before loading so a partially started runner is cleaned up
+        # if model loading fails partway through.
+        atexit.register(_unload_llm_at_stage_exit)
+        runner_pids = load_ollama_gpu_model(
+            client.model,
+            base_url=client.base_url.removesuffix("/v1"),
+            keep_alive=-1,
+        )
+        print(f"Loaded the configured text model on Ollama GPU runner PIDs {runner_pids}")
     print(f"Using the local text model '{client.model}' at {client.base_url}")
 
     num_consolidated = 0
@@ -189,8 +217,9 @@ def main() -> None:
     write_object_json(exp_out_path, args.exp_suffix, objects)
     print(f"Consolidated the captions of {num_consolidated} objects.")
     # Do not report this stage complete until Ollama has accepted the unload.
-    client.unload()
-    atexit.unregister(_unload_llm_at_stage_exit)
+    if not external_server:
+        unload_all_models()
+        atexit.unregister(_unload_llm_at_stage_exit)
 
 
 if __name__ == "__main__":

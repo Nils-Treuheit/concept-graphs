@@ -6,10 +6,19 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 MODEL_DIR="${CG_EDGE_MODEL_DIR:-/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/edge-compatible-gguf}"
-LLAMA_SERVER_BIN="${LLAMA_SERVER_BIN:-$(command -v llama-server || true)}"
+DEFAULT_LLAMA_SERVER_BIN="${HOME}/.local/src/llama.cpp/build/bin/llama-server"
+LLAMA_SERVER_BIN="${LLAMA_SERVER_BIN:-}"
+if [[ -z "${LLAMA_SERVER_BIN}" ]]; then
+    if [[ -x "${DEFAULT_LLAMA_SERVER_BIN}" ]]; then
+        LLAMA_SERVER_BIN="${DEFAULT_LLAMA_SERVER_BIN}"
+    else
+        LLAMA_SERVER_BIN="$(command -v llama-server || true)"
+    fi
+fi
 WORKFLOW_ROOT="${CODEX_OPENCODE_PIPELINE:-/home/nils/Project_Code/codex_opencode_pipeline}"
 PORT="${EDGE_COMPATIBLE_PORT:-20262}"
 CTX_SIZE="${EDGE_COMPATIBLE_CONTEXT_SIZE:-16384}"
+REASONING_MODE="${EDGE_COMPATIBLE_REASONING:-off}"
 
 usage() {
     printf 'Usage: %s {qwen35-9b-q4|qwen35-9b-q8|gemma4-12b|gemma4-26b-a4b}\n' "$0"
@@ -23,6 +32,18 @@ case "$MODEL_ID" in
     gemma4-12b) MODEL_FILE="gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" ;;
     gemma4-26b-a4b) MODEL_FILE="gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" ;;
     *) usage >&2; exit 2 ;;
+esac
+
+EXPECTED_ALIAS="edge-compatible-${MODEL_ID}"
+REQUESTED_ALIAS="${CG_EDGE_MODEL_ALIAS:-${EDGE_COMPATIBLE_MODEL_ALIAS:-}}"
+if [[ -n "$REQUESTED_ALIAS" && "$REQUESTED_ALIAS" != "$EXPECTED_ALIAS" ]]; then
+    echo "Model alias must match the selected model ID: ${EXPECTED_ALIAS}" >&2
+    exit 2
+fi
+MODEL_ALIAS="${REQUESTED_ALIAS:-$EXPECTED_ALIAS}"
+case "$REASONING_MODE" in
+    off|on|auto) ;;
+    *) echo "EDGE_COMPATIBLE_REASONING must be off, on, or auto." >&2; exit 2 ;;
 esac
 
 MODEL_PATH="${MODEL_DIR}/${MODEL_ID}/${MODEL_FILE}"
@@ -58,12 +79,13 @@ if ! grep -Eiq 'cuda|nvidia' <<<"$DEVICE_LIST"; then
     exit 2
 fi
 
-echo "Starting $MODEL_ID on CUDA with a ${CTX_SIZE}-token context at port ${PORT}."
+echo "Starting $MODEL_ID as ${MODEL_ALIAS} on CUDA with a ${CTX_SIZE}-token context at port ${PORT}."
+echo "Reasoning mode: ${REASONING_MODE}."
 echo "All model layers and the multimodal projector are requested on GPU."
 exec "$LLAMA_SERVER_BIN" \
     --model "$MODEL_PATH" \
     --mmproj "$MMPROJ_PATH" \
-    --alias edge-compatible \
+    --alias "$MODEL_ALIAS" \
     --host 127.0.0.1 \
     --port "$PORT" \
     --n-gpu-layers all \
@@ -71,4 +93,5 @@ exec "$LLAMA_SERVER_BIN" \
     --fit off \
     --flash-attn on \
     --ctx-size "$CTX_SIZE" \
-    --parallel 1
+    --parallel 1 \
+    --reasoning "$REASONING_MODE"

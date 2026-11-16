@@ -33,6 +33,7 @@ This repository contains the code for the ConceptGraphs project. ConceptGraphs b
 * The `dev` branch provides the real-time, streamlined implementation, including RGB-D video support and Rerun visualization. See the [getting started tutorial](https://youtu.be/56jEFyrqqpo?si=jo-qto5Gv8qxqEw2).
 * The code for real-world mapping and navigation using a Jackal robot is available [here](https://github.com/sachaMorin/concept_graphs_jackal).
 * The code for localization and mapping in AI2Thor is included in this repository. See the [AI2Thor instructions](#ai2thor-related-experiments).
+* A separate YOLOE-26 modernization with isolated feature and component-benchmark options is documented in [`ENVIRONMENT.md`](ENVIRONMENT.md#parallel-modernized-yoloe-pipeline).
 
 ## Getting Started Video Tutorial 
 

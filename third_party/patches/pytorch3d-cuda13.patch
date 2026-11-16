@@ -1,0 +1,25 @@
+--- a/setup.py
++++ b/setup.py
+@@ -52 +52 @@
+-    extra_compile_args = {"cxx": ["-std=c++17"]}
++    extra_compile_args = {"cxx": ["-std=c++20"]}
+@@ -77 +77,18 @@
+-            nvcc_args.append("-std=c++17")
++            nvcc_args.append("-std=c++20")
++
++        if torch.version.hip is None:
++            # CUDA 13.0+ compatibility flags for pulsar (backported from main).
++            # Starting with CUDA 13, __global__ function visibility changed.
++            # See: https://developer.nvidia.com/blog/
++            #      cuda-c-compiler-updates-impacting-elf-visibility-and-linkage/
++            cuda_version = torch.version.cuda
++            if cuda_version is not None:
++                major = int(cuda_version.split(".")[0])
++                if major >= 13:
++                    nvcc_args.extend(
++                        [
++                            "--device-entity-has-hidden-visibility=false",
++                            "-static-global-template-stub=false",
++                        ]
++                    )
++

@@ -726,11 +726,15 @@
   "source_annotation_sha256": "454873a8a01114246066ac841750eb742df3b5e42ce927ef38b49690084ec75a",
   "sample_manifest_sha256": "512abb4eabfcadf8ee4818a1dfb2beaef4763679bbf127119ddbdc7b4348af62",
   "extracted_png_manifest": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/adapter/data/coco500-extracted-manifest.json",
+  "panoptic_subset_json": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/adapter/data/coco500-panoptic-subset.json",
+  "panoptic_subset_manifest": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/adapter/data/coco500-panoptic-subset-manifest.json",
+  "panoptic_subset_json_sha256": "87e2a7c8f732d07708b90fa87c9d9ae983922132f6fe7879f1faa2b6c3cc5285",
+  "panoptic_subset_manifest_sha256": "bd9de5acd9cfd9b6e25339e6c13c08aac16cdf69fd75624c5addcbb45411552a",
   "status": "evaluator_roundtrip_passed",
   "detectron2_version": "0.6",
   "evaluator_class": "detectron2.evaluation.panoptic_evaluation.COCOPanopticEvaluator",
   "evaluator_source": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/detectron2-repo/detectron2/evaluation/panoptic_evaluation.py",
-  "evaluator_source_sha256": "c5bcff01a3f64f6d3b8d29a8ec292db397f3498fb59878e3374899c15398f764",
+  "evaluator_source_sha256": "a58388d39118d3473016bca333c63a605cbca2fcf920a71accf154a5c29cc52b",
   "evaluator_reverse_fields": [
     "_thing_contiguous_id_to_dataset_id",
     "_stuff_contiguous_id_to_dataset_id"

@@ -1,0 +1,37 @@
+# Model roles for modernized-path experiments. The annotation module still
+# uses the existing local VLM client; the launcher selects annotation_model.
+annotation:
+  model: qwen3.8:27b-mtp4-ud_q4_K_XL-128k
+  candidates:
+    - llava-onevision-2-8b-instruct
+    - Qwen/Qwen2.5-VL-7B-Instruct
+    - Qwen3-VL-8B-Instruct-UD-Q4_K_XL
+    - Qwen3-VL-8B-Instruct-UD-Q8_K_XL
+    - Qwen3-VL-8B-Thinking-UD-Q8_K_XL
+    - qwen3.8:27b-mtp4-ud_q4_K_XL-128k
+
+query:
+  model: unsloth/Qwen3-VL-30B-A3B-Thinking-1M-GGUF:UD-Q4_K_XL
+  candidates:
+    - unsloth/Qwen3-VL-8B-Instruct-GGUF:UD-Q8_K_XL
+    - qwen3.8:27b-mtp4-ud_q4_K_XL-128k
+    - Qwen3-VL-8B-Thinking-UD-Q8_K_XL
+
+# Annotation and query-answering are independent roles. This file records
+# planned choices; no query model is loaded by per-frame annotation.
+benchmark:
+  held_out_manifest: ""
+  reference_annotations: ""
+  output_dir: ""
+  fixed_detection_suffix: ""
+  prompt_version: object_attributes_relations_v1
+  decoding:
+    temperature: 0
+    max_tokens: 4096
+  required_result_metadata:
+    - model_id
+    - checkpoint_revision_or_quantization
+    - runtime
+    - reasoning_mode
+    - prompt_version
+    - held_out_manifest

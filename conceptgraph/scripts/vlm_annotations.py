@@ -42,7 +42,11 @@ from conceptgraph.utils.general_utils import (
     make_vlm_edges_and_captions,
 )
 from conceptgraph.utils.llm_client import get_vlm_client
-from conceptgraph.utils.model_control import unload_all_models, verify_ollama_gpu_model
+from conceptgraph.utils.model_control import (
+    load_ollama_gpu_model,
+    unload_all_models,
+    verify_ollama_gpu_model,
+)
 from conceptgraph.utils.gpu_memory_budget import NvmlMemoryBudget
 from conceptgraph.utils.model_utils import require_cuda_device
 
@@ -118,6 +122,12 @@ def main(cfg: DictConfig):
             f"Configured local VLM '{vlm_client.model}' is not available from "
             f"{vlm_client.base_url}; server models: {available_models}"
         )
+    runner_pids = load_ollama_gpu_model(
+        vlm_client.model,
+        base_url=vlm_client.base_url.removesuffix("/v1"),
+        keep_alive=-1,
+    )
+    print(f"Loaded the configured VLM on Ollama GPU runner PIDs {runner_pids}")
     # Keep the VLM warm across frames, then release it before the launcher
     # starts the GPU mapping stage. Per-frame unloading causes needless reloads.
     vlm_client.unload_after_frame = False

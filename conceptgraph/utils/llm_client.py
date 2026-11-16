@@ -32,6 +32,7 @@ variable                     meaning                                    default
 ``LLM_MODEL``                model tag as served by the server          ``qwen3.8:27b-mtp4-ud_q4_K_XL-128k``
 ``LLM_API_KEY``              bearer token (local servers ignore it)       ``EMPTY``
 ``LLM_TIMEOUT``              request timeout in seconds                  ``600``
+``LLM_KEEP_ALIVE``           Ollama model residency after each request     server default
 ``LLM_MAX_TOKENS``           ``max_tokens`` cap (0 = unlimited)          ``0``
 ``LLM_REASONING_EFFORT``     ``none|minimal|low|medium|high|xhigh|max``  ``xhigh``
 ``LLM_JSON_MODE``            request strict JSON output                 ``1``
@@ -95,6 +96,18 @@ def _env_flag(name: str, default: bool = True) -> bool:
     if value is None:
         return default
     return value.strip().lower() in ("1", "true", "yes", "on")
+
+
+def _apply_keep_alive(client: "LocalLLMClient", env_name: str) -> None:
+    """Pass an Ollama keep-alive policy through its OpenAI-compatible API."""
+    raw_value = os.getenv(env_name)
+    if raw_value is None or raw_value == "":
+        return
+    try:
+        keep_alive: int | str = int(raw_value)
+    except ValueError:
+        keep_alive = raw_value
+    client.extra_body = {**client.extra_body, "keep_alive": keep_alive}
 
 
 @dataclass
@@ -449,6 +462,7 @@ def get_llm_client(**kwargs: Any) -> LocalLLMClient:
     """
     kwargs.setdefault("env_prefix", "LLM")
     client = LocalLLMClient(**kwargs)
+    _apply_keep_alive(client, "LLM_KEEP_ALIVE")
     # The text client never releases the runner at a frame boundary.
     client.unload_after_frame = False
     return client
@@ -458,9 +472,9 @@ def get_vlm_client(**kwargs: Any) -> LocalLLMClient:
     """Client for the pipeline's local vision-language requests.
 
     Uses the primary local model by default. Configure with ``VLM_BASE_URL``,
-    ``VLM_MODEL``, ``VLM_REASONING_EFFORT`` and ``VLM_TIMEOUT``. Set
-    ``VLM_UNLOAD_AFTER_FRAME=1`` to release the Ollama runner after each
-    frame's relation and caption work.
+    ``VLM_MODEL``, ``VLM_REASONING_EFFORT``, ``VLM_TIMEOUT`` and
+    ``VLM_KEEP_ALIVE``. Set ``VLM_UNLOAD_AFTER_FRAME=1`` to release the Ollama
+    runner after each frame's relation and caption work.
     """
     kwargs.setdefault("env_prefix", "VLM")
     # The scene-graph prompts ask for a list of tuples / a list of dicts, not
@@ -475,6 +489,7 @@ def get_vlm_client(**kwargs: Any) -> LocalLLMClient:
     if "timeout" not in kwargs and not os.getenv("VLM_TIMEOUT"):
         kwargs["timeout"] = DEFAULT_TIMEOUT
     client = LocalLLMClient(**kwargs)
+    _apply_keep_alive(client, "VLM_KEEP_ALIVE")
     # Opt-in release of the Ollama runner after each frame's VLM work (off by
     # default for compatible non-Ollama endpoints).
     client.unload_after_frame = _env_flag("VLM_UNLOAD_AFTER_FRAME", False)

@@ -60,6 +60,44 @@ def _released(state: dict) -> bool:
     return True
 
 
+def get_model_control_status() -> dict:
+    """Return the loopback control app's current validated status object."""
+    code, state = _request("/status")
+    if code != 200:
+        raise RuntimeError(f"model-control /status returned HTTP {code}: {state}")
+    return state
+
+
+def require_idle_model_control() -> None:
+    """Fail unless managed inference engines and unmanaged GPU jobs are idle."""
+    state = get_model_control_status()
+    if not _released(state):
+        raise RuntimeError("model-control reports an active managed inference engine")
+    ollama = state.get("ollama")
+    unmatched = ollama.get("unmatched_gpu_processes") if isinstance(ollama, dict) else None
+    if unmatched != []:
+        raise RuntimeError(
+            "model-control reports unmanaged GPU processes; refusing to start inference: "
+            f"{unmatched}"
+        )
+    djev = state.get("djev")
+    if isinstance(djev, dict) and (
+        djev.get("ready") or djev.get("process_groups_alive")
+    ):
+        raise RuntimeError("model-control reports an active D-JEV inference engine")
+    jobs = state.get("jobs")
+    terminal_states = {
+        "done", "complete", "completed", "success", "succeeded", "failed", "error",
+    }
+    if not isinstance(jobs, dict):
+        raise RuntimeError("model-control status omitted its job inventory")
+    for job_name, job in jobs.items():
+        if not isinstance(job, dict) or str(job.get("status", "")).lower() not in terminal_states:
+            raise RuntimeError(
+                f"model-control job {job_name!r} is active or has unknown status: {job}"
+            )
+
+
 def verify_ollama_gpu_model(model: str) -> list[int]:
     """Require the requested model and at least one GPU runner in app status."""
     code, state = _request("/status")
@@ -119,6 +157,43 @@ def verify_ollama_gpu_model(model: str) -> list[int]:
             f"The requested Ollama model ({model}) has no observable GPU runner process"
         )
     return sorted(runner_pids)
+
+
+def load_ollama_gpu_model(
+    model: str,
+    *,
+    base_url: str = "http://127.0.0.1:20261",
+    keep_alive: int = -1,
+    timeout: float = 180.0,
+    poll_interval: float = 1.0,
+) -> list[int]:
+    """Load one Ollama model through model-control and confirm its GPU runner."""
+    code, response = _request(
+        "/load",
+        method="POST",
+        payload={"base_url": base_url, "model": model, "keep_alive": keep_alive},
+        timeout=min(timeout, 30.0),
+    )
+    if code not in {200, 202}:
+        raise RuntimeError(f"model-control /load returned HTTP {code}: {response}")
+    if response.get("status") in {"error", "failed"}:
+        raise RuntimeError(f"model-control load job failed: {response}")
+
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            return verify_ollama_gpu_model(model)
+        except RuntimeError as exc:
+            code, state = _request("/status", timeout=min(timeout, 15.0))
+            if code != 200:
+                raise RuntimeError(f"model-control /status returned HTTP {code}: {state}")
+            load_job = (state.get("jobs") or {}).get("load", {})
+            if isinstance(load_job, dict) and load_job.get("status") in {"error", "failed"}:
+                raise RuntimeError(f"model-control load job failed: {load_job}") from exc
+            time.sleep(poll_interval)
+    raise TimeoutError(
+        f"model-control did not confirm the GPU runner for {model} within {timeout:.0f}s"
+    )
 
 
 def _job_status(state: dict) -> str | None:

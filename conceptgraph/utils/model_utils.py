@@ -1,7 +1,6 @@
 import os
 from conceptgraph.utils.general_utils import measure_time
 # from line_profiler import profile
-from segment_anything import sam_model_registry, SamPredictor, SamAutomaticMaskGenerator
 import numpy as np
 import torch
 import cv2

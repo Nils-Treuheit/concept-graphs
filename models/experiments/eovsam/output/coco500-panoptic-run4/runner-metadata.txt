@@ -1,4 +1,0 @@
-cwd=/mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/repo
-CUDA_VISIBLE_DEVICES=0
-DETECTRON2_DATASETS=/mnt/HDD1/Project_Data/public_datasets
-command=/mnt/HDD1/Project_Code/concept-graphs/models/experiments/envs/eovsam-cu128-attempt1/bin/python /mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/adapter/evaluate.py run --num-gpus 1 --eval-only --config-file /mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/adapter/eovsam_coco500.yaml OUTPUT_DIR /mnt/HDD1/Project_Code/concept-graphs/models/experiments/eovsam/output/coco500-panoptic-run4 MODEL.WEIGHTS /mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--HaominPeng--EOVSAM/snapshots/51a9003a32aa87254675e492f94087eaa55c4f6b/eovsam.pth

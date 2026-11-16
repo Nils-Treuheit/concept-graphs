@@ -174,7 +174,7 @@ def consolidate_captions(client: LocalLLMClient = None, captions: list = None):
     (Qwen3.8 served by Ollama).
     """
     if client is None:
-        client = get_llm_client()
+        client = get_llm_client(reasoning_effort="none")
 
     # Formatting the captions into a single string prompt
     captions_text = "\n".join([f"{cap['caption']}" for cap in captions if cap['caption'] is not None])
@@ -191,36 +191,61 @@ def consolidate_captions(client: LocalLLMClient = None, captions: list = None):
         }
     ]
 
-    consolidated_caption = ""
-    try:
-        response = client.chat.completions.create(
-            model=getattr(client, "model", None) or gpt_model,
-            messages=messages,
-            response_format={"type": "json_object"}
-        )
-        
-        consolidated_caption_json = response.choices[0].message.content.strip()
-        # The local model sometimes answers with a different key ("caption")
-        # - accept the usual variants instead of losing the caption.
-        parsed = json.loads(consolidated_caption_json)
+    def extract_caption(content: str) -> str | None:
+        """Accept the requested JSON schema and common plain-text variants."""
+        content = (content or "").strip()
+        if not content:
+            return ""
+        # Some local runners wrap otherwise valid JSON in a Markdown fence.
+        if content.startswith("```"):
+            content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content, flags=re.I).strip()
+        try:
+            parsed = json.loads(content)
+        except json.JSONDecodeError:
+            if content.startswith(("{", "[", '"')):
+                # Do not persist truncated or malformed structured output as
+                # an object description. The caller retries once instead.
+                return None
+            # Structured-output mode is not honored consistently by every
+            # local model build. Preserve a useful plain-text answer instead
+            # of turning it into a blank object caption.
+            return content.strip().strip('"').strip()
         if isinstance(parsed, dict):
-            consolidated_caption = (
+            value = (
                 parsed.get("consolidated_caption")
                 or parsed.get("caption")
-                or next(
-                    (v for v in parsed.values() if isinstance(v, str)),
-                    "",
-                )
+                or next((v for v in parsed.values() if isinstance(v, str)), "")
             )
-        else:
-            consolidated_caption = str(parsed)
-        print(f"Consolidated Caption: {consolidated_caption}")
-        
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        consolidated_caption = ""
+            return value.strip() if isinstance(value, str) else ""
+        if isinstance(parsed, str):
+            return parsed.strip()
+        return ""
 
-    return consolidated_caption
+    for attempt in range(2):
+        try:
+            response = client.chat.completions.create(
+                model=getattr(client, "model", None) or gpt_model,
+                messages=messages,
+                response_format={"type": "json_object"},
+                reasoning_effort="none",
+            )
+            choice = response.choices[0] if response.choices else None
+            content = choice.message.content if choice else ""
+            consolidated_caption = extract_caption(content)
+            if consolidated_caption is not None and consolidated_caption:
+                print(f"Consolidated Caption: {consolidated_caption}")
+                return consolidated_caption
+            if attempt == 0:
+                print(
+                    "Caption consolidation returned unusable content; retrying once. "
+                    f"finish_reason={getattr(choice, 'finish_reason', None)!r}"
+                )
+        except Exception as exc:
+            print(f"Caption consolidation attempt {attempt + 1} failed: {exc}")
+            if attempt == 0:
+                continue
+
+    return ""
     
 def extract_list_of_tuples(text: str):
     # Pattern to match a list of tuples, considering a list that starts with '[' and ends with ']'

@@ -1351,9 +1351,9 @@ def filter_gobs(
     #     print(key, type(gobs[key]), len(gobs[key]))
 
     for attribute in gobs.keys():
-        if isinstance(gobs[attribute], str) or attribute == "classes":  # Captions
+        if isinstance(gobs[attribute], str) or attribute in {"classes", "feature_metadata"}:  # Captions and cache metadata
             continue
-        if attribute in ['labels', 'edges', 'text_feats', 'captions']:
+        if attribute in ['labels', 'edges', 'text_feats', 'text_feats_box', 'captions']:
             # Note: this statement was used to also exempt 'detection_class_labels' but that causes a bug. It causes the edges to be misalgined with the objects.
             continue
         elif isinstance(gobs[attribute], list):
@@ -1572,7 +1572,9 @@ def make_detection_list_from_pcd_and_gobs(
             # These are for the entire 3D object
             'pcd': obj_pcds_and_bboxes[mask_idx]['pcd'],
             'bbox': obj_pcds_and_bboxes[mask_idx]['bbox'],
-            'clip_ft': to_tensor(gobs['image_feats'][mask_idx]),
+            'clip_ft': to_tensor(
+                gobs[gobs.get('map_feature_key', 'image_feats')][mask_idx]
+            ),
             # 'text_ft': to_tensor(gobs['text_feats'][mask_idx]),
             'num_obj_in_class': num_obj_in_class,
             'curr_obj_num': tracker.total_object_count,

@@ -8,6 +8,12 @@ The selected files include each model's `mmproj-F16.gguf`, so relation and
 object-caption requests can use the same annotated images as the current
 Qwen3.8 route. The text consolidation stage uses that same candidate model.
 
+The modernized pipeline selects `gemma4-12b` for final caption consolidation
+by default. It starts the CUDA server after detection, annotation and mapping
+finish, then stops it after consolidation. Frame annotation remains on the
+configured VLM. Use `--consolidation-model qwen3.8` to select the prior
+Ollama-backed consolidator.
+
 ## Download
 
 Preview one model first:
@@ -44,11 +50,14 @@ system-wide. Set `LLAMA_CPP_SOURCE_DIR` to choose its checkout and
 `LLAMA_BUILD_JOBS` to limit compilation parallelism. Then start one candidate:
 
 ```bash
-LLAMA_SERVER_BIN=/path/to/llama-server scripts/edge-compatible/serve_model.sh qwen35-9b-q4
+LLAMA_SERVER_BIN=/path/to/llama-server scripts/edge-compatible/serve_model.sh gemma4-12b
 ```
 
-The server runs on `127.0.0.1:20262`, requests every model layer and the image
+The server runs on `127.0.0.1:20262`, names the endpoint
+`edge-compatible-<model-id>`, requests every model layer and the image
 projector on CUDA, uses a 16K context, and refuses a CPU-only llama.cpp build.
+Reasoning is disabled by default for short caption and annotation requests;
+set `EDGE_COMPATIBLE_REASONING=on` or `auto` when a task needs model reasoning.
 The launcher first calls the configured agentic workflow's `release-local`
 command, then checks CUDA availability. Stop the server with Ctrl-C before
 starting another candidate. Set `EDGE_COMPATIBLE_CONTEXT_SIZE` to change the
@@ -81,7 +90,7 @@ latency, output validity, and caption-consolidation agreement.
   --detections-exp-suffix s_detections_stride50 \
   --mapping-exp-suffix r_mapping_stride50 \
   --candidate-id qwen35-9b-q4 \
-  --model edge-compatible \
+  --model edge-compatible-qwen35-9b-q4 \
   --frames 5 \
   --objects 5
 ```

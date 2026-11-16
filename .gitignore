@@ -1,4 +1,4 @@
-.agentic_workflow
+.agentic_workflow/
 .codex
 .aws
 AGENTS.md
@@ -13,6 +13,40 @@ README_private.md
 weights
 *.pt
 env_vars.bash
+
+# Local model assets, downloaded datasets, external checkouts, and run output
+*.pth
+*.safetensors
+*.ckpt
+*.onnx
+*.engine
+/data/
+/datasets/
+**/datasets/
+models/experiments/envs/
+models/experiments/**/checkpoints/
+models/experiments/**/repo/
+models/experiments/**/*-repo/
+models/experiments/**/results/
+models/experiments/**/output/
+models/experiments/**/data/
+models/experiments/**/data/**/*.png
+models/experiments/**/data/**/*.jpg
+models/experiments/**/data/**/*.jpeg
+models/experiments/**/data/**/*.npz
+models/experiments/**/data/**/*.npy
+# Generated detector inputs, predictions, and local model artifacts are not reports.
+models/experiments/objembed/data/replicassg-five-scene-v1.json
+scripts/pipeline_model_reports/data/yoloe26/rerun_*/
+scripts/pipeline_model_reports/data/yoloe26/yoloe-26l-seg*.json*
+scripts/pipeline_model_reports/data/yoloe26/yoloe-26m-*.json*
+scripts/pipeline_model_reports/data/yoloe26/*.npz
+*.tmp
+/mobileclip2_b.ts
+
+# Vendored external dependency snapshots; migration out of the tracked index is pending.
+/third_party/faiss/
+/third_party/pytorch3d/
 
 # Local workflow and generated artifacts
 *.log

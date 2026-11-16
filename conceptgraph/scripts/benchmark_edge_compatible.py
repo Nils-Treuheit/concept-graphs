@@ -44,7 +44,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--detections-exp-suffix", default="s_detections_stride50")
     parser.add_argument("--mapping-exp-suffix", default="r_mapping_stride50")
     parser.add_argument("--base-url", default=os.getenv("EDGE_COMPATIBLE_BASE_URL", "http://127.0.0.1:20262/v1"))
-    parser.add_argument("--model", default=os.getenv("EDGE_COMPATIBLE_MODEL_ALIAS", "edge-compatible"))
+    parser.add_argument(
+        "--model",
+        default=os.getenv(
+            "EDGE_COMPATIBLE_MODEL_ALIAS",
+            f"edge-compatible-{os.getenv('EDGE_COMPATIBLE_CANDIDATE_ID', 'qwen35-9b-q4')}",
+        ),
+    )
     parser.add_argument(
         "--candidate-id",
         default=os.getenv("EDGE_COMPATIBLE_CANDIDATE_ID", "candidate"),

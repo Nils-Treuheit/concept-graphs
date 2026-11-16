@@ -5,13 +5,26 @@ set -euo pipefail
 SOURCE_DIR="${LLAMA_CPP_SOURCE_DIR:-/home/nils/.local/src/llama.cpp}"
 WORKFLOW_ROOT="${CODEX_OPENCODE_PIPELINE:-/home/nils/Project_Code/codex_opencode_pipeline}"
 JOBS="${LLAMA_BUILD_JOBS:-4}"
+CUDA_COMPILER="${CUDACXX:-}"
+CUDA_ARCHITECTURES="${LLAMA_CUDA_ARCHITECTURES:-120a}"
+if [[ -z "${CUDA_COMPILER}" ]]; then
+    if [[ -x /usr/local/cuda/bin/nvcc ]]; then
+        CUDA_COMPILER="/usr/local/cuda/bin/nvcc"
+    else
+        CUDA_COMPILER="$(command -v nvcc || true)"
+    fi
+fi
 
-for command_name in git cmake nvcc; do
+for command_name in git cmake; do
     if ! command -v "$command_name" >/dev/null 2>&1; then
         echo "Required build tool is missing: $command_name" >&2
         exit 2
     fi
 done
+if [[ -z "${CUDA_COMPILER}" || ! -x "${CUDA_COMPILER}" ]]; then
+    echo "A CUDA compiler was not found; set CUDACXX to the CUDA nvcc executable." >&2
+    exit 2
+fi
 if [[ ! -f "$WORKFLOW_ROOT/src/executor.py" ]]; then
     echo "Agentic workflow executor not found at $WORKFLOW_ROOT/src/executor.py" >&2
     echo "Set CODEX_OPENCODE_PIPELINE to the workflow checkout." >&2
@@ -36,6 +49,8 @@ if [[ -n "${LLAMA_CPP_REF:-}" ]]; then
 fi
 
 cmake -S "$SOURCE_DIR" -B "$SOURCE_DIR/build" \
+    -DCMAKE_CUDA_COMPILER="$CUDA_COMPILER" \
+    -DCMAKE_CUDA_ARCHITECTURES="$CUDA_ARCHITECTURES" \
     -DGGML_CUDA=ON \
     -DCMAKE_BUILD_TYPE=Release
 cmake --build "$SOURCE_DIR/build" --config Release \

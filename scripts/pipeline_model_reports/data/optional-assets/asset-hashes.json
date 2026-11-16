@@ -1,0 +1,92 @@
+{
+  "objembed_2b_shard1": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--ObjEmbed-2B/snapshots/0e8aafeb53a95fa624de76de3a3c0f59615acbc2/model-00001-of-00002.safetensors",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/a6/a6078d30327dba6c929d99f59f8d88a887727b1ee7598249ea04b5838e4a907d",
+    "bytes": 4760594440,
+    "sha256": "f32c85c42432077a8c3b416e6aa80a4d8f71a86ce54d0ce7a9876ec72f97e91a"
+  },
+  "objembed_2b_shard2": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--ObjEmbed-2B/snapshots/0e8aafeb53a95fa624de76de3a3c0f59615acbc2/model-00002-of-00002.safetensors",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/09/0930e909f6fc8d23495f441d7e6bf7a3f8bd34b35d7d3fb0422060192d1b8d4d",
+    "bytes": 626532962,
+    "sha256": "c1cb9ef9f6dff6c29b9a45a4e4c0e5ec62baf0f4729621ea598ce80c51dd7175"
+  },
+  "objembed_4b_shard1": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--ObjEmbed-4B/snapshots/18b9b26c6d93f94045d2acc4914d1e4e1ded2a0a/model-00001-of-00003.safetensors",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/7f/7fbb83c499c96fb7489fae0486a455f8136a3046a0be1c7bcc4eafd67a82656b",
+    "bytes": 4990498160,
+    "sha256": "bd8a29621030f7fc2d42e1e134a60f5ade92211af86f01c5e59c719c9542f096"
+  },
+  "objembed_4b_shard2": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--ObjEmbed-4B/snapshots/18b9b26c6d93f94045d2acc4914d1e4e1ded2a0a/model-00002-of-00003.safetensors",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/b9/b95b07a4362660535c043d09e77b08f8c51e750faa5aceb368dad55ac7945346",
+    "bytes": 4674979944,
+    "sha256": "a822c08a2ed98369d5d06aa90f5330c3df24b7cfb3c90304909ab541b73f4ba8"
+  },
+  "objembed_4b_shard3": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--ObjEmbed-4B/snapshots/18b9b26c6d93f94045d2acc4914d1e4e1ded2a0a/model-00003-of-00003.safetensors",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/5d/5d11843dc2b952fdf84a3bc2047b11ad200292561339871e1fcefb924da06c92",
+    "bytes": 784476770,
+    "sha256": "1ab0b4e9676dea5cb0a550f973de8803e8b68199b56ceb295d504e20a9b17591"
+  },
+  "wedetect_base_uni": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--fushh7--WeDetect/snapshots/3b9d0670cbf300d0b48f900ae87a6c4785d88939/wedetect_base_uni.pth",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/a6/a67956964ba65f85eabc88bb49d019162c854fb8ff3167ed5a094a0743f281d5",
+    "bytes": 433889662,
+    "sha256": "e595578aeeb5f2a36cca383c23279cf7ea72e0bfb7c546dc39420359bf2d2c82"
+  },
+  "tren_region_encoder": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--savyak2--T-REN/snapshots/cfc2ea88a4f8e7679df43a8ecbb4a99701329cd8/tren_region_encoder.pth",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/18/180f768c439517626cdaf0fdbbb42d352f3bda4218a161875be55893f5396f46",
+    "bytes": 1455980684,
+    "sha256": "7f85132237001d52176226b3fd6ebde8ecfc08569ae196d56deeb5b052bf9b1f"
+  },
+  "eovsam": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--HaominPeng--EOVSAM/snapshots/51a9003a32aa87254675e492f94087eaa55c4f6b/eovsam.pth",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/b9/b96085699baa32c2cd3ef16afb4f4be4ae911d2abbf305b1f0349ad631013100",
+    "bytes": 7694435929,
+    "sha256": "717ee1cf425396945fb38dbc6977262e115daf80230db4f5cf657004732ebda4"
+  },
+  "sam3": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3/snapshots/3c879f39826c281e95690f02c7821c4de09afae7/sam3.pt",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3/blobs/9999e2341ceef5e136daa386eecb55cb414446a00ac2b55eb2dfd2f7c3cf8c9e",
+    "bytes": 3450062241,
+    "sha256": "9999e2341ceef5e136daa386eecb55cb414446a00ac2b55eb2dfd2f7c3cf8c9e"
+  },
+  "sam3_1": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3.1/snapshots/daa63191845a41281374e725f4c9e51c7a824460/sam3.1_multiplex.pt",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--facebook--sam3.1/blobs/0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
+    "bytes": 3502755717,
+    "sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6"
+  },
+  "qwen3vl_8b_thinking": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--unsloth--Qwen3-VL-8B-Thinking-GGUF/snapshots/894774171339940a7a7f162a39d8143fb5154cdd/Qwen3-VL-8B-Thinking-UD-Q8_K_XL.gguf",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/64/64e060c5d1a37b43d413f4205598f4626cefe89f3cd18b7b9c1809f818406be4",
+    "bytes": 10824039712,
+    "sha256": "3bc450f7fd9c41afc599258d01e15066124b270fedc5eab6237c5c0b08d2723d"
+  },
+  "qwen3vl_8b_thinking_mmproj": {
+    "path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/models--unsloth--Qwen3-VL-8B-Thinking-GGUF/snapshots/894774171339940a7a7f162a39d8143fb5154cdd/mmproj-F16.gguf",
+    "resolved_path": "/mnt/HDD1/unsloth_and_hugging_face_models/huggingface/hub/blobs/a4/a4d54b4133929782dfe974d59b6c692be5b4a7940ffe81103e015c9a9430a7f3",
+    "bytes": 1159030336,
+    "sha256": "64d5be3f16fb91cfb451155fe4745266e2169ccbe1f29f57bfab27fb7fec389e"
+  },
+  "dinode_ode_checkpoint": {
+    "path": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/dinode/checkpoints/eccv26_dinode_coco_stuff.pth",
+    "resolved_path": "/mnt/HDD1/Project_Code/concept-graphs/models/experiments/dinode/checkpoints/eccv26_dinode_coco_stuff.pth",
+    "bytes": 214589829,
+    "sha256": "494354fe148a278a99c8186a59d9fa5ef14cf6254e312195eb08cac69cac1377"
+  },
+  "yoloe26_l_seg": {
+    "path": "/mnt/HDD1/Project_Code/concept-graphs/models/yoloe-26l-seg.pt",
+    "resolved_path": "/mnt/HDD1/Project_Code/concept-graphs/models/yoloe-26l-seg.pt",
+    "bytes": 79417413,
+    "sha256": "a612d2d505f24e14d87ec82d688b823b6cb600646664f16125ce6c84ce360da9"
+  },
+  "yoloe26_m_seg": {
+    "path": "/mnt/HDD1/Project_Code/concept-graphs/models/yoloe-26m-seg.pt",
+    "resolved_path": "/mnt/HDD1/Project_Code/concept-graphs/models/yoloe-26m-seg.pt",
+    "bytes": 70443185,
+    "sha256": "585f5ec9028fd358035da8d860c27c56be285a795cba2076fba536a4391c2c83"
+  }
+}

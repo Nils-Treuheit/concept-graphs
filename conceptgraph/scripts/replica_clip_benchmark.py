@@ -671,8 +671,11 @@ def main() -> int:
         raise RuntimeError("No ground-truth object masks were visible in the selected ReplicaSSG frames")
 
     labels = sorted({row["label"] for row in observations})
-    from conceptgraph.utils.model_utils import require_cuda_device
-    device = require_cuda_device("cuda:0")
+    # Keep this benchmark independent of optional detector packages. Importing
+    # model_utils also imports Segment Anything, which is not needed here.
+    device = torch.device("cuda:0")
+    if not torch.cuda.is_available():
+        raise RuntimeError("Replica benchmark requires a CUDA device; CPU fallback is disabled")
     results = []
     for name in args.models:
         results.append(_run_model(name, args, observations, labels, graph_data, device))

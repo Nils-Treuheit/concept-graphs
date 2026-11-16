@@ -1,0 +1,30 @@
+defaults:
+  - base
+  - base_detections
+  - record3d
+  - classes
+  - logging_level
+  - _self_
+
+# Separate experiment output. The legacy streamlined detector is untouched.
+stride: 50
+exp_suffix: s_modernized_${features.input_mode}_yoloe26l_stride${stride}
+save_video: false
+
+model:
+  checkpoint_name: auto
+  yoloe_checkpoint: auto
+  prompt_encoder: ${repo_root}/mobileclip2_b.ts
+  image_size: 640
+
+features:
+  input_mode: masked
+  hf_home: ${oc.env:HF_HOME,/mnt/HDD1/unsloth_and_hugging_face_models/huggingface}
+  mask_encoder: siglip2
+  mask_model_id: google/siglip2-so400m-patch14-384
+  mask_checkpoint: ""
+  siglip2_checkpoint: ""
+  box_encoder: fg_clip2
+  box_model_id: qihoo360/fg-clip2-so400m
+  box_checkpoint: ""
+  fg_clip2_checkpoint: ""

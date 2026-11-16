@@ -32,10 +32,17 @@ because CMake otherwise picks up the CUDA 11.5 wrapper in `/usr/bin`.
 ## Install / sync
 
 ```bash
+bash scripts/bootstrap_third_party.sh
 uv sync
 ```
 
-`uv sync` rebuilds the two vendored extensions if their sources changed
+The bootstrap obtains the pinned upstream sources and applies the small local
+CUDA compatibility patches before `uv` resolves the path dependencies. It
+refuses to replace an existing non-Git directory. See
+[`third_party/README.md`](third_party/README.md) for source references and patch
+details.
+
+`uv sync` rebuilds the two external extensions if their sources changed
 (~9 min for faiss, ~20 min for pytorch3d, both with 4 jobs). To rebuild one of
 them explicitly:
 
@@ -59,8 +66,8 @@ uv sync --reinstall-package faiss-gpu-cu12   # or pytorch3d
 | `torchaudio` | 2.11.0+cu130 | from the `pytorch-cu130` index |
 | `torchcodec` | 0.17.0 | audio backend for torchaudio >= 2.9 |
 | `triton` | 3.8.0 | comes with torch |
-| `pytorch3d` | 0.7.9 | built from source, `third_party/pytorch3d` |
-| `faiss-gpu-cu12` | 1.15.1 | built from source, `third_party/faiss` |
+| `pytorch3d` | 0.7.9 | upstream `facebookresearch/pytorch3d` tag, with local CUDA compatibility patch |
+| `faiss-gpu-cu12` | 1.15.1 | upstream `facebookresearch/faiss` tag, with local CUDA 13 build config and loader patch |
 | `nvidia-*` | cu13 line | CUDA 13 runtime wheels, single `nvidia/cu13/lib` directory |
 
 The CUDA 12 `nvidia-*-cu12` wheels are **not** used any more: the PyTorch cu130
@@ -68,14 +75,13 @@ build and the locally built faiss both link against the CUDA 13 runtime.
 
 ### Why pytorch3d and faiss are built from source
 
-* **pytorch3d 0.7.9** does not compile against torch 2.14 (C++17 vs. the C++20
-  that ATen now requires) and does not know the CUDA 13 visibility flags. Both
-  fixes from upstream `main` were backported — see
-  [`third_party/pytorch3d/README.md`](third_party/pytorch3d/README.md).
+* **pytorch3d 0.7.9** needs C++20 for the project PyTorch build and CUDA 13
+  visibility flags. The tracked patch and upstream reference are documented in
+  [`third_party/README.md`](third_party/README.md).
 * **faiss**: the PyPI wheel `faiss-gpu-cu12` only ships `sm_70`/`sm_80` SASS and
   fails on the RTX 5090 with `CUDA error 209`. It is rebuilt for `sm_120` and
-  needs a patched loader for the CUDA 13 wheel layout — see
-  [`third_party/faiss/README.md`](third_party/faiss/README.md).
+  needs a patched loader for the CUDA 13 wheel layout. The patch and upstream
+  reference are documented in [`third_party/README.md`](third_party/README.md).
 
 ## Local models (no cloud API)
 
@@ -145,6 +151,40 @@ Mapping starts after neural weights have been released, leaving VRAM available
 to geometry and GPU Faiss. The launcher checks configured `/models` endpoints
 and aborts if they do not answer. Results are written below
 `<dataset_root>/<scene>/exps/r_mapping_stride<STRIDE>`.
+
+### Parallel modernized YOLOE pipeline
+
+The separate modernized launcher has two input modes. Its default `masked`
+mode uses YOLOE-26-L-seg native instance masks and SigLIP2 Base features
+isolated to each mask. Its `region-proposal` mode uses standard YOLOE-26-L
+detections and FG-CLIP2 So400m features from padded proposal crops. Proposal
+boxes provide rectangular RGB-D geometry masks for map construction. Neither
+mode loads SAM-L, and the legacy launcher remains unchanged.
+
+Prepare the YOLOE checkpoint and its text-prompt asset, then prepare the local
+encoder snapshots:
+
+```bash
+./.venv/bin/python scripts/download_models.py --download --only yoloe26l yoloe26l_detect
+./.venv/bin/python scripts/download_models.py --download --only modernized_features
+scripts/run_modernized_pipeline_local.sh --scene room0 --stride 50
+scripts/run_modernized_pipeline_local.sh --input-mode region-proposal --scene room0 --stride 50
+```
+
+The detector requires CUDA and offline local assets. YOLOE's prompt encoder
+must be present as `mobileclip2_b.ts` in the repository root. Missing weights,
+prompt assets, or encoder snapshots fail before frame inference. The launcher
+selects `yoloe-26l-seg.pt` for `masked` and `yoloe-26l.pt` for
+`region-proposal` unless `YOLOE_CHECKPOINT` is set. Outputs use mode-specific
+suffixes such as `s_modernized_masked_yoloe26l_stride<STRIDE>` and
+`s_modernized_region_proposal_yoloe26l_stride<STRIDE>` under `exps/`.
+Override `YOLOE_CHECKPOINT`, `MASK_ENCODER`, `MASK_MODEL_ID`, `MASK_CHECKPOINT`,
+`BOX_ENCODER`, `BOX_MODEL_ID`, `BOX_CHECKPOINT`, or `VLM_MODEL` for a controlled
+component run. Use `scripts/run_modernized_component_benchmark.sh` to run paired
+baseline/candidate arms that change one component. The protocol and metrics are
+documented in [`scripts/MODERNIZED_COMPONENT_BENCHMARKS.md`](scripts/MODERNIZED_COMPONENT_BENCHMARKS.md).
+The annotation model and complex query-answering model are selected separately;
+query candidates are not loaded during per-frame annotation.
 
 The mapping process keeps exact GPU Faiss indexes for unchanged object point
 clouds resident across overlap calls. A geometry hash catches in-place point

@@ -1,0 +1,42 @@
+--- a/faiss/python/__init__.py
++++ b/faiss/python/__init__.py
+@@ -56 +56,8 @@
+-    if is_cuvs:
++    try:
++        from . import _cuda13_build  # noqa: F401
++
++        is_cuda13 = True
++    except ImportError:
++        is_cuda13 = False
++
++    if is_cuvs or is_cuda13:
+@@ -67,4 +74,4 @@
+-                "faiss-gpu-cuvs installed but the CUDA 13 runtime wheels are "
+-                "missing — pip install 'nvidia-cuda-runtime>=13.2,<14' "
+-                "'nvidia-cublas>=13.2,<14' 'nvidia-curand>=10.3.7,<11' "
+-                "'nvidia-nvjitlink>=13.2,<14'"
++                "faiss-gpu (CUDA 13 build) installed but the CUDA 13 runtime "
++                "wheels are missing — pip install 'nvidia-cuda-runtime>=13.0,<14' "
++                "'nvidia-cublas>=13.0,<14' 'nvidia-curand>=10.4,<11' "
++                "'nvidia-nvjitlink>=13.0,<14'"
+@@ -80,0 +88,4 @@
++        if not is_cuvs:
++            # Plain (non-cuVS) CUDA 13 build: the base CUDA preload above is
++            # sufficient, there is no RAPIDS stack to load.
++            return
+--- a/faiss/python/CMakeLists.txt
++++ b/faiss/python/CMakeLists.txt
+@@ -474,0 +475,13 @@
++# CUDA 13 build marker: present when the wheel was compiled against CUDA >= 13.
++# The CUDA 13 nvidia wheels (nvidia-cuda-runtime / -cublas / -curand /
++# -nvjitlink) ship every lib in a single PEP 420 namespace dir (nvidia/cu13/lib)
++# instead of the per-component layout used by the CUDA 12 wheels, so __init__.py
++# has to preload from a different place. Upstream only ships this marker with
++# the cuVS wheels; it is needed here for a plain (non-cuVS) CUDA 13 build.
++if(FAISS_ENABLE_GPU AND CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL "13.0")
++  file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/_cuda13_build.py"
++    "# Auto-generated when built with CUDA >= 13.\n"
++    "IS_CUDA13_BUILD = True\n")
++  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/_cuda13_build.py" DESTINATION faiss)
++endif()
++

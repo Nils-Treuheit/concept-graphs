@@ -2,7 +2,8 @@
 # Source this profile to route both former GPT call classes through the
 # separately served edge-compatible multimodal GGUF model.
 export LLM_BASE_URL="${EDGE_COMPATIBLE_BASE_URL:-http://127.0.0.1:20262/v1}"
-export LLM_MODEL="${EDGE_COMPATIBLE_MODEL_ALIAS:-edge-compatible}"
+export EDGE_COMPATIBLE_CANDIDATE_ID="${EDGE_COMPATIBLE_CANDIDATE_ID:-qwen35-9b-q4}"
+export LLM_MODEL="${EDGE_COMPATIBLE_MODEL_ALIAS:-edge-compatible-${EDGE_COMPATIBLE_CANDIDATE_ID}}"
 export LLM_API_KEY="EMPTY"
 export LLM_TIMEOUT="${EDGE_COMPATIBLE_TIMEOUT:-600}"
 export LLM_REASONING_EFFORT=""
