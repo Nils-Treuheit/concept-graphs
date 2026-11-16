@@ -30,6 +30,9 @@ manipulation/contact_graspnet/test_data
 manipulation/contact_graspnet/checkpoints
 manipulation/dataset
 
+# DINOtxt test-5 artifacts
+models/experiments/t_ren/data/dinotxt_test5/
+
 outputs
 wandb
 
