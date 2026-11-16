@@ -38,9 +38,9 @@ Preserve old values as historical where their sampling settings or memory scope 
 
 ## Execution prerequisite and current status
 
-The user confirmed these NInfer model IDs are available in OpenCode. I attempted the required `python3 src/executor.py release-local` from `/mnt/HDD1/Project_Code/VLM_benchmark`; the checkout has no `src/executor.py`. The ConceptGraphs checkout also lacks `src/`. No GPU probe, model-control query, residency check, or model launch was performed. The missing release-local workflow remains the execution blocker.
+The user confirmed these NInfer model IDs are available in OpenCode. The correct release workflow exists at `.agentic_workflow/src/executor.py` in this checkout; the earlier attempts used the wrong checkout and therefore did not establish that the release entry point was missing. The latest release attempt returned `deep_cleanup=cleanup_failed` and `fast_cleanup=cleanup_failed` at about 2026-11-16 19:36 UTC. Retry only after the one-hour cleanup wait, inspect the controller and session gates separately, and start no GPU probe or model job until release succeeds and idle state is confirmed.
 
-Once the correct workflow checkout or release-local entry point is available, run each route through the owned OpenCode server/session flow, check GPU release before every probe/job, and verify each owned session is inactive before archiving it. Preserve raw outputs and publish only completed results; label partial runs preliminary.
+Run each route through the owned OpenCode server/session flow, check GPU release before every probe/job, and verify each owned session is inactive before archiving it. Preserve raw outputs and publish only completed results; label partial runs preliminary. Store persistent outputs and caches under the project HDD, never `/tmp`.
 
 ## Existing evidence
 
