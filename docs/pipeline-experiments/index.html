@@ -54,6 +54,8 @@
     .metric { padding: 13px; border-radius: 10px; background: #f4f7f5; }
     .metric b { display: block; font-size: 1.45rem; letter-spacing: -.04em; }
     .metric span { color: var(--muted); font-size: .82rem; }
+    .updates-table td:first-child { min-width: 150px; font-weight: 700; }
+    .updates-table td:nth-child(2) { min-width: 140px; }
     .status {
       display: inline-flex; align-items: center; gap: 7px; padding: 5px 9px; border-radius: 999px;
       font-size: .76rem; font-weight: 750; letter-spacing: .025em;
@@ -113,6 +115,48 @@
         <div class="component"><small>Caption consolidation</small><b>Gemma 4 12B QAT Q4</b></div>
       </div>
       <p class="note" style="margin-top:13px">Detector, feature, and consolidation settings are fixed from the recorded component experiments. Qwen3.8 remains the provisional per-frame default because the shortlist evaluates schema reliability and agreement, not semantic truth. The map audit is descriptive because this scene has no ready-to-use instance IDs.</p>
+      <p class="note"><b>YOLOE prompting:</b> the modernized masked pipeline uses text prompts via <code>set_classes</code> and the 200-name ScanNet class list (multiword labels are hyphenated). The COCO detector comparison uses text prompts from its 80 COCO categories. Neither path uses visual prompts or a prompt-free checkpoint. The proposed primary follow-up compares fixed labels, prompt-free discovery, and VLM scene-category prompts with paired open-scene quality and complete-pipeline latency. The VLM arm requires GPU co-residency and must stay within 10% of prompt-free latency; the prompt-free checkpoint is not yet available locally. The VLM arm will screen SmolVLM2, Qwen3.5, Florence-2, Gemma 4 E2B, LFM3-VL-2B, and Moondream 3.1 for structured scene categories and GPU co-residency. LFM3 documents full-weight BF16, not FP16. A separate RF-DETR-Seg M/L comparison is scoped as a closed-set COCO control, not an open-vocabulary replacement. A DINOv3-L feature-injection hybrid is recorded as a training-dependent research candidate; the DINO-YOLO preprint does not establish YOLOE/open-vocabulary mask gains. <a href="reports/optional/yoloe_prompt_and_runtime_plan.md">Open-scene prompting and runtime plan</a></p>
+    </section>
+
+    <section class="panel span-12" aria-labelledby="latest-title">
+      <span class="status measured">Latest verified updates · 16 Nov 2026</span>
+      <h2 id="latest-title" style="margin-top:12px">Recent experiment and benchmark results</h2>
+      <p class="note">Completed component benchmarks are separated from work that has no score yet. These bounded results do not establish map-level acceptance or a production replacement.</p>
+      <table class="updates-table">
+        <thead><tr><th>Experiment</th><th>Status and result</th><th>Scope and interpretation</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>EOVSAM + SAM3 panoptic run 5</td>
+            <td><b>PQ 51.9266</b><br>SQ 80.2159 · RQ 62.9975<br><span class="status measured">500 images scored</span></td>
+            <td>Fresh inference on the frozen COCO val2017 500-image subset. Run 4 used the wrong GT image set and remains unscored; run 5 used the matching subset. This does not test ConceptGraphs mapping. <a href="../../scripts/pipeline_model_reports/eovsam_coco500_run5.md">Run 5 report</a></td>
+          </tr>
+          <tr>
+            <td>EOVSAM mask fusion</td>
+            <td>Mask AP: baseline <b>0.367780</b><br>replace 0.361840 · union <b>0.369562</b><br><span class="status measured">Primary metrics verified</span></td>
+            <td>Fixed COCO500 subset; box AP is 0.444025 for all three arms. Independent COCOeval verified AP, AP50, and AP75. Area AP breakdown conflicts with stored metrics and remains unresolved, so no arm is selected. <a href="../../scripts/pipeline_model_reports/eovsam_fusion.md">Fusion report</a></td>
+          </tr>
+          <tr>
+            <td>WeDetect-Uni run 3</td>
+            <td>Proposal recall: <b>0.4651</b> at IoU .50, K=300<br>0.1588 at IoU .75, K=300<br><span class="status measured">250 frames completed</span></td>
+            <td>Five locally available ReplicaSSG test scenes, 2,204 object views. The embedding result is GT-matched diagnostic only, not autonomous map association. This is not a controlled detector comparison. <a href="../../scripts/pipeline_model_reports/wedetect_uni_run3.md">Run 3 report</a></td>
+          </tr>
+          <tr>
+            <td>DINOv3 + dino.txt global encoder</td>
+            <td>Macro mAP: <b>0.0261293</b><br>Top-1 macro 0.0139328 · Top-5 micro 0.1588022<br><span class="status measured">2,204 held-out views scored</span></td>
+            <td>GT-mask-isolated crop category retrieval on the frozen five-scene held-out split (2,204 views, 49 categories). Cross-view identity and graph diagnostics remain pending; Stage 2 pipeline-slot acceptance is pending. <a href="reports/optional/dinotxt_global_retrieval_test5.md">Detailed result</a></td>
+          </tr>
+          <tr>
+            <td>DINOde text retrieval</td>
+            <td><span class="status pending">In progress · no score</span></td>
+            <td>Source and weights are installed; adapter preparation and the GPU run remain pending. Keep this unscored rather than reading it as a failed benchmark. <a href="../../scripts/pipeline_model_reports/dinode_template_retrieval_status.md">DINOde status</a></td>
+          </tr>
+          <tr>
+            <td>T-REN region retrieval</td>
+            <td>Macro AP: <b>0.0246173</b><br>Top-1 micro 0.131125 · Top-5 micro 0.244555<br><span class="status measured">2,204 held-out views scored</span></td>
+            <td>Point-conditioned region-text retrieval on GT-mask point prompts, completed on the frozen five-scene held-out split (2,204 views, 49 categories). Controls are descriptive only; this does not answer the separate DINOtxt global-crop substitution question. <a href="../../scripts/pipeline_model_reports/t_ren.md">T-REN report</a></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section class="panel span-7" aria-labelledby="features-title">
@@ -146,6 +190,7 @@
       </table>
       <p class="note" style="margin-top:12px">L leads M by 0.90 box AP points. At each size, the derived detect-only head matches the segmentation head's box AP to below 0.000001 and avoids mask output. Throughput is descriptive because segmentation runs also generate and serialize masks.</p>
       <p class="note">*Detect-only heads are derived from matching official segmentation checkpoints; they are not separately released detect-only weights. This comparison evaluates the detector component on COCO and does not change map-level acceptance.</p>
+      <p class="note">The 9.64 images/s L-seg and 79.49 images/s L detect-only figures are not a model-core speed comparison: one produces and transfers full-resolution masks while the other returns boxes. The paired export plan profiles mask processing separately and tests TensorRT FP16.</p>
       <div class="links">
         <a href="../../scripts/pipeline_model_reports/yoloe26_four_arm_coco_comparison.md">Four-arm comparison<small>Standard box and mask AP, runtime, GPU memory, and recommendation</small></a>
         <a href="../../scripts/pipeline_model_reports/yoloe26_l_seg_coco_report.md">YOLOE-26-L-seg report<small>Per-model configuration and artifacts</small></a>
@@ -153,6 +198,7 @@
         <a href="../../scripts/pipeline_model_reports/yoloe26_m_seg_coco_report.md">YOLOE-26-M-seg report<small>Per-model configuration and artifacts</small></a>
         <a href="../../scripts/pipeline_model_reports/yoloe26_m_detect_only_coco_report.md">YOLOE-26-M detect-only report<small>Derived head, box AP, runtime, and resources</small></a>
         <a href="reports/yoloe26_detection_only_checkpoint_status.md">Checkpoint and initialization details<small>Official asset names and scale-aware YAML route</small></a>
+        <a href="reports/optional/yoloe_prompt_and_runtime_plan.md">Open-scene prompt comparison<small>Small-VLM candidate screen, Florence-2, and RF-DETR control</small></a>
       </div>
     </section>
 
@@ -205,11 +251,13 @@
         <tbody>
           <tr><td><b>Qwen3.8</b><br><span class="note">provisional default</span></td><td>339 saved relations</td><td>763/763 caption IDs</td><td>Relation F1 0.498<br>Caption word F1 0.646</td><td>13.3 s/frame requests<br>532 s summed requests</td></tr>
           <tr><td><code>LiquidAI/LFM3-VL-2B-GGUF:NVFP4</code></td><td>36/40 relation lists valid<br>183/186 tuples; both IDs resolve</td><td>28/40 caption lists valid<br>526/763 caption IDs; no extras or duplicates</td><td>Relation F1 0.398<br>Caption word F1 0.509</td><td>14.3 s/frame requests<br>571 s summed requests</td></tr>
-          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code><br><span class="note">legacy prompts</span></td><td>0/40 relation parses valid</td><td>0/40 caption parses valid<br>0/763 IDs</td><td>Not meaningful: structured outputs failed</td><td>8.4 s/frame requests<br>435.5 s wall; 85.9 s load</td></tr>
+          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code><br><span class="note">updated: structured batch JSON</span></td><td>14/40 relation JSON valid<br>10/40 endpoint/predicate-valid</td><td>40/40 caption JSON valid<br>714/763 usable</td><td>Relation F1 0.0933<br>Caption word F1 0.4088</td><td>34.317 s relation + 5.071 s caption/frame<br>1,583.10 s wall</td></tr>
+          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code><br><span class="note">updated: targeted captions</span></td><td>14/40 relation JSON valid<br>10/40 endpoint/predicate-valid</td><td>718/763 nonempty<br>45 <code>NOT_VISIBLE</code></td><td>Relation F1 0.0933<br>Caption word F1 0.2518</td><td>34.332 s relation + 19.604 s caption/frame<br>2,178.98 s wall</td></tr>
+          <tr><td><code>llava-hf/llava-onevision-qwen2-7b-ov-hf</code><br><span class="note">legacy prompt attempt</span></td><td>0/40 relation parses valid</td><td>0/40 caption parses valid<br>0/763 IDs</td><td>Not meaningful: format failure</td><td>Historical failed-format attempt; retained in its report</td></tr>
           <tr><td><code>Qwen/Qwen2.5-VL-7B-Instruct</code></td><td>149 relations<br>38/40 relation parses valid<br>149/149 valid tuples</td><td>762/763 caption IDs<br>40/40 after fence-aware reparse</td><td>Relation F1 0.331<br>Caption word F1 0.338</td><td>8.9 s/frame requests<br>537.6 s wall; 177.5 s load</td></tr>
         </tbody>
       </table>
-      <p class="note" style="margin-top:12px">External VLM leaderboard scores motivated the shortlist only. Qwen3.8 remains provisional, not a production winner. The raw Qwen2.5 summary reports 0/40 strict caption parses; the 40/40 above comes from post-hoc fence-aware re-parsing of retained responses. Raw runs: <a href="data/vlm-qwen38-baseline-40.json">Qwen3.8</a>, <a href="data/vlm-lfm3-vl-2b-nvfp4-40.json">LFM3-VL</a>, <a href="data/vlm-llava-onevision-qwen2-7b-40.json">LLaVA OneVision</a>, <a href="data/vlm-qwen2.5-vl-7b-40.json">Qwen2.5-VL</a>.</p>
+      <p class="note" style="margin-top:12px">External VLM leaderboard scores motivated the shortlist only. Qwen3.8 remains provisional, not a production winner. LLaVA’s current structured and targeted-caption results replace the legacy row as the useful prompt comparison; the legacy failure is retained below for history. The 825-example LFM3-VL-2B BF16 result is a separate general benchmark; full-weight BF16 has not yet run in this 40-frame pipeline. The matched rerun plan covers LFM3 BF16, the current Qwen3.8 control, and the three user-confirmed OpenCode NInfer routes. Runs are pending the required release-local workflow. <a href="reports/optional/vlm_40frame_runtime_comparison_plan.md">Integrated report update and matched-run plan</a>. The raw Qwen2.5 summary reports 0/40 strict caption parses; the 40/40 above comes from post-hoc fence-aware re-parsing of retained responses. Raw runs: <a href="data/vlm-qwen38-baseline-40.json">Qwen3.8</a>, <a href="data/vlm-lfm3-vl-2b-nvfp4-40.json">LFM3-VL NVFP4</a>, <a href="../../scripts/pipeline_model_reports/data/vlm-llava-onevision-qwen2-7b-structured-40-retry1.json">LLaVA structured</a>, <a href="../../scripts/pipeline_model_reports/data/vlm-llava-onevision-qwen2-7b-targeted-40.json">LLaVA targeted</a>, <a href="data/vlm-qwen2.5-vl-7b-40.json">Qwen2.5-VL</a>.</p>
     </section>
 
     <section class="panel span-12" aria-labelledby="llava-prompt-title">
@@ -256,10 +304,12 @@
       <span class="status pending">Optional experiments in progress</span>
       <h2 id="optional-title" style="margin-top:12px">Template retrieval, query VQA, and optional components</h2>
       <p>The matched held-out retrieval run used the five locally available ReplicaSSG test scenes (250 frames, 2,204 GT object views). On mask-isolated crops, SigLIP2 led cross-view identity top-1 (0.3966) and oracle graph triplet recall (0.3878); FG-CLIP2 led category macro AP (0.0403). Visual-only DINOv3 FP32 reached identity top-1 0.3800 and triplet recall 0.3265, while using 1.402 GiB peak reserved CUDA memory. Keep SigLIP2 as the map-association feature and FG-CLIP2 in the separate padded-proposal retrieval role; do not substitute DINOv3 for DINOde.</p>
-      <p class="note">This is an oracle-mask representation comparison, not detector-backed map retrieval or end-to-end VQA. ReplicaSSG test data contains relation triples but no aligned natural-language questions or answers; generated questions will be reported as a synthetic graph-query task. Earlier FP16 DINOv3 scores were invalidated after a CUDA diagnostic found non-finite embeddings. Only corrected FP32 scores are used. DINOde code, ODE checkpoint, DINOv3 backbone, and official OpenCLIP ViT-L/14 weights are installed; a local experiment is authorized and its adapter/run is pending. DINOde's upstream license remains undeclared, so assets and outputs stay local as a project precaution. T-REN's required DINOtxt head is unavailable from the official release route; cached visual backbone snapshots (ViT-S/B/L/16) contain no text-aligned head. Official URLs have not been supplied. EOVSAM source/checkpoint are installed. The run2 completion produced 500 panoptic PNGs and hash-verified manifests (PQ 51.9504, SQ 80.2088, RQ 63.0339). Mask-fusion scoring is available (mask AP 0.3678 baseline); an independent CPU COCOeval verified main AP/AP50/AP75 while AP-small/medium/large values conflict with stored metrics and remain unresolved. This optional panoptic benchmark does not validate ConceptGraphs mapping or replace the selected detector. ObjEmbed-2B and 4B both completed the frozen 250-view oracle-box experiment; their scores are mixed, and neither displaces the selected feature on this nonidentical crop protocol. SAM 3.1 completed on 100 paired COCO inputs using SDPA: mean mask IoU fell from 0.774529 to 0.589640, with 27 prompts returning no mask; keep this refinement disabled for the measured protocol. Native box and mask AP are measured for all four YOLOE-26 L/M segmentation and derived detect-only arms.</p>
+      <p class="note">This is an oracle-mask representation comparison, not detector-backed map retrieval or end-to-end VQA. ReplicaSSG test data contains relation triples but no aligned natural-language questions or answers; generated questions will be reported as a synthetic graph-query task. Earlier FP16 DINOv3 scores were invalidated after a CUDA diagnostic found non-finite embeddings. Only corrected FP32 scores are used. DINOde code, ODE checkpoint, DINOv3 backbone, and official OpenCLIP ViT-L/14 weights are installed; a local experiment is authorized and its adapter/run is pending. DINOde's upstream license remains undeclared, so assets and outputs stay local as a project precaution. T-REN point-conditioned region-text retrieval is measured on the frozen five-scene held-out split (macro AP 0.0246173, 2,204 views); it does not answer the separate DINOtxt global-crop substitution question. EOVSAM source/checkpoint are installed. The run2 completion produced 500 panoptic PNGs and hash-verified manifests (PQ 51.9504, SQ 80.2088, RQ 63.0339). Mask-fusion scoring is available (mask AP 0.3678 baseline); an independent CPU COCOeval verified main AP/AP50/AP75 while AP-small/medium/large values conflict with stored metrics and remain unresolved. This optional panoptic benchmark does not validate ConceptGraphs mapping or replace the selected detector. ObjEmbed-2B and 4B both completed the frozen 250-view oracle-box experiment; their scores are mixed, and neither displaces the selected feature on this nonidentical crop protocol. SAM 3.1 completed on 100 paired COCO inputs using SDPA: mean mask IoU fell from 0.774529 to 0.589640, with 27 prompts returning no mask; keep this refinement disabled for the measured protocol. Native box and mask AP are measured for all four YOLOE-26 L/M segmentation and derived detect-only arms.</p>
       <div class="links">
         <a href="reports/optional/template_retrieval_test5.md">Matched retrieval comparison<small>SigLIP2, FG-CLIP2, and visual-only DINOv3</small></a>
         <a href="reports/optional/dinov3_visual_association_test5.md">DINOv3 association report<small>Corrected FP32 result and invalid attempt audit</small></a>
+        <a href="reports/optional/dinotxt_global_retrieval_test5.md">DINOtxt global crop retrieval<small>GT-mask-isolated crop measured; identity/graph diagnostics pending</small></a>
+        <a href="reports/optional/dinotxt_clip_substitution.md">DINOtxt substitution plan<small>Asset gate passed; cross-view identity and pipeline-slot acceptance pending</small></a>
         <a href="../../scripts/pipeline_model_reports/dinode_template_retrieval_status.md">DINOde retrieval status<small>Weights installed, local run authorized; implementation and benchmark pending</small></a>
         <a href="reports/optional/template_vqa_query_vlm_status.md">Template-matching VQA readiness<small>Qwen3.8 and Qwen3-VL answerers; no held-out VQA score yet</small></a>
         <a href="reports/optional/query_qwen38.md">Qwen3.8 query answerer<small>Provisional baseline; target role not measured</small></a>
@@ -274,7 +324,7 @@
         <a href="../../scripts/pipeline_model_reports/wedetect_uni_run2_failure.md">WeDetect-Uni proposal run 2<small>250/250 frames processed; final aggregation failed; partial rows unscored</small></a>
         <a href="../../scripts/pipeline_model_reports/objembed_2b_test5.md">ObjEmbed-2B report<small>Identity top-1 0.3805; triplet recall 0.1429</small></a>
         <a href="../../scripts/pipeline_model_reports/objembed_4b_test5.md">ObjEmbed-4B report<small>Identity top-1 0.3782; triplet recall 0.1837</small></a>
-        <a href="../../scripts/pipeline_model_reports/t_ren.md">T-REN feasibility<small>Repository, region weights, and backbone snapshots installed; DINOtxt head unavailable</small></a>
+        <a href="../../scripts/pipeline_model_reports/t_ren.md">T-REN region retrieval<small>Point-conditioned retrieval measured; macro AP 0.0246173 on 2,204 held-out views</small></a>
       </div>
     </section>
 
