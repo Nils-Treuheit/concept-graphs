@@ -58,6 +58,12 @@ The following compact outputs are committed with this report. The full 200-frame
 - Broader 200-frame map: [object JSON](../data/map_level/stride10_200_objects.json) and [edge JSON](../data/map_level/stride10_200_edges.json). Its full detector, annotation, and mapper logs remain at the local paths listed in the table above.
 - Initial resource-guard result: `.agentic_workflow/workspace/room0-relation-propagation-test/mapper.log`.
 
+## Map-association audit (2026-11-17)
+
+A dedicated CPU-only evaluator was run to score the 200-frame stride-10 map against ReplicaSSG semantic instance IDs. The run terminated at its planned fail-closed guard: the PCD validation step found 36 duplicate `(track_id, source_frame)` join groups containing 39 extra records, violating the protocol requirement for unique observation joins. No IoU threshold, precision, recall, or identity metric was produced. The new association audit stopped before scoring because of these 36 duplicate join groups.
+
+The detailed report is at [room0 map association status 2026-11-17](../../../scripts/pipeline_model_reports/room0_map_association_status_20261117.md). It lists all 36 duplicate groups, confirms the fail-closed result JSON (SHA-256 `e8e939c51be68ba37206cc53820c35ea0f75218eac6e3ff4ae328a140f9eedd1`), and records sampled RSS of ~5.78 GiB over 10.64 seconds. The narrow next step is to inspect whether the repeated `(track_id, source_frame)` rows can be normalized (e.g. mask union or deterministic selection) without violating the accepted evaluation protocol; if not, the evaluation contract must be adjusted. This audit covers only this single saved map and does not establish broader scene coverage.
+
 ## Separate OpenCode implementation attempt
 
 The local OpenCode/NInfer Qwen3.8 implementation handoff used the configured system route and repository host context. Its provider repeatedly returned `ECONNREFUSED`; no model-authored patch was produced. The owned session was closed and its managed model released before GPU experiments continued. Evidence: `.agentic_workflow/workspace/pipeline-experiments/implementation-qwen38-cfb0dfe32e4546ba8f78ae728a605c53.session.jsonl` and `/home/nils/.local/share/model-unload/ninfer-qwen3.8-27b-nvfp4.log`.
