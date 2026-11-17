@@ -1,0 +1,189 @@
+No list of tuples found in the text.
+Frame frame000000: relations done
+Frame frame000000: captions done
+Frame frame000050: relations done
+Frame frame000050: captions done
+No list of tuples found in the text.
+Frame frame000100: relations done
+Frame frame000100: captions done
+Frame frame000150: relations done
+Frame frame000150: captions done
+Frame frame000200: relations done
+Frame frame000200: captions done
+Frame frame000250: relations done
+Frame frame000250: captions done
+No list of tuples found in the text.
+Frame frame000300: relations done
+Frame frame000300: captions done
+No list of tuples found in the text.
+Frame frame000350: relations done
+Frame frame000350: captions done
+Frame frame000400: relations done
+Frame frame000400: captions done
+No list of tuples found in the text.
+Frame frame000450: relations done
+Frame frame000450: captions done
+Frame frame000500: relations done
+Frame frame000500: captions done
+Frame frame000550: relations done
+Frame frame000550: captions done
+Frame frame000600: relations done
+Frame frame000600: captions done
+Frame frame000650: relations done
+Frame frame000650: captions done
+Frame frame000700: relations done
+Frame frame000700: captions done
+Frame frame000750: relations done
+Frame frame000750: captions done
+Frame frame000800: relations done
+Frame frame000800: captions done
+Frame frame000850: relations done
+Frame frame000850: captions done
+Frame frame000900: relations done
+Frame frame000900: captions done
+Frame frame000950: relations done
+Frame frame000950: captions done
+Frame frame001000: relations done
+Frame frame001000: captions done
+No list of tuples found in the text.
+Frame frame001050: relations done
+Frame frame001050: captions done
+No list of tuples found in the text.
+Frame frame001100: relations done
+Frame frame001100: captions done
+Frame frame001150: relations done
+Frame frame001150: captions done
+No list of tuples found in the text.
+Frame frame001200: relations done
+No list of objects found in the text.
+Frame frame001200: captions done
+Frame frame001250: relations done
+Frame frame001250: captions done
+No list of tuples found in the text.
+Frame frame001300: relations done
+Frame frame001300: captions done
+No list of tuples found in the text.
+Frame frame001350: relations done
+Frame frame001350: captions done
+No list of tuples found in the text.
+Frame frame001400: relations done
+Frame frame001400: captions done
+No list of tuples found in the text.
+Frame frame001450: relations done
+Frame frame001450: captions done
+Frame frame001500: relations done
+No list of objects found in the text.
+Frame frame001500: captions done
+Frame frame001550: relations done
+Frame frame001550: captions done
+No list of tuples found in the text.
+Frame frame001600: relations done
+Frame frame001600: captions done
+Frame frame001650: relations done
+Frame frame001650: captions done
+No list of tuples found in the text.
+Frame frame001700: relations done
+Frame frame001700: captions done
+No list of tuples found in the text.
+Frame frame001750: relations done
+Frame frame001750: captions done
+Frame frame001800: relations done
+Frame frame001800: captions done
+Frame frame001850: relations done
+Frame frame001850: captions done
+Frame frame001900: relations done
+Frame frame001900: captions done
+Frame frame001950: relations done
+Frame frame001950: captions done
+{
+  "status": "complete",
+  "summary": {
+    "selected_frames": 40,
+    "records_written": 40,
+    "frame_records_missing": 0,
+    "relation_requests_completed": 40,
+    "caption_requests_completed": 40,
+    "complete_frame_pairs": 40,
+    "relation_legacy_parse_valid_frames": 25,
+    "relation_strict_json": {
+      "expected": 40,
+      "completed": 40,
+      "failed_or_not_completed": 0,
+      "json_array_frames": 0,
+      "json_array_rate_over_expected": 0.0,
+      "schema_valid_frames": 0,
+      "schema_valid_rate_over_expected": 0.0,
+      "ids_and_predicates_valid_frames": 0,
+      "ids_and_predicates_valid_rate_over_expected": 0.0,
+      "relation_endpoints_valid": 0,
+      "relation_endpoints_total": 0,
+      "relation_predicates_valid": 0,
+      "relation_predicates_total": 0
+    },
+    "caption_legacy_parse_valid_frames": 38,
+    "caption_strict_json": {
+      "expected": 40,
+      "completed": 40,
+      "failed_or_not_completed": 0,
+      "json_array_frames": 38,
+      "json_array_rate_over_expected": 0.95,
+      "schema_valid_frames": 38,
+      "schema_valid_rate_over_expected": 0.95,
+      "exact_id_coverage_frames": 38,
+      "exact_id_coverage_rate_over_expected": 0.95,
+      "ids_matched": 734,
+      "ids_expected": 734,
+      "ids_missing": 0,
+      "ids_extra": 0,
+      "duplicate_ids": 0
+    },
+    "usable_caption_observations": {
+      "count": 734,
+      "expected": 763,
+      "rate": 0.9619921363040629,
+      "definition": "Detection observation with a nonempty caption, resolvable ID and exact cached detector name; also requires valid JSON array schema (legacy batch mode)."
+    },
+    "relation_error_count": 0,
+    "caption_error_count": 0,
+    "relation_agreement_f1_mean": null,
+    "relation_agreement_scored_frames": 0,
+    "relation_agreement_empty_reference_frames": 16,
+    "caption_word_f1_mean": 0.6744565956495725,
+    "caption_word_f1_scored_frames": 35,
+    "caption_word_f1_scored_ids": 677,
+    "first_request": {
+      "frame": "frame000000",
+      "task": "relations",
+      "seconds": 19.062134063104168,
+      "sent_at_offset_seconds": 0.096967204939574,
+      "finish_reason": "length"
+    },
+    "first_request_latency_seconds": 19.062134063104168,
+    "request_latency": {
+      "count": 80,
+      "mean_seconds": 8.834292534338601,
+      "median_seconds": 5.472851123020519,
+      "p95_seconds": 19.201529498567105,
+      "min_seconds": 1.646449337946251,
+      "max_seconds": 20.686363232904114,
+      "scope": "successful chat-completion requests only, both tasks"
+    },
+    "effective_frames_per_second": 0.05625585799615349,
+    "response_model_mismatch_count": 0
+  },
+  "wall_seconds": 711.0370621799957,
+  "gpu_memory": {
+    "process_scope": {
+      "peak_mib": null,
+      "note": "Unavailable from this runner: the NInfer process is owned by the model-control lifecycle, not by this process."
+    },
+    "whole_device_scope": {
+      "peak_used_mib": 29720,
+      "sample_count": 697,
+      "sample_interval_seconds": 1,
+      "source": "nvidia-smi --query-gpu=memory.used (maximum across visible GPUs per sample)",
+      "note": "Includes other processes and the desktop baseline; this is a whole-device peak, not a process-only peak."
+    },
+    "sampler_errors": []
+  }
+}
