@@ -57,6 +57,10 @@ MODEL_PATHS = {
         HUB / "models--Qwen--Qwen2.5-VL-7B-Instruct/snapshots/cc594898137f460bfe9f0759e9844b3ce807cfb5",
         "bfloat16",
     ),
+    "lfm3-vl-2b": (
+        HUB / "models--LiquidAI--LFM3-VL-2B/snapshots/23387beda43c60310348e83e25f78f33c3140d3a",
+        "bfloat16",
+    ),
 }
 ALLOWED_RELATIONS = {"on top of", "under"}
 LLAVA_STRUCTURED_RELATION_TEMPLATE = """Image contains numbered, outlined detections. Listed IDs are the only allowed endpoints. Detection labels: {labels}
@@ -120,8 +124,28 @@ def _chat_inputs(
     user_prompt: str,
     *,
     single_user_turn: bool = False,
+    lfm3_single_turn: bool = False,
 ) -> dict:
-    if single_user_turn:
+    if lfm3_single_turn:
+        # LFM3: single user turn with image object then merged system+task text
+        # in one content block.  The shared system prompt is combined with the
+        # task prompt so the full set of instructions reaches LFM3.
+        content = [
+            {"type": "image", "image": image},
+            {"type": "text", "text": f"{system_prompt}\n\n{user_prompt}"},
+        ]
+        messages = [
+            {"role": "user", "content": content},
+        ]
+        tokenized = processor.apply_chat_template(
+            messages, tokenize=True, add_generation_prompt=True,
+            return_dict=True, return_tensors="pt",
+        )
+        serialized = processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+        )
+        return tokenized, serialized
+    elif single_user_turn:
         # Follow the model-card pure-Transformers example: a single user turn,
         # task text first, then the image placeholder, with no system role.
         content = [{"type": "text", "text": user_prompt}, {"type": "image"}]
@@ -142,11 +166,13 @@ def _chat_inputs(
 
 
 def _generate(model, processor, image_path: Path, system_prompt: str, user_prompt: str,
-              max_new_tokens: int, timeout: float, *, single_user_turn: bool = False) -> dict:
+              max_new_tokens: int, timeout: float, *, single_user_turn: bool = False,
+              lfm3_single_turn: bool = False) -> dict:
     image = Image.open(image_path).convert("RGB")
     inputs, serialized_prompt = _chat_inputs(
         processor, image, system_prompt, user_prompt,
         single_user_turn=single_user_turn,
+        lfm3_single_turn=lfm3_single_turn,
     )
     inputs = {
         key: value.to(model.device) if hasattr(value, "to") else value
@@ -235,7 +261,13 @@ def _strict_list(raw: str, *, relation: bool) -> bool:
 
 
 def _parse_model_list(raw: str, *, relation: bool, prefer_json: bool):
-    """Parse contracted JSON arrays without the legacy first-bracket regex."""
+    """Parse contracted JSON arrays without the legacy first-bracket regex.
+
+    After any legacy ``ast.literal_eval``-based parse, verify the result is
+    serialisable as strict JSON (no ``Ellipsis``, ``nan``, etc.).  Return
+    ``None`` on unserialisable values so the response is recorded as an
+    invalid parse rather than silently producing a corrupted record.
+    """
     if prefer_json:
         candidate = raw.strip()
         if candidate.startswith("```"):
@@ -249,9 +281,15 @@ def _parse_model_list(raw: str, *, relation: bool, prefer_json: bool):
         if isinstance(value, list):
             return value
         return None
-    if relation:
-        return extract_list_of_tuples(raw)
-    return vlm_extract_object_captions(raw)
+    # Legacy path: use ast.literal_eval via the shared extractors, then
+    # gate the result through strict JSON to reject Ellipsis, nan, etc.
+    value = extract_list_of_tuples(raw) if relation else vlm_extract_object_captions(raw)
+    if value is not None:
+        try:
+            json.dumps(value, allow_nan=False)
+        except (TypeError, ValueError):
+            return None
+    return value
 
 
 def _strict_json_list(raw: str, *, relation: bool, expected_ids: set[str]) -> dict:
@@ -383,23 +421,42 @@ def main() -> int:
         raise FileExistsError(f"Refusing to overwrite targeted-call stream: {target_stream_path}")
 
     import torch
-    from transformers import AutoProcessor, LlavaOnevisionForConditionalGeneration, Qwen2_5_VLForConditionalGeneration
+    from transformers import (
+        AutoModelForImageTextToText,
+        AutoProcessor,
+        LlavaOnevisionForConditionalGeneration,
+        Qwen2_5_VLForConditionalGeneration,
+    )
 
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable; this benchmark has no CPU fallback")
+
+    # Model routing by candidate ID.
     if args.model.startswith("llava"):
         model_class = LlavaOnevisionForConditionalGeneration
+    elif args.model.startswith("lfm3"):
+        model_class = AutoModelForImageTextToText
     else:
         model_class = Qwen2_5_VLForConditionalGeneration
+
     dtype = getattr(torch, dtype_name)
+    trust_remote = args.model.startswith("lfm3")
+    # LFM3 requires trust_remote_code=True; LLaVA and Qwen2.5-VL use False.
 
     started_utc = datetime.now(timezone.utc).isoformat()
     wall_started = time.perf_counter()
     structured = args.prompt_profile == "llava-structured"
+    is_lfm3 = args.model.startswith("lfm3")
+    # LFM3 always uses single-turn message with combined image+text content.
+    lfm3_single_turn = is_lfm3 and not structured
     if structured and not args.model.startswith("llava"):
-        raise ValueError("llava-structured is only valid with the LLaVA candidate")
+        raise ValueError(
+            "llava-structured is only valid with the LLaVA candidate"
+        )
     if args.caption_profile == "targeted-object" and not args.model.startswith("llava"):
-        raise ValueError("targeted-object is only valid with the LLaVA candidate")
+        raise ValueError(
+            "targeted-object is only valid with the LLaVA candidate"
+        )
     if args.caption_profile == "targeted-object" and not structured:
         raise ValueError("targeted-object requires --prompt-profile llava-structured")
     report_system_prompts = (
@@ -413,11 +470,18 @@ def main() -> int:
             "captions": LLAVA_STRUCTURED_CAPTION_TEMPLATE,
             "targeted_captions": LLAVA_TARGETED_CAPTION_TEMPLATE,
         }
-        if structured else
-        {
+        if structured
+        else {
             "relations": "Here is the list of labels for the annotations of the objects in the image: {labels}. Please describe the spatial relationships between the objects in the image.",
             "captions": "Here is the list of labels for the annotations of the objects in the image: {labels}. Please accurately caption the objects in the image.",
         }
+    )
+    prompt_source = (
+        "LLaVA model-card format: one user turn with task text before image, no system role; explicit JSON schema and example"
+        if structured
+        else "conceptgraph.utils.vlm system_prompt_only_top/system_prompt_captions; same labels and annotated_for_vlm.jpg cache; system then image-only user turn then text-only user turn"
+        if not is_lfm3
+        else "conceptgraph.utils.vlm system_prompt_only_top/system_prompt_captions; same labels and annotated_for_vlm.jpg cache; LFM3 merges the original system instruction and task text into one user text block with image content via apply_chat_template"
     )
 
     report = {
@@ -427,6 +491,7 @@ def main() -> int:
             "model": str(model_path),
             "revision": model_path.name,
             "backend": "Transformers local-files-only",
+            "trust_remote_code": trust_remote,
             "dtype": dtype_name,
             "device": "cuda:0",
             "transformers": __import__("transformers").__version__,
@@ -439,11 +504,7 @@ def main() -> int:
         "dataset": {"scene": "Replica room0", "frames": 40,
                     "frame_stride": 50, "detection_suffix": DETECTION_SUFFIX,
                     "object_observations": expected_caption_observations},
-        "prompt_source": (
-            "LLaVA model-card format: one user turn with task text before image, no system role; explicit JSON schema and example"
-            if structured else
-            "conceptgraph.utils.vlm system_prompt_only_top/system_prompt_captions; same labels and annotated_for_vlm.jpg cache; system then image-only user turn then text-only user turn"
-        ),
+        "prompt_source": prompt_source,
         "prompt_profile": args.prompt_profile,
         "caption_profile": args.caption_profile,
         "targeted_caption_max_new_tokens": (
@@ -482,14 +543,14 @@ def main() -> int:
     try:
         torch.cuda.reset_peak_memory_stats()
         processor = AutoProcessor.from_pretrained(
-            model_path, local_files_only=True, trust_remote_code=False
+            model_path, local_files_only=True, trust_remote_code=trust_remote
         )
         model = model_class.from_pretrained(
             model_path,
             torch_dtype=dtype,
             device_map="cuda:0",
             local_files_only=True,
-            trust_remote_code=False,
+            trust_remote_code=trust_remote,
             low_cpu_mem_usage=True,
         ).eval()
         torch.cuda.synchronize()
@@ -512,6 +573,18 @@ def main() -> int:
                 relation_prompt = LLAVA_STRUCTURED_RELATION_TEMPLATE.format(labels=labels)
                 caption_prompt = LLAVA_STRUCTURED_CAPTION_TEMPLATE.format(labels=labels)
                 single_user_turn = True
+            elif is_lfm3:
+                # LFM3 receives the legacy task text directly; the shared system
+                # prompt is merged inside _chat_inputs via apply_chat_template.
+                relation_prompt = (
+                    f"Here is the list of labels for the annotations of the objects in the image: "
+                    f"{labels}. Please describe the spatial relationships between the objects in the image."
+                )
+                caption_prompt = (
+                    f"Here is the list of labels for the annotations of the objects in the image: "
+                    f"{labels}. Please accurately caption the objects in the image."
+                )
+                single_user_turn = False
             else:
                 relation_prompt = (
                     f"Here is the list of labels for the annotations of the objects in the image: "
@@ -544,6 +617,7 @@ def main() -> int:
                     relation_system_prompt,
                     relation_prompt, args.max_new_tokens, args.request_timeout,
                     single_user_turn=single_user_turn,
+                    lfm3_single_turn=lfm3_single_turn,
                 )
                 record["relation_request"] = {
                     "seconds": relation["seconds"],
@@ -695,6 +769,7 @@ def main() -> int:
                         caption_system_prompt,
                         caption_prompt, args.max_new_tokens, args.request_timeout,
                         single_user_turn=single_user_turn,
+                        lfm3_single_turn=lfm3_single_turn,
                     )
                 target_mode = args.caption_profile == "targeted-object"
                 record["caption_request"] = {

@@ -1,0 +1,37 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/424 [00:00<?, ?it/s]Loading weights:   2%|▏         | 8/424 [00:00<00:05, 79.10it/s]Loading weights:  22%|██▏       | 95/424 [00:00<00:00, 533.91it/s]Loading weights:  45%|████▍     | 190/424 [00:00<00:00, 701.55it/s]Loading weights:  66%|██████▋   | 281/424 [00:00<00:00, 771.86it/s]Loading weights: 100%|██████████| 424/424 [00:00<00:00, 913.19it/s]
+Frame frame000000: done
+Frame frame000050: done
+Frame frame000100: done
+Frame frame000150: done
+Frame frame000200: done
+Frame frame000250: done
+Frame frame000300: done
+Frame frame000350: done
+Frame frame000400: done
+Frame frame000450: done
+Frame frame000500: done
+Frame frame000550: done
+Frame frame000600: done
+Frame frame000650: done
+Traceback (most recent call last):
+  File "/mnt/HDD1/Project_Code/concept-graphs/scripts/benchmark_vlm_shortlist_transformers.py", line 1052, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/mnt/HDD1/Project_Code/concept-graphs/scripts/benchmark_vlm_shortlist_transformers.py", line 1043, in main
+    _write_json(output, report)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/mnt/HDD1/Project_Code/concept-graphs/scripts/benchmark_vlm_shortlist_transformers.py", line 99, in _write_json
+    temporary.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nils/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/json/__init__.py", line 242, in dumps
+    **kw).encode(obj)
+          ~~~~~~^^^^^
+  File "/home/nils/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/json/encoder.py", line 202, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/nils/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/json/encoder.py", line 263, in iterencode
+    return _iterencode(o, 0)
+  File "/home/nils/.local/share/uv/python/cpython-3.13.13-linux-x86_64-gnu/lib/python3.13/json/encoder.py", line 182, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+                    f'is not JSON serializable')
+TypeError: Object of type ellipsis is not JSON serializable

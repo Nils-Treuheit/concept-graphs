@@ -1,0 +1,128 @@
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/424 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 52/424 [00:00<00:00, 519.11it/s]Loading weights:  33%|███▎      | 142/424 [00:00<00:00, 736.41it/s]Loading weights:  55%|█████▍    | 232/424 [00:00<00:00, 799.94it/s]Loading weights:  91%|█████████▏| 387/424 [00:00<00:00, 1092.31it/s]Loading weights: 100%|██████████| 424/424 [00:00<00:00, 1020.77it/s]
+Frame frame000000: done
+Frame frame000050: done
+Frame frame000100: done
+Frame frame000150: done
+Frame frame000200: done
+Frame frame000250: done
+Frame frame000300: done
+Frame frame000350: done
+Frame frame000400: done
+Frame frame000450: done
+Frame frame000500: done
+Frame frame000550: done
+Frame frame000600: done
+Frame frame000650: done
+Frame frame000700: done
+Frame frame000750: done
+Frame frame000800: done
+Frame frame000850: done
+Frame frame000900: done
+Frame frame000950: done
+Frame frame001000: done
+Frame frame001050: done
+No list of tuples found in the text.
+Frame frame001100: done
+Frame frame001150: done
+Frame frame001200: done
+Frame frame001250: done
+Frame frame001300: done
+Frame frame001350: done
+Frame frame001400: done
+Frame frame001450: done
+Frame frame001500: done
+Frame frame001550: done
+Frame frame001600: done
+Frame frame001650: done
+Frame frame001700: done
+Frame frame001750: done
+Frame frame001800: done
+Frame frame001850: done
+Frame frame001900: done
+Frame frame001950: done
+{
+  "summary": {
+    "selected_frames": 40,
+    "records_written": 40,
+    "frame_records_missing": 0,
+    "frames_missing_annotated_image": 0,
+    "relation_requests_completed": 40,
+    "caption_requests_completed": 40,
+    "caption_frame_records_completed": 40,
+    "complete_frame_pairs": 40,
+    "relation_legacy_parse_valid_frames": 0,
+    "relation_strict_json": {
+      "expected": 40,
+      "completed": 40,
+      "failed_or_not_completed": 0,
+      "json_array_frames": 0,
+      "json_array_rate_over_expected": 0.0,
+      "schema_valid_frames": 0,
+      "schema_valid_rate_over_expected": 0.0,
+      "ids_and_predicates_valid_frames": 0,
+      "ids_and_predicates_valid_rate_over_expected": 0.0,
+      "relation_endpoints_valid": 0,
+      "relation_endpoints_total": 0,
+      "relation_predicates_valid": 0,
+      "relation_predicates_total": 0
+    },
+    "caption_legacy_parse_valid_frames": 0,
+    "caption_strict_json": {
+      "expected": 40,
+      "completed": 40,
+      "failed_or_not_completed": 0,
+      "json_array_frames": 0,
+      "json_array_rate_over_expected": 0.0,
+      "schema_valid_frames": 0,
+      "schema_valid_rate_over_expected": 0.0,
+      "exact_id_coverage_frames": 0,
+      "exact_id_coverage_rate_over_expected": 0.0,
+      "ids_matched": 0,
+      "ids_expected": 0,
+      "ids_missing": 0,
+      "ids_extra": 0,
+      "duplicate_ids": 0
+    },
+    "caption_native_structured_output": {
+      "expected": 40,
+      "completed": 40,
+      "failed_or_not_completed": 0,
+      "json_array_frames": 0,
+      "json_array_rate_over_expected": 0.0,
+      "schema_valid_frames": 0,
+      "schema_valid_rate_over_expected": 0.0,
+      "exact_id_coverage_frames": 0,
+      "exact_id_coverage_rate_over_expected": 0.0,
+      "ids_matched": 0,
+      "ids_expected": 0,
+      "ids_missing": 0,
+      "ids_extra": 0,
+      "duplicate_ids": 0
+    },
+    "caption_harness_stitching_note": null,
+    "usable_caption_observations": {
+      "count": 0,
+      "expected": 763,
+      "rate": 0.0,
+      "definition": "Detection observation with a nonempty description and resolvable ID/name; batch mode also requires valid JSON array schema; targeted IDs are prompt-linked then cache-attached."
+    },
+    "targeted_caption_totals": null,
+    "relation_error_count": 0,
+    "caption_error_count": 0,
+    "relation_agreement_f1_mean": null,
+    "relation_agreement_scored_frames": 0,
+    "relation_agreement_empty_reference_frames": 16,
+    "caption_word_f1_mean": null,
+    "caption_word_f1_scored_frames": 0,
+    "caption_word_f1_scored_ids": 0
+  },
+  "wall_seconds": 2018.3676751960302,
+  "gpu_memory": {
+    "torch_peak_allocated_mib": 3836.3,
+    "torch_peak_reserved_mib": 3890.0,
+    "nvidia_smi_peak_all_gpus_used_mib": 6105,
+    "nvidia_smi_sample_count": 1982,
+    "nvidia_smi_scope": "maximum memory.used among all visible GPUs; includes other processes and desktop baseline"
+  }
+}
