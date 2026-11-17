@@ -673,12 +673,13 @@ def run_preflight() -> PreflightReport:
 # ── Metrics helpers ─────────────────────────────────────────────────────────
 
 
-def _binary_true(label_matrix: np.ndarray, cats: List[str]) -> np.ndarray:
+def _binary_true(labels: List[str], cats: List[str]) -> np.ndarray:
     """Return a (n_obs x n_cats) bool matrix; category column True where label == cat."""
-    # labels: array of length n_obs; cats sorted
+    # labels: list/sequence of length n_obs; cats sorted
+    n_obs = len(labels)
     cat_index = {c: i for i, c in enumerate(cats)}
-    out = np.zeros((label_matrix.shape[0], len(cats)), dtype=bool)
-    for i, lbl in enumerate(label_matrix):
+    out = np.zeros((n_obs, len(cats)), dtype=bool)
+    for i, lbl in enumerate(labels):
         idx = cat_index.get(lbl)
         if idx is not None:
             out[i, idx] = True
@@ -1721,7 +1722,7 @@ def _verify_manifest_entries(phase: str) -> Dict[str, Any]:
 
         if path_str.endswith("-box.png"):
             # Track box stem
-            box_stems.add(rel_path[:-9])  # Remove "-box.png"
+            box_stems.add(rel_path[:-8])  # Remove "-box.png" (8 chars)
             n_box += 1
 
             if not _os.path.isfile(disk_path):
@@ -2036,14 +2037,22 @@ def _run_inference() -> Dict[str, Any]:
             mask_native_np = np.array(mask_native, dtype=np.float32)
             mask_positive = (mask_native_np > 0).astype(np.float32)
 
-            total_mask_pixels = mask_positive.sum()
+            # Convert mask to a float32 CUDA tensor on logits_native.device
+            # so arithmetic with logits_native stays on GPU.
+            mask_positive_tensor = torch.from_numpy(mask_positive).to(
+                logits_native.device, dtype=torch.float32
+            )
+
+            total_mask_pixels = mask_positive_tensor.sum()
             if total_mask_pixels == 0:
                 raise RuntimeError(f"Empty mask at observation {idx}")
 
             # Pool each category's logits over positive mask pixels
-            # logits_native: [49, H, W]; mask_positive: [H, W]
-            pooled = (logits_native * mask_positive).sum(dim=(1, 2)) / total_mask_pixels
-            scores_matrix[idx] = pooled.numpy()
+            # logits_native: [49, H, W]; mask_positive_tensor: [H, W]
+            # Accumulate/sum in float32 to avoid low-precision overflow.
+            pooled = (logits_native.float() * mask_positive_tensor).sum(dim=(1, 2)) / total_mask_pixels
+            # Copy to CPU before NumPy conversion.
+            scores_matrix[idx] = pooled.cpu().numpy()
 
     t_infer_end = time.perf_counter()
 
