@@ -200,4 +200,4 @@ None recorded. Input manifest unchanged after inference.
 
 ## Scope statement
 
-This result completes the GT-mask-isolated crop category-retrieval subtask. Cross-view identity diagnostics, graph-triplet recall, and optional full pipeline-slot acceptance remain **pending**. The asset gate for backbone, head, and vocabulary is **passed** (SHA-256 verified).
+This result completes the GT-mask-isolated crop category-retrieval subtask. The cross-view identity diagnostics and oracle predicate-triplet recall are now measured and reported; see the [dedicated graph report](../../../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md). Optional full pipeline-slot acceptance (Stage 2) remains **pending**. The asset gate for backbone, head, and vocabulary is **passed** (SHA-256 verified).

@@ -1,6 +1,6 @@
 # DINOv3 + dino.txt ViT-L/16 substitution experiment
 
-**Status:** asset gate passed; GT-mask-isolated crop category retrieval measured and reviewed (16 Nov 2026). See [detailed result](dinotxt_global_retrieval_test5.md). Broader Stage 1 (cross-view identity / graph diagnostics) and Stage 2 (optional pipeline-slot acceptance) remain explicitly pending. The candidate is a direct shared-space image/text encoder for the SigLIP2 mask-isolated slot. It is distinct from DINOde's ODE text transport and T-REN's point-conditioned region tokens.
+**Status:** asset gate passed; GT-mask-isolated crop category retrieval measured and reviewed (16 Nov 2026). Stage 1 cross-view identity and graph diagnostics measured and reviewed. See [GT-mask-isolated result](dinotxt_global_retrieval_test5.md) and [dedicated identity/graph report](../../../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md). Stage 2 (optional pipeline-slot acceptance) remains explicitly pending. The candidate is a direct shared-space image/text encoder for the SigLIP2 mask-isolated slot. It is distinct from DINOde's ODE text transport and T-REN's point-conditioned region tokens.
 
 ## Why this is a valid candidate
 
@@ -19,19 +19,24 @@ A local audit on 16 November 2026 verified all three assets under `models/experi
 - **BPE vocabulary:** `bpe_simple_vocab_16e6.txt.gz` — 1,356,917 bytes, SHA-256 `924691ac288e54409236115652ad4aa250f48203de50a9e4722a6ecd48d6804a`.
 - **Source commit:** `6876159a11b4df116f30f667f8c9888617df0751` (exact match).
 
-The asset gate is passed. The GT-mask-isolated crop category retrieval benchmark ran on the five-scene held-out split (2,204 views, 49 categories) with all metrics measured. See the detailed result report for full numbers. Broader Stage 1 (cross-view identity and graph-triplet diagnostics) and Stage 2 (optional pipeline-slot acceptance) remain explicitly pending.
+The asset gate is passed. The GT-mask-isolated crop category retrieval benchmark ran on the five-scene held-out split (2,204 views, 49 categories) with all metrics measured. See the detailed result report for full numbers. Stage 1 cross-view identity and graph-triplet diagnostics have now been measured independently. Stage 2 (optional pipeline-slot acceptance) remains explicitly pending.
 
 ## Stage 1: matched retrieval benchmark
 
-GT-mask-isolated crop category retrieval (macro AP, macro top-1/top-5, macro query recall@1/5/10/50) is measured and reviewed on the five-scene held-out split (2,204 views, 49 categories). See the detailed result report.
+GT-mask-isolated crop category retrieval (macro AP, macro top-1/top-5, macro query recall@1/5/10/50) is measured and reviewed on the five-scene held-out split (2,204 views, 49 categories). See [GT-mask-isolated result](dinotxt_global_retrieval_test5.md).
 
-Remaining Stage 1 diagnostics — cross-view identity top-1, MRR, recall@1/5/10 using leave-one-frame-out prototypes, graph-node identity accuracy, and oracle relation-triplet recall — are **explicitly pending**. They require the same frozen ReplicaSSG test subset, object IDs, and score code, but have not yet been computed for dino.txt.
+Cross-view identity and graph diagnostics are measured and reviewed (2,171 eligible queries, 33 excluded):
+- Top-1: 424/2,171 = 0.1953; MRR 0.3393; recall@5 0.5002; recall@10 0.6642.
+- Graph-node identity accuracy: 424/2,171 = 0.1953.
+- Oracle predicate-triplet recall: 0/49 = 0.0 (predicates frozen from `relationships.json`; inference not evaluated).
+
+See the [dedicated identity and graph report](../../../../scripts/pipeline_model_reports/dinotxt_identity_graph_test5.md) for per-scene breakdowns and full metrics.
 
 All other Stage 1 requirements are documented: frozen five scenes with 6 excluded scenes lacking local RGB/poses, official transform and prompt, descriptive SigLIP2 and FG-CLIP2 controls, asset hashes, transform/prompt definitions, throughput, CUDA/host memory, cache size, cache namespace, and release-local workflow compliance.
 
 ## Stage 2: optional pipeline-slot acceptance
 
-**Explicitly pending.** Stage 1 crop category retrieval has a measured result, but broader identity/graph diagnostics remain incomplete. Only after all Stage 1 work is reviewed should an opt-in dino.txt encoder configuration be added. Changes would affect only the mask-isolated encoder: detector, prompts, masks, VLM, frame sample, mapping thresholds, and downstream stages stay fixed. Build a fresh dino.txt map and cache; never combine dino.txt and CLIP embeddings in one map. Measure map identity and association on labeled data, plus runtime, peak memory, and cache size. Keep SigLIP2 as the default unless paired quality and resource evidence supports switching. Do not claim VQA improvement from this study: the current ReplicaSSG split has no aligned natural-language QA labels. Test VQA separately once a labeled question set and fixed answer-evidence protocol exist.
+**Explicitly pending.** Stage 1 crop category retrieval and cross-view identity/graph diagnostics have measured results, but pipeline-slot acceptance remains incomplete. Only after all Stage 1 work is reviewed should an opt-in dino.txt encoder configuration be added. Changes would affect only the mask-isolated encoder: detector, prompts, masks, VLM, frame sample, mapping thresholds, and downstream stages stay fixed. Build a fresh dino.txt map and cache; never combine dino.txt and CLIP embeddings in one map. Measure map identity and association on labeled data, plus runtime, peak memory, and cache size. Keep SigLIP2 as the default unless paired quality and resource evidence supports switching. Do not claim VQA improvement from this study: the current ReplicaSSG split has no aligned natural-language QA labels. Test VQA separately once a labeled question set and fixed answer-evidence protocol exist.
 
 ## Separation from related experiments
 
